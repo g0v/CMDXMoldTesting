@@ -114,6 +114,9 @@ void CMDXTestMoldingDlg::OnTcnSelchangeTabmolding(NMHDR *pNMHDR, LRESULT *pResul
 			m_ProcessPage.InitFillTime();
 			m_ProcessPage.SetProfileFill();
 			m_ProcessPage.SetProfilePack();
+			m_ProcessPage.InitCoolTime();
+			m_ProcessPage.InitCycleTime();
+			m_ProcessPage.InitResidenceTime();
 
 			if( !m_ProductPage.UpdateData())
 			{
@@ -145,6 +148,8 @@ void CMDXTestMoldingDlg::OnTcnSelchangeTabmolding(NMHDR *pNMHDR, LRESULT *pResul
 			m_ProcessPage.InitFillTime();
 			m_ProcessPage.SetProfileFill();
 			m_ProcessPage.SetProfilePack();
+			m_ProcessPage.InitCycleTime();
+			m_ProcessPage.InitResidenceTime();
 
 			if( !m_MaterialPage.UpdateData())
 			{

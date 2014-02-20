@@ -48,6 +48,8 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_EN_CHANGE(IDC_EDIT_VOLUME, &CMDXProductPage::OnEnChangeEditPartVolume)
 	ON_EN_CHANGE(IDC_EDIT_CR_VOLUME, &CMDXProductPage::OnEnChangeEditColdRunnerVolume)
 	ON_EN_CHANGE(IDC_EDIT_PART_THICKNESS, &CMDXProductPage::OnEnChangeEditPartThickness)
+	ON_EN_CHANGE(IDC_EDIT_MAX_PART_THICKNESS, &CMDXProductPage::OnEnChangeEditMaxPartThickness)
+	ON_EN_CHANGE(IDC_EDIT_HR_VOLUME, &CMDXProductPage::OnEnChangeEditHrVolume)
 END_MESSAGE_MAP()
 
 //void CMDXProductPage::OnEnKillfocusEditPartVolume()
@@ -346,7 +348,6 @@ void CMDXProductPage::OnEnChangeEditColdRunnerVolume()
 	DataCenter::getInstance().SetColdRunnerVolume(GetColdRunnerVolumeData());
 }
 
-
 void CMDXProductPage::OnEnChangeEditPartThickness()
 {
 	// 更新澆口短邊肉厚
@@ -361,4 +362,25 @@ void CMDXProductPage::OnEnChangeEditPartThickness()
 
 	//push gate thickness to data center
 	DataCenter::getInstance().SetGateThickness(GetGateThicknessData());
+}
+
+void CMDXProductPage::OnEnChangeEditMaxPartThickness()
+{
+	CString strEditData("");
+	GetDlgItem( IDC_EDIT_MAX_PART_THICKNESS )->GetWindowText(strEditData);
+	double t = _tstof(strEditData);
+	SetMaxPartThicknessData(t);
+
+	DataCenter::getInstance().SetMaxPartThickness(GetMaxPartThicknessData());
+}
+
+
+void CMDXProductPage::OnEnChangeEditHrVolume()
+{
+	CString strEditData("");
+	GetDlgItem( IDC_EDIT_HR_VOLUME )->GetWindowText(strEditData);
+	double HR = _tstof(strEditData);
+	SetHotRunnerVolumeData(HR);
+
+	DataCenter::getInstance().SetHotRunnerVolume(GetHotRunnerVolumeData());
 }

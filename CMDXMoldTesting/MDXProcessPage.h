@@ -74,6 +74,11 @@ private:
 	double m_dFillSpeed_multi_2;
 	double m_dFillSpeed_multi_3;
 
+	double m_dCoolTime;
+	double m_dMoldOpenTime;
+	double m_dCycleTime;
+	double m_dResidenceTime;
+
 public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnCbnSelchangeComboFillingSection();
@@ -84,6 +89,10 @@ public:
 	void InitVolumeExpansion();
 	void SetProfileFill();
 	void SetProfilePack();
+	void InitCoolTime();
+	void InitMoldOpenTime();
+	void InitCycleTime();
+	void InitResidenceTime();
 	afx_msg void OnDeltaposSpinVP(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinInjectionPressure(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinFillTime(NMHDR *pNMHDR, LRESULT *pResult);

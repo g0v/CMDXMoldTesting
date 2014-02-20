@@ -76,4 +76,6 @@ public:
 	afx_msg void OnEnChangeEditPartVolume();
 	afx_msg void OnEnChangeEditColdRunnerVolume();
 	afx_msg void OnEnChangeEditPartThickness();
+	afx_msg void OnEnChangeEditMaxPartThickness();
+	afx_msg void OnEnChangeEditHrVolume();
 };

@@ -55,7 +55,52 @@ BOOL CMDXProcessPage::OnInitDialog()
 	SetProfileFill();
 	SetProfilePack();
 
+	InitCoolTime();
+	InitMoldOpenTime();
+	InitCycleTime();
+	InitResidenceTime();
+
 	return TRUE;
+}
+
+void CMDXProcessPage::InitCoolTime()
+{
+	double max_part = DataCenter::getInstance().GetMaxPartThickness();
+	m_dCoolTime = max_part * (1+2*max_part);
+
+	CString strTemp("");
+	strTemp.Format("%.1f", m_dCoolTime);
+	GetDlgItem(IDC_EDIT_COOLING_TIME)->SetWindowText(strTemp);
+}
+
+void CMDXProcessPage::InitMoldOpenTime()
+{
+	m_dMoldOpenTime = 5.0;
+
+	CString strTemp("");
+	strTemp.Format("%.1f", m_dMoldOpenTime);
+	GetDlgItem(IDC_EDIT_MOLDOPEN_TIME)->SetWindowText(strTemp);
+}
+	
+void CMDXProcessPage::InitCycleTime()
+{
+	m_dCycleTime = m_dInjectionTime + m_dCoolTime + m_dMoldOpenTime;
+
+	CString strTemp("");
+	strTemp.Format("%.1f", m_dCycleTime);
+	GetDlgItem(IDC_EDIT_CYCLE_TIME)->SetWindowText(strTemp);
+}
+
+void CMDXProcessPage::InitResidenceTime()
+{
+	double hrV = DataCenter::getInstance().GetHotRunnerVolume();
+	m_dResidenceTime = (hrV+m_dPartVolume+m_dColdRunnerVolume)
+						/(m_dPartVolume+m_dColdRunnerVolume)
+						/m_dVolumeExpansion*m_dCycleTime/60;
+	
+	CString strTemp("");
+	strTemp.Format("%.1f", m_dResidenceTime);
+	GetDlgItem(IDC_EDIT_RESIDENCE_TIME)->SetWindowText(strTemp);
 }
 
 void CMDXProcessPage::InitVP()
@@ -199,7 +244,10 @@ void CMDXProcessPage::OnDeltaposSpinFillTime(NMHDR *pNMHDR, LRESULT *pResult)
     CString strTemp("");
 	strTemp.Format("%.1f", m_dInjectionTime);
 	GetDlgItem(IDC_EDIT_FILLINT_TIME)->SetWindowText(strTemp); 
+	
 	SetProfileFill();
+	InitCycleTime();
+	InitResidenceTime();
 }
 
 double CMDXProcessPage::InjectionTimeLookUpTable()
@@ -505,7 +553,6 @@ void CMDXProcessPage::OnCbnSelchangeComboFillingSection()
 	m_profileF.RemoveAllData();
 	SetProfileFill();
 }
-
 
 void CMDXProcessPage::OnCbnSelchangeComboPackingSection()
 {

@@ -47,6 +47,17 @@ public:
 		return m_dColdRunnerVolume;
 	}
 
+	void SetHotRunnerVolume(double hrv)
+	{
+		m_dHotRunnerVolume = hrv;
+
+		//TRACE("%lf", m_dColdRunnerVolume);
+	}
+	double GetHotRunnerVolume()
+	{
+		return m_dHotRunnerVolume;
+	}
+
 	void SetMaterialSel(int material)
 	{
 		m_iMaterialSel = material;
@@ -74,6 +85,15 @@ public:
 		return m_dGateThickness;
 	}
 
+	void SetMaxPartThickness(double mpt)
+	{
+		m_dMaaxPartThickness = mpt;
+	}
+	double GetMaxPartThickness()
+	{
+		return m_dMaaxPartThickness;
+	}
+
 private:
     DataCenter() {m_dDiaScrew=0, m_dMaxInjPre=0;}                   // Constructor? (the {} brackets) are needed here.
     // Dont forget to declare these two. You want to make sure they
@@ -85,8 +105,10 @@ private:
 	double m_dMaxInjPre;
 	double m_dVolume;
 	double m_dColdRunnerVolume;
+	double m_dHotRunnerVolume;
 	int m_iMaterialSel;
 	double m_dVolumeExpansion;
 	double m_dMaxScrewStroke;
 	double m_dGateThickness;
+	double m_dMaaxPartThickness;
 };

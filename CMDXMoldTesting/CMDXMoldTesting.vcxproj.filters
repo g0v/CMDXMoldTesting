@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Page">
+      <UniqueIdentifier>{6eae7dea-54fe-4e6a-b4b9-f4536792a435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialog">
+      <UniqueIdentifier>{96d50e32-abe5-497f-82b9-1b169814c91d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{3cfbddd7-dcf3-4702-9fef-022ccff3c4f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{6488945c-da28-4abb-9463-717cb0155232}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="res\CMDXMoldTesting.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\MDXCoreTech.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CMDXMoldTesting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CMDXMoldTestingDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXMachinePage.h">
+      <Filter>Page</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXProcessPage.h">
+      <Filter>Page</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXTestMoldingDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXProductPage.h">
+      <Filter>Page</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXMaterialPage.h">
+      <Filter>Page</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXStringParser.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXProductPageData.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXAllMoldTestingData.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DataCenter.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CMDXMoldTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CMDXMoldTestingDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXMachinePage.cpp">
+      <Filter>Page</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXProcessPage.cpp">
+      <Filter>Page</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXTestMoldingDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXProductPage.cpp">
+      <Filter>Page</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXMaterialPage.cpp">
+      <Filter>Page</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXStringParser.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXProductPageData.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXAllMoldTestingData.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="DataCenter.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CMDXMoldTesting.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

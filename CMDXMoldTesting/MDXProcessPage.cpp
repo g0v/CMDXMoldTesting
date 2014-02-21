@@ -155,7 +155,7 @@ void CMDXProcessPage::InitInjectionPressure()
 	m_dMachinePressure = DataCenter::getInstance().GetMaxInjectionPressure();
 
 	//更新顯示(射出壓力)
-	m_dInjectionPressure = m_dMachinePressure*0.9;
+	m_dInjectionPressure = m_dMachinePressure*0.8;	
 	m_dInjectionPressure_step = m_dInjectionPressure * 0.01;
 	m_dInjectionPressure_max = m_dInjectionPressure * 1.1;
 	m_dInjectionPressure_min = m_dInjectionPressure * 0.9;

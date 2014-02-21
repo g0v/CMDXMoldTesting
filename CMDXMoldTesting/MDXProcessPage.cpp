@@ -241,6 +241,7 @@ void CMDXProcessPage::InitFillTime()
 	//從資料中心拿資料
 	m_iMaterialSel = DataCenter::getInstance().GetMaterialSel();
 	m_dPartVolume = DataCenter::getInstance().GetPartVolume();
+	m_dColdRunnerVolume = DataCenter::getInstance().GetColdRunnerVolume();
 
 	//更新顯示(充填時間)
 	m_dInjectionTime = InjectionTimeLookUpTable();
@@ -321,45 +322,46 @@ double CMDXProcessPage::InjectionTimeLookUpTable()
 	HighVis[8] = (5.4+7.2) / 2;
 	HighVis[9] = (7.2+9.5) / 2;
 
-	// part volume
+	// part volume + cold runner volume = plasticizing volume 塑化體積
+	double plastic_volume = m_dPartVolume + m_dColdRunnerVolume;
 	int idxV = 0;
-	if (m_dPartVolume < 8)
+	if (plastic_volume < 8)
 	{
 		idxV = 0;
 	}
-	else if (m_dPartVolume < 15)
+	else if (plastic_volume < 15)
 	{
 		idxV = 1;
 	}
-	else if (m_dPartVolume < 30)
+	else if (plastic_volume < 30)
 	{
 		idxV = 2;
 	}
-	else if (m_dPartVolume < 50)
+	else if (plastic_volume < 50)
 	{
 		idxV = 3;
 	}
-	else if (m_dPartVolume < 80)
+	else if (plastic_volume < 80)
 	{
 		idxV = 4;
 	}
-	else if (m_dPartVolume < 120)
+	else if (plastic_volume < 120)
 	{
 		idxV = 5;
 	}
-	else if (m_dPartVolume < 180)
+	else if (plastic_volume < 180)
 	{
 		idxV = 6;
 	}
-	else if (m_dPartVolume < 250)
+	else if (plastic_volume < 250)
 	{
 		idxV = 7;
 	}
-	else if (m_dPartVolume < 350)
+	else if (plastic_volume < 350)
 	{
 		idxV = 8;
 	}
-	else //part volume >= 350
+	else //plasticizing volume >= 350
 	{
 		idxV = 9;
 	}

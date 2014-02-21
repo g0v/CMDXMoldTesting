@@ -286,7 +286,7 @@ BOOL CMDXProductPage::CheckPartThickness(CDataExchange *pDX, UINT nEditID, doubl
 	if (part > max)
 	{
 		CString strErrorMesg("");
-		strErrorMesg = "產品平均肉厚不可大於最大肉厚";
+		strErrorMesg = "產品[平均肉厚]不可大於[最大肉厚]";
 		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
 	}
 	return TRUE;

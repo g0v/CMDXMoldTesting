@@ -74,8 +74,12 @@ private:
 	double m_dFillSpeed_multi_2;
 	double m_dFillSpeed_multi_3;
 
-	double m_dCoolTime;
 	double m_dMoldOpenTime;
+	double m_dMoldOpenTime_step;
+	double m_dMoldOpenTime_max;
+	double m_dMoldOpenTime_min;
+
+	double m_dCoolTime;
 	double m_dCycleTime;
 	double m_dResidenceTime;
 
@@ -96,4 +100,5 @@ public:
 	afx_msg void OnDeltaposSpinVP(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinInjectionPressure(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinFillTime(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinMoldopenTime(NMHDR *pNMHDR, LRESULT *pResult);
 };

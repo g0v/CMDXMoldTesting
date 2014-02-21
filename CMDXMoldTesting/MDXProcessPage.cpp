@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CMDXProcessPage, CDialog)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_VP, &CMDXProcessPage::OnDeltaposSpinVP)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_INJECTION_PRESSURE, &CMDXProcessPage::OnDeltaposSpinInjectionPressure)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_FILLINT_TIME, &CMDXProcessPage::OnDeltaposSpinFillTime)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MOLDOPEN_TIME, &CMDXProcessPage::OnDeltaposSpinMoldopenTime)
 END_MESSAGE_MAP()
 
 
@@ -76,10 +77,41 @@ void CMDXProcessPage::InitCoolTime()
 void CMDXProcessPage::InitMoldOpenTime()
 {
 	m_dMoldOpenTime = 5.0;
+	m_dMoldOpenTime_step = m_dMoldOpenTime * 0.01;
+	m_dMoldOpenTime_max = m_dMoldOpenTime * 1.1;
+	m_dMoldOpenTime_min = m_dMoldOpenTime * 0.9;
 
 	CString strTemp("");
 	strTemp.Format("%.1f", m_dMoldOpenTime);
 	GetDlgItem(IDC_EDIT_MOLDOPEN_TIME)->SetWindowText(strTemp);
+}
+
+void CMDXProcessPage::OnDeltaposSpinMoldopenTime(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-預設值的1% 
+	//至多調整+-10%
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dMoldOpenTime < m_dMoldOpenTime_max)  
+    {
+        m_dMoldOpenTime += m_dMoldOpenTime_step;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dMoldOpenTime > m_dMoldOpenTime_min)  
+    {
+        m_dMoldOpenTime -= m_dMoldOpenTime_step;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.1f", m_dMoldOpenTime);
+	GetDlgItem(IDC_EDIT_MOLDOPEN_TIME)->SetWindowText(strTemp); 
+
+	InitCycleTime();
+	InitResidenceTime();
 }
 	
 void CMDXProcessPage::InitCycleTime()
@@ -568,3 +600,5 @@ void CMDXProcessPage::OnCbnSelchangeComboPackingSection()
 	m_profileP.RemoveAllData();
 	SetProfilePack();
 }
+
+

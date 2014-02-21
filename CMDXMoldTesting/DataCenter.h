@@ -18,7 +18,7 @@ public:
         return m_dDiaScrew;
     }
 
-	void SetMaxInjectionPressure(double pre)
+	void SetMaxInjectionPressure(double pre) // = machine pressure
     {
 		m_dMaxInjPre = pre;
     }

@@ -167,7 +167,7 @@ void CMDXTestMoldingDrawProfile::DrawValueText(CDC *pDC)
 		//}
 		//else
 		{
-			strTemp.Format( _T("%6.2f"), dValue);
+			strTemp.Format( _T("%6.1f"), dValue);
 		}
 			
 		//strTemp.Format( "%6.2f", dValue); //2010-02-10
@@ -189,7 +189,7 @@ void CMDXTestMoldingDrawProfile::DrawValueText(CDC *pDC)
 //        strTemp.Format( "%6.2f", (m_dYmin + (m_dYmax - m_dYmin)*i*0.1)*m_dYFactor );
 	        
 
-		strTemp.Format( _T("%6.2f"), dValue);	
+		strTemp.Format( _T("%6.1f"), dValue);	
 	     if ( i %2 == 0 )
 		 {
 			 pDC->TextOut( m_Rect.left - 25, m_Rect.bottom-m_Rect.Height()*i/10-8, strTemp );

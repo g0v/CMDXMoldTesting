@@ -220,8 +220,8 @@ void CMDXProcessPage::OnDeltaposSpinInjectionPressure(NMHDR *pNMHDR, LRESULT *pR
     CString strTemp("");
 	strTemp.Format("%.1f", m_dInjectionPressure);
 	GetDlgItem(IDC_EDIT_INJECTION_PRESSURE)->SetWindowText(strTemp); 
-	DataCenter::getInstance().SetMaxInjectionPressure(m_dInjectionPressure);
-	SetProfilePack();
+	//DataCenter::getInstance().SetMaxInjectionPressure(m_dInjectionPressure);
+	//SetProfilePack();
 }
 
 void CMDXProcessPage::InitVolumeExpansion()
@@ -538,23 +538,24 @@ void CMDXProcessPage::SetProfilePack()
 
 	//從資料中心拿資料
 	double gate_thickness = DataCenter::getInstance().GetGateThickness();
+	m_dMachinePressure = DataCenter::getInstance().GetMaxInjectionPressure();
 	m_dPackTime = gate_thickness * (1+2*gate_thickness);
 
 	m_profileP.SetXMinMaxValue(0,m_dPackTime);
-	m_profileP.SetYMinMaxValue(0,m_dInjectionPressure);
+	m_profileP.SetYMinMaxValue(0,m_dMachinePressure);
 
 	//加入資料
 	if (m_iPackSel == 0) //單段保壓 0.75(機器壓力)
 	{
-		m_profileP.AddXYData(m_dPackTime,0.75*m_dInjectionPressure);
-		m_profileP.AddXYData(0,0.75*m_dInjectionPressure);
+		m_profileP.AddXYData(m_dPackTime,0.75*m_dMachinePressure);
+		m_profileP.AddXYData(0,0.75*m_dMachinePressure);
 	}
 	else //二段保壓 0.75:0.4(機器壓力)
 	{
-		m_profileP.AddXYData(m_dPackTime,0.4*m_dInjectionPressure);
-		m_profileP.AddXYData(0.5*m_dPackTime,0.4*m_dInjectionPressure);
-		m_profileP.AddXYData(0.5*m_dPackTime,0.75*m_dInjectionPressure);
-		m_profileP.AddXYData(0,0.75*m_dInjectionPressure);
+		m_profileP.AddXYData(m_dPackTime,0.4*m_dMachinePressure);
+		m_profileP.AddXYData(0.5*m_dPackTime,0.4*m_dMachinePressure);
+		m_profileP.AddXYData(0.5*m_dPackTime,0.75*m_dMachinePressure);
+		m_profileP.AddXYData(0,0.75*m_dMachinePressure);
 	}
 
 	m_profileP.Invalidate(TRUE);

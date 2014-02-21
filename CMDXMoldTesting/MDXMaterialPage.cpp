@@ -90,29 +90,36 @@ void CMDXMaterialPage::SetTemperatureData()
 		{
 			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("300");
 			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("230");
+			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("265"); // (300+230)/2
 			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("60");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("75"); // (90+60)/2
 		}
 		break;
 	case 1://PC+ABS
 		{
 			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("270");
 			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("235");
 			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("50");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("70");
 		}
 		break;
 	case 2://PA
 		{
 			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("260");
 			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("230");
+			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("245");
 			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("50");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("70");
 		}
 		break;
 	}
 
 	UpdateAllData();
+
 }
 
 void CMDXMaterialPage::UpdateAllData()
@@ -126,6 +133,10 @@ void CMDXMaterialPage::UpdateAllData()
 	SetMaxMoldTemperature(atof(strValue) );
 	GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->GetWindowText(strValue);
 	SetMinMoldTemperature(atof(strValue) );
+	GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->GetWindowText(strValue);
+	SetMoldTemperature(atof(strValue) );
+	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->GetWindowText(strValue);
+	SetMoldTemperature(atof(strValue) );
 
 	//push material selection to data center
 	DataCenter::getInstance().SetMaterialSel(m_iMaterialSel);

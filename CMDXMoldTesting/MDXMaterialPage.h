@@ -19,10 +19,14 @@ public:
 	void SetMinMeltTemperature( double dValue )	{ m_dMinMeltTemp =  dValue; };
 	void SetMaxMoldTemperature( double dValue ) { m_dMaxMoldTemp =  dValue; };
 	void SetMinMoldTemperature( double dValue )	{ m_dMinMoldTemp =  dValue; };
-	double SetMaxMeltTemperature()	{ return m_dMaxMeltTemp; };
-	double SetMinMeltTemperature()	{ return m_dMinMeltTemp; };
-	double SetMaxMoldTemperature()	{ return m_dMaxMoldTemp; };
-	double SetMinMoldTemperature()	{ return m_dMinMoldTemp; };
+	void SetMeltTemperature( double dValue )	{ m_dMeltTemp =  dValue; };
+	void SetMoldTemperature( double dValue )	{ m_dMoldTemp =  dValue; };
+	double GetMaxMeltTemperature()	{ return m_dMaxMeltTemp; };
+	double GetMinMeltTemperature()	{ return m_dMinMeltTemp; };
+	double GetMaxMoldTemperature()	{ return m_dMaxMoldTemp; };
+	double GetMinMoldTemperature()	{ return m_dMinMoldTemp; };
+	double GetMeltTemperature()	{ return m_dMeltTemp; };
+	double GetMoldTemperature()	{ return m_dMoldTemp; };
 	void UpdateAllData();
 
 private:
@@ -53,4 +57,6 @@ private:
 	double m_dMinMeltTemp;
 	double m_dMaxMoldTemp;
 	double m_dMinMoldTemp;
+	double m_dMeltTemp;
+	double m_dMoldTemp;
 };

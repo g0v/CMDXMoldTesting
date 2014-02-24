@@ -35,17 +35,19 @@ private:
 	BOOL IsValidateData(CDataExchange *pDX);
 	BOOL IsRealParse(CDataExchange *pDX, UINT nEditID, CString strValue);
 	BOOL CheckInputValue( CDataExchange *pDX, UINT nEditID, double dVlaue );
+	BOOL CheckMeltMinMax( CDataExchange *pDX, UINT nEditID, double melt, double min, double max );
+	BOOL CheckMoldMinMax( CDataExchange *pDX, UINT nEditID, double mold, double min, double max );
 	BOOL IsMaxMeltTemperature( CDataExchange *pDX ); 
 	BOOL IsMinMeltTemperature( CDataExchange *pDX );
+	BOOL IsMeltTemperature( CDataExchange *pDX );
 	BOOL IsMaxMoldTemperature( CDataExchange *pDX ); 
 	BOOL IsMinMoldTemperature( CDataExchange *pDX );
+	BOOL IsMoldTemperature( CDataExchange *pDX );
 
 protected:
 
 	virtual BOOL OnInitDialog();
-
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	
 	afx_msg void OnCbnSelchangeComboMaterialType();
 
 	CComboBox m_cMaterialType;
@@ -59,4 +61,6 @@ private:
 	double m_dMinMoldTemp;
 	double m_dMeltTemp;
 	double m_dMoldTemp;
+public:
+	afx_msg void OnEnChangeEditMeltTemperature();
 };

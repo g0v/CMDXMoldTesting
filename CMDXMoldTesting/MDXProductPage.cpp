@@ -206,6 +206,11 @@ BOOL CMDXProductPage::IsPlasticVolumeValidate( CDataExchange *pDX )
 		return FALSE;
 	}
 
+	if( !CheckPlasticVolumeValue( pDX, IDC_EDIT_PLASTIC_VOLUME, atof(strItem)))
+	{
+		return FALSE;
+	}
+
 	SetPlasticVolumeData(atof(strItem));
 	return TRUE;
 }
@@ -325,17 +330,23 @@ BOOL CMDXProductPage::CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, d
 	return TRUE;
 }
 
+BOOL CMDXProductPage::CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue)
+{
+	CMDXStringParser parser;
+	if( dValue > 550 )
+	{
+		CString strErrorMesg("");
+		strErrorMesg = "建議塑化體積需小於550";
+		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
+	}
+	return TRUE;
+}
+
 BOOL CMDXProductPage::CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max)
 {
 	CMDXStringParser parser;
-
-	if (part <= 0)
-	{
-		CString strErrorMesg("");
-		strErrorMesg = "產品[平均肉厚]需大於0";
-		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
-	}
-	else if (part > max)
+	
+	if (part > max)
 	{
 		CString strErrorMesg("");
 		strErrorMesg = "產品[平均肉厚]不可大於[最大肉厚]";
@@ -466,7 +477,7 @@ void CMDXProductPage::OnBnClickedButtonHrVolumeInfo()
 
 void CMDXProductPage::OnBnClickedButtonPlasticVolumeInfo()
 {
-	MessageBox(_T("產品體積 + 冷流道部分體積，以 cc 計"), _T("塑化體積"), 
+	MessageBox(_T("產品體積 + 冷流道部分體積，建議 < 550 cc，以 cc 計"), _T("塑化體積"), 
       MB_OK | MB_ICONINFORMATION);
 }
 

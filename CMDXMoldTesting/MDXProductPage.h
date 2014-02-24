@@ -49,6 +49,7 @@ private:
 	void ShowWarningMessage(CDataExchange *pDX, UINT nEditID, CString strMsg);
 	BOOL CheckInputValue( CDataExchange *pDX, UINT nEditID, double dVlaue ); //check >= 0
 	BOOL CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, double dValue); //check != 0
+	BOOL CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue);
 	BOOL CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max);
 
 protected:

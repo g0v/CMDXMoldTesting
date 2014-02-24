@@ -42,6 +42,7 @@ void CMDXMaterialPage::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CMDXMaterialPage, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_MATERIAL, &CMDXMaterialPage::OnCbnSelchangeComboMaterialType)
+	ON_EN_CHANGE(IDC_EDIT_MELT_TEMPERATURE, &CMDXMaterialPage::OnEnChangeEditMeltTemperature)
 END_MESSAGE_MAP()
 
 
@@ -49,7 +50,7 @@ END_MESSAGE_MAP()
 BOOL CMDXMaterialPage::OnInitDialog()
 {
 	InitComboBoxData();
-	m_bCheckEditData = false;
+	m_bCheckEditData = true;
 	return TRUE;
 }
 
@@ -151,8 +152,11 @@ BOOL CMDXMaterialPage::IsValidateData(CDataExchange *pDX)
 	     
     if( !IsMaxMeltTemperature( pDX ) )			{ return FALSE; };
 	if( !IsMinMeltTemperature( pDX ) )				{ return FALSE; };
+	if( !IsMeltTemperature( pDX ) )				{ return FALSE; };
 	if( !IsMaxMoldTemperature( pDX ) )				{ return FALSE; };
 	if( !IsMinMoldTemperature( pDX ) )			{ return FALSE; };
+	if( !IsMoldTemperature( pDX ) )			{ return FALSE; };
+
 
         //
    return TRUE;
@@ -187,6 +191,30 @@ BOOL CMDXMaterialPage::CheckInputValue( CDataExchange *pDX, UINT nEditID, double
 	return TRUE;
 }
 
+BOOL CMDXMaterialPage::CheckMeltMinMax( CDataExchange *pDX, UINT nEditID, double melt, double min, double max )
+{
+	CMDXStringParser parser;
+	if( melt < min || melt > max )
+	{
+		CString strErrorMesg("");
+		strErrorMesg = "[料溫]需在建議上下限之間";
+		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
+	}
+	return TRUE;
+}
+
+BOOL CMDXMaterialPage::CheckMoldMinMax( CDataExchange *pDX, UINT nEditID, double mold, double min, double max )
+{
+	CMDXStringParser parser;
+	if( mold < min || mold > max )
+	{
+		CString strErrorMesg("");
+		strErrorMesg = "[模溫]需在建議上下限之間";
+		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
+	}
+	return TRUE;
+}
+
 BOOL CMDXMaterialPage::IsMaxMeltTemperature( CDataExchange *pDX ) 
 { 
 	CString strItem("");
@@ -201,6 +229,7 @@ BOOL CMDXMaterialPage::IsMaxMeltTemperature( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
 	SetMaxMeltTemperature(atof(strItem));
 	return TRUE;
 }
@@ -219,7 +248,33 @@ BOOL CMDXMaterialPage::IsMinMeltTemperature( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
 	SetMinMeltTemperature(atof(strItem));
+	return TRUE;
+}
+
+BOOL CMDXMaterialPage::IsMeltTemperature( CDataExchange *pDX ) 
+{ 
+	CString strItem("");
+	GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->GetWindowText(strItem);
+    
+	if( !IsRealParse( pDX, IDC_EDIT_MELT_TEMPERATURE, strItem ) )
+    {
+        return FALSE;
+    }
+
+	if( !CheckInputValue( pDX, IDC_EDIT_MELT_TEMPERATURE, atof(strItem)))
+	{
+		return FALSE;
+	}
+
+	if( !CheckMeltMinMax( pDX, IDC_EDIT_MELT_TEMPERATURE, atof(strItem), 
+		GetMinMeltTemperature(), GetMaxMeltTemperature()))
+	{
+		return FALSE;
+	}
+
+	SetMeltTemperature(atof(strItem));
 	return TRUE;
 }
 
@@ -237,6 +292,7 @@ BOOL CMDXMaterialPage::IsMaxMoldTemperature( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
 	SetMaxMoldTemperature(atof(strItem));
 	return TRUE;
 }
@@ -255,6 +311,40 @@ BOOL CMDXMaterialPage::IsMinMoldTemperature( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
 	SetMinMoldTemperature(atof(strItem));
 	return TRUE;
+}
+
+BOOL CMDXMaterialPage::IsMoldTemperature( CDataExchange *pDX ) 
+{ 
+	CString strItem("");
+	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->GetWindowText(strItem);
+    
+	if( !IsRealParse( pDX, IDC_EDIT_MOLD_TEMPERATURE, strItem ) )
+    {
+        return FALSE;
+    }
+
+	if( !CheckInputValue( pDX, IDC_EDIT_MOLD_TEMPERATURE, atof(strItem)))
+	{
+		return FALSE;
+	}
+
+	if( !CheckMoldMinMax( pDX, IDC_EDIT_MOLD_TEMPERATURE, atof(strItem), 
+		GetMinMoldTemperature(), GetMaxMoldTemperature()))
+	{
+		return FALSE;
+	}
+
+	SetMoldTemperature(atof(strItem));
+	return TRUE;
+}
+
+void CMDXMaterialPage::OnEnChangeEditMeltTemperature()
+{
+	CString strEditData("");
+	GetDlgItem( IDC_EDIT_MELT_TEMPERATURE )->GetWindowText(strEditData);
+	double t = _tstof(strEditData);
+	SetMeltTemperature(t);
 }

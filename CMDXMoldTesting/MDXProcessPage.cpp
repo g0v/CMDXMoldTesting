@@ -38,6 +38,15 @@ BEGIN_MESSAGE_MAP(CMDXProcessPage, CDialog)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_INJECTION_PRESSURE, &CMDXProcessPage::OnDeltaposSpinInjectionPressure)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_FILLINT_TIME, &CMDXProcessPage::OnDeltaposSpinFillTime)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MOLDOPEN_TIME, &CMDXProcessPage::OnDeltaposSpinMoldopenTime)
+	ON_BN_CLICKED(IDC_BUTTON_VP_INFO, &CMDXProcessPage::OnBnClickedButtonVpInfo)
+	ON_BN_CLICKED(IDC_BUTTON_INJECTION_PRESSURE_INFO, &CMDXProcessPage::OnBnClickedButtonInjectionPressureInfo)
+	ON_BN_CLICKED(IDC_BUTTON_FILLINT_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonFillintTimeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_FILLING_SECTION_INFO, &CMDXProcessPage::OnBnClickedButtonFillingSectionInfo)
+	ON_BN_CLICKED(IDC_BUTTON_PACKING_SECTION_INFO, &CMDXProcessPage::OnBnClickedButtonPackingSectionInfo)
+	ON_BN_CLICKED(IDC_BUTTON_COOLING_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonCoolingTimeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MOLDOPEN_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonMoldopenTimeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_CYCLE_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonCycleTimeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_RESIDENCE_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonResidenceTimeInfo)
 END_MESSAGE_MAP()
 
 
@@ -92,8 +101,13 @@ void CMDXProcessPage::OnDeltaposSpinMoldopenTime(NMHDR *pNMHDR, LRESULT *pResult
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
 
-	//按一次箭頭可以+-預設值的1% 
+	//按一次箭頭可以+-bigger(預設值的1%, 0.1) 
 	//至多調整+-10%
+
+	if (m_dMoldOpenTime_step < 0.1)
+	{
+		m_dMoldOpenTime_step = 0.1;
+	}
 
 	//向上箭頭
 	if(pNMUpDown->iDelta == -1 && m_dMoldOpenTime < m_dMoldOpenTime_max)  
@@ -260,18 +274,23 @@ void CMDXProcessPage::OnDeltaposSpinFillTime(NMHDR *pNMHDR, LRESULT *pResult)
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
 
-	//按一次箭頭可以+-0.1
+	//按一次箭頭可以+-bigger(1%, 0.1)
 	//至多調整+-10%
+
+	if (m_dInjectionTime_step < 0.1)
+	{
+		m_dInjectionTime_step = 0.1;
+	}
 
 	//向上箭頭
 	if(pNMUpDown->iDelta == -1 && m_dInjectionTime < m_dInjectionTime_max)  
     {
-        m_dInjectionTime += 0.1;
+        m_dInjectionTime += m_dInjectionTime_step;
     }
 	//向下箭頭
     else if(pNMUpDown->iDelta == 1 && m_dInjectionTime > m_dInjectionTime_min)  
     {
-        m_dInjectionTime -= 0.1;
+        m_dInjectionTime -= m_dInjectionTime_step;
     }
 
     CString strTemp("");
@@ -436,14 +455,10 @@ void CMDXProcessPage::CalculateFillSpeed()
 	m_dColdRunnerVolume = DataCenter::getInstance().GetColdRunnerVolume();
 	m_dMaxScrewStroke = DataCenter::getInstance().GetMaxScrewStroke();
 
-	//Y軸繪圖上下限需使用(暫時位置)、其實該放在"IF"中
-	m_dFillSpeed_single = 10*(m_dPartVolume+m_dColdRunnerVolume)*m_dVolumeExpansion
-								/m_dInjectionTime/m_dAreaScrew;
-
 	if (m_iFillSel == 0) //單段充填
 	{
-		/*m_dFillSpeed_single = 10*(m_dPartVolume+m_dColdRunnerVolume)*m_dVolumeExpansion
-								/m_dInjectionTime/m_dAreaScrew;*/
+		m_dFillSpeed_single = 10*(m_dPartVolume+m_dColdRunnerVolume)*m_dVolumeExpansion
+								/m_dInjectionTime/m_dAreaScrew;
 		m_dScrewStroke_single = m_dFillSpeed_single*m_dInjectionTime+m_dVP;
 	}
 	else //三段充填 2:4:1
@@ -497,7 +512,7 @@ void CMDXProcessPage::SetProfileFill()
 	if (m_iFillSel == 0) //單段充填
 	{
 		m_profileF.SetXMinMaxValue(m_dVP, m_dScrewStroke_single);  //X軸上下限
-		m_profileF.SetYMinMaxValue(0,m_dFillSpeed_single*1.5);  //Y軸上下限
+		m_profileF.SetYMinMaxValue(0,m_dFillSpeed_single*1.2);  //Y軸上下限
 
 		m_profileF.AddXYData(m_dScrewStroke_single,m_dFillSpeed_single);
 		m_profileF.AddXYData(m_dVP,m_dFillSpeed_single);
@@ -505,7 +520,7 @@ void CMDXProcessPage::SetProfileFill()
 	else //三段充填 2:4:1
 	{
 		m_profileF.SetXMinMaxValue(m_dVP, m_dScrewStroke_1);  //X軸上下限
-		m_profileF.SetYMinMaxValue(0,m_dFillSpeed_single*1.5);  //Y軸上下限
+		m_profileF.SetYMinMaxValue(0,m_dFillSpeed_multi_2*1.2);  //Y軸上下限
 
 		m_profileF.AddXYData(m_dScrewStroke_1,m_dFillSpeed_multi_1);
 		m_profileF.AddXYData(m_dScrewStroke_2,m_dFillSpeed_multi_1); //SetProfileType(1)
@@ -605,3 +620,56 @@ void CMDXProcessPage::OnCbnSelchangeComboPackingSection()
 }
 
 
+void CMDXProcessPage::OnBnClickedButtonVpInfo()
+{
+	MessageBox(_T("由[速度控制]轉為[壓力控制]之螺桿位置，預設為 25% 的螺桿直徑，以 mm 計"), _T("VP 切換位置"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonInjectionPressureInfo()
+{
+	MessageBox(_T("機台最大射壓 * 0.8，以 MPa 計"), _T("射出壓力"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonFillintTimeInfo()
+{
+	MessageBox(_T("預估充填時間，參考[塑化體積]&[材料黏度]查表得之，以 sec 計"), _T("充填時間"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonFillingSectionInfo()
+{
+	MessageBox(_T("可選擇[單段充填]或[三段充填]，[三段充填]預設速度比為 2:4:1，分別充填[冷流道體積]、[95% 產品體積]、[5% 產品體積]"), _T("充填段數"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonPackingSectionInfo()
+{
+	MessageBox(_T("可選擇[單段保壓]或[二段保壓]，[二段保壓]預設保壓時間比為 1:1，保壓壓力分別為[75% 機台最大射壓]、[40% 機台最大射壓]"), _T("保壓段數"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonCoolingTimeInfo()
+{
+	MessageBox(_T("從[保壓結束]到成型料溫已[冷卻至頂出溫度]的時間，使用[產品最大厚度]預估之，以 sec 計"), _T("冷卻時間"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonMoldopenTimeInfo()
+{
+	MessageBox(_T("開模時間預設為 5.0 秒，以 sec 計"), _T("開模時間"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonCycleTimeInfo()
+{
+	MessageBox(_T("一次射出成型所需時間，為[充填時間]+[冷卻時間]+[開模時間]，以 sec 計"), _T("成型周期"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonResidenceTimeInfo()
+{
+	MessageBox(_T("塑料從熱澆道入口到澆口擠出前，在料管內滯留的時間，以 min 計"), _T("料管滯留時間"), 
+      MB_OK | MB_ICONINFORMATION);
+}

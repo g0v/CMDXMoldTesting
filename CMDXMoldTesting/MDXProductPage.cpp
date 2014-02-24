@@ -50,6 +50,13 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_EN_CHANGE(IDC_EDIT_PART_THICKNESS, &CMDXProductPage::OnEnChangeEditPartThickness)
 	ON_EN_CHANGE(IDC_EDIT_MAX_PART_THICKNESS, &CMDXProductPage::OnEnChangeEditMaxPartThickness)
 	ON_EN_CHANGE(IDC_EDIT_HR_VOLUME, &CMDXProductPage::OnEnChangeEditHrVolume)
+	ON_BN_CLICKED(IDC_BUTTON_VOLUME_INFO, &CMDXProductPage::OnBnClickedButtonVolumeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_CR_VOLUME_INFO, &CMDXProductPage::OnBnClickedButtonCrVolumeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_HR_VOLUME_INFO, &CMDXProductPage::OnBnClickedButtonHrVolumeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_PLASTIC_VOLUME_INFO, &CMDXProductPage::OnBnClickedButtonPlasticVolumeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_PART_THICKNESS_INFO, &CMDXProductPage::OnBnClickedButtonPartThicknessInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MAX_PART_THICKNESS_INFO, &CMDXProductPage::OnBnClickedButtonMaxPartThicknessInfo)
+	ON_BN_CLICKED(IDC_BUTTON_GATE_THICKNESS_INFO, &CMDXProductPage::OnBnClickedButtonGateThicknessInfo)
 END_MESSAGE_MAP()
 
 //void CMDXProductPage::OnEnKillfocusEditPartVolume()
@@ -131,6 +138,12 @@ BOOL CMDXProductPage::IsVolumeValidate( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
+	if( !CheckInputValueNotZero( pDX, IDC_EDIT_VOLUME, atof(strItem)))
+	{
+		return FALSE;
+	}
+
 	SetVolumeData(atof(strItem));
 	return TRUE;
 }
@@ -149,6 +162,12 @@ BOOL CMDXProductPage::IsColdRunnerVolumeValidate( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
+	if( !CheckInputValueNotZero( pDX, IDC_EDIT_CR_VOLUME, atof(strItem)))
+	{
+		return FALSE;
+	}
+
 	SetColdRunnerVolumeData(atof(strItem));
 	return TRUE;
 }
@@ -167,6 +186,7 @@ BOOL CMDXProductPage::IsHotRunnerVolumeValidate( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
 	SetHotRunnerVolumeData(atof(strItem));
 	return TRUE;
 }
@@ -185,6 +205,7 @@ BOOL CMDXProductPage::IsPlasticVolumeValidate( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
 	SetPlasticVolumeData(atof(strItem));
 	return TRUE;
 }
@@ -203,9 +224,16 @@ BOOL CMDXProductPage::IsGateThicknessValidate( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
+	if( !CheckInputValueNotZero( pDX, IDC_EDIT_GATE_THICKNESS, atof(strItem)))
+	{
+		return FALSE;
+	}
+
 	SetGateThicknessData(atof(strItem));
 	return TRUE;
 }
+
 BOOL CMDXProductPage::IsPartThicknessValidate( CDataExchange *pDX )
 {
 	CString strItem("");
@@ -217,6 +245,11 @@ BOOL CMDXProductPage::IsPartThicknessValidate( CDataExchange *pDX )
     }
 
 	if( !CheckInputValue( pDX, IDC_EDIT_PART_THICKNESS, atof(strItem)))
+	{
+		return FALSE;
+	}
+
+	if( !CheckInputValueNotZero( pDX, IDC_EDIT_PART_THICKNESS, atof(strItem)))
 	{
 		return FALSE;
 	}
@@ -247,6 +280,7 @@ BOOL CMDXProductPage::IsMaxPartThicknessValidate( CDataExchange *pDX )
 	{
 		return FALSE;
 	}
+
 	SetMaxPartThicknessData(atof(strItem));
 	return TRUE;
 }
@@ -279,11 +313,29 @@ BOOL CMDXProductPage::CheckInputValue( CDataExchange *pDX, UINT nEditID, double 
 	return TRUE;
 }
 
+BOOL CMDXProductPage::CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, double dValue)
+{
+	CMDXStringParser parser;
+	if( dValue == 0 )
+	{
+		CString strErrorMesg("");
+		strErrorMesg = "此設定值不能等於0";
+		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
+	}
+	return TRUE;
+}
+
 BOOL CMDXProductPage::CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max)
 {
 	CMDXStringParser parser;
 
-	if (part > max)
+	if (part <= 0)
+	{
+		CString strErrorMesg("");
+		strErrorMesg = "產品[平均肉厚]需大於0";
+		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
+	}
+	else if (part > max)
 	{
 		CString strErrorMesg("");
 		strErrorMesg = "產品[平均肉厚]不可大於[最大肉厚]";
@@ -309,9 +361,18 @@ void CMDXProductPage::UpdateAllData()
 	SetVolumeData(atof(strTemp));
 	GetDlgItem(IDC_EDIT_CR_VOLUME)->GetWindowText(strTemp);
 	SetColdRunnerVolumeData(atof(strTemp));
+	GetDlgItem(IDC_EDIT_HR_VOLUME)->GetWindowText(strTemp);
+	SetHotRunnerVolumeData(atof(strTemp));
+	GetDlgItem(IDC_EDIT_GATE_THICKNESS)->GetWindowText(strTemp);
+	SetGateThicknessData(atof(strTemp));
+	GetDlgItem(IDC_EDIT_MAX_PART_THICKNESS)->GetWindowText(strTemp);
+	SetMaxPartThicknessData(atof(strTemp));
 
 	DataCenter::getInstance().SetPartVolume(GetVolumeData());
 	DataCenter::getInstance().SetColdRunnerVolume(GetColdRunnerVolumeData());
+	DataCenter::getInstance().SetHotRunnerVolume(GetHotRunnerVolumeData());
+	DataCenter::getInstance().SetGateThickness(GetGateThicknessData());
+	DataCenter::getInstance().SetMaxPartThickness(GetMaxPartThicknessData());
 }
 
 void CMDXProductPage::OnEnChangeEditPartVolume()
@@ -374,7 +435,6 @@ void CMDXProductPage::OnEnChangeEditMaxPartThickness()
 	DataCenter::getInstance().SetMaxPartThickness(GetMaxPartThicknessData());
 }
 
-
 void CMDXProductPage::OnEnChangeEditHrVolume()
 {
 	CString strEditData("");
@@ -383,4 +443,47 @@ void CMDXProductPage::OnEnChangeEditHrVolume()
 	SetHotRunnerVolumeData(HR);
 
 	DataCenter::getInstance().SetHotRunnerVolume(GetHotRunnerVolumeData());
+}
+
+
+void CMDXProductPage::OnBnClickedButtonVolumeInfo()
+{
+	MessageBox(_T("射出成型產品之體積，以 cc 計"), _T("產品體積"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonCrVolumeInfo()
+{
+	MessageBox(_T("冷流道部分之體積，以 cc 計"), _T("冷流道體積"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonHrVolumeInfo()
+{
+	MessageBox(_T("熱流道部分之體積，以 cc 計"), _T("熱流道體積"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonPlasticVolumeInfo()
+{
+	MessageBox(_T("產品體積 + 冷流道部分體積，以 cc 計"), _T("塑化體積"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonPartThicknessInfo()
+{
+	MessageBox(_T("產品平均厚度，以 mm 計"), _T("產品平均肉厚"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMaxPartThicknessInfo()
+{
+	MessageBox(_T("產品最大厚度，以 mm 計"), _T("產品最大肉厚"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonGateThicknessInfo()
+{
+	MessageBox(_T("澆口短邊之厚度，預設值為 2/3 * 產品平均肉厚，以 mm 計"), _T("澆口短邊肉厚"), 
+      MB_OK | MB_ICONINFORMATION);
 }

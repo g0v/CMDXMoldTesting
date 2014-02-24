@@ -119,7 +119,6 @@ void CMDXMaterialPage::SetTemperatureData()
 	}
 
 	UpdateAllData();
-
 }
 
 void CMDXMaterialPage::UpdateAllData()

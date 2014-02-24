@@ -101,4 +101,13 @@ public:
 	afx_msg void OnDeltaposSpinInjectionPressure(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinFillTime(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinMoldopenTime(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButtonVpInfo();
+	afx_msg void OnBnClickedButtonInjectionPressureInfo();
+	afx_msg void OnBnClickedButtonFillintTimeInfo();
+	afx_msg void OnBnClickedButtonFillingSectionInfo();
+	afx_msg void OnBnClickedButtonPackingSectionInfo();
+	afx_msg void OnBnClickedButtonCoolingTimeInfo();
+	afx_msg void OnBnClickedButtonMoldopenTimeInfo();
+	afx_msg void OnBnClickedButtonCycleTimeInfo();
+	afx_msg void OnBnClickedButtonResidenceTimeInfo();
 };

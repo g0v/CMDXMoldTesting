@@ -47,7 +47,8 @@ private:
 	BOOL IsMaxPartThicknessValidate( CDataExchange *pDX );
 	BOOL IsRealParse(CDataExchange *pDX, UINT nEditID, CString strValue);
 	void ShowWarningMessage(CDataExchange *pDX, UINT nEditID, CString strMsg);
-	BOOL CheckInputValue( CDataExchange *pDX, UINT nEditID, double dVlaue );
+	BOOL CheckInputValue( CDataExchange *pDX, UINT nEditID, double dVlaue ); //check >= 0
+	BOOL CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, double dValue); //check != 0
 	BOOL CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max);
 
 protected:
@@ -78,4 +79,11 @@ public:
 	afx_msg void OnEnChangeEditPartThickness();
 	afx_msg void OnEnChangeEditMaxPartThickness();
 	afx_msg void OnEnChangeEditHrVolume();
+	afx_msg void OnBnClickedButtonVolumeInfo();
+	afx_msg void OnBnClickedButtonCrVolumeInfo();
+	afx_msg void OnBnClickedButtonHrVolumeInfo();
+	afx_msg void OnBnClickedButtonPlasticVolumeInfo();
+	afx_msg void OnBnClickedButtonPartThicknessInfo();
+	afx_msg void OnBnClickedButtonMaxPartThicknessInfo();
+	afx_msg void OnBnClickedButtonGateThicknessInfo();
 };

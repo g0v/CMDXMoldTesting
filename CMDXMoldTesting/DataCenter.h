@@ -87,15 +87,17 @@ public:
 
 	void SetMaxPartThickness(double mpt)
 	{
-		m_dMaaxPartThickness = mpt;
+		m_dMaxPartThickness = mpt;
 	}
 	double GetMaxPartThickness()
 	{
-		return m_dMaaxPartThickness;
+		return m_dMaxPartThickness;
 	}
 
 private:
-    DataCenter() {m_dDiaScrew=0, m_dMaxInjPre=0;}                   // Constructor? (the {} brackets) are needed here.
+    DataCenter() {m_dDiaScrew=0, m_dMaxInjPre=0, m_dMaxScrewStroke=0, 
+		m_dVolume=0, m_dColdRunnerVolume=0, m_dHotRunnerVolume=0, m_dGateThickness=0, m_dMaxPartThickness=0,
+		m_iMaterialSel=0;}                   // Constructor? (the {} brackets) are needed here.
     // Dont forget to declare these two. You want to make sure they
     // are unaccessable otherwise you may accidently get copies of
     // your singleton appearing.
@@ -107,8 +109,7 @@ private:
 	double m_dColdRunnerVolume;
 	double m_dHotRunnerVolume;
 	int m_iMaterialSel;
-	double m_dVolumeExpansion;
 	double m_dMaxScrewStroke;
 	double m_dGateThickness;
-	double m_dMaaxPartThickness;
+	double m_dMaxPartThickness;
 };

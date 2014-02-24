@@ -459,42 +459,42 @@ void CMDXProductPage::OnEnChangeEditHrVolume()
 
 void CMDXProductPage::OnBnClickedButtonVolumeInfo()
 {
-	MessageBox(_T("射出成型產品之體積，以 cc 計"), _T("產品體積"), 
+	MessageBox(_T("射出成型產品之體積，以 cc 計"), _T("產品體積 (product volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonCrVolumeInfo()
 {
-	MessageBox(_T("冷流道部分之體積，以 cc 計"), _T("冷流道體積"), 
+	MessageBox(_T("冷流道部分之體積，以 cc 計"), _T("冷流道體積 (cold runner volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonHrVolumeInfo()
 {
-	MessageBox(_T("熱流道部分之體積，以 cc 計"), _T("熱流道體積"), 
+	MessageBox(_T("熱流道部分之體積，以 cc 計"), _T("熱流道體積 (hot runner volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonPlasticVolumeInfo()
 {
-	MessageBox(_T("產品體積 + 冷流道部分體積，建議 < 550 cc，以 cc 計"), _T("塑化體積"), 
+	MessageBox(_T("產品體積 + 冷流道部分體積，建議 < 550 cc，以 cc 計"), _T("塑化體積 (plasticizing volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonPartThicknessInfo()
 {
-	MessageBox(_T("產品平均厚度，以 mm 計"), _T("產品平均肉厚"), 
+	MessageBox(_T("產品平均厚度，以 mm 計"), _T("產品平均肉厚 (product average thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonMaxPartThicknessInfo()
 {
-	MessageBox(_T("產品最大厚度，以 mm 計"), _T("產品最大肉厚"), 
+	MessageBox(_T("產品最大厚度，以 mm 計"), _T("產品最大肉厚 (product maximum thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonGateThicknessInfo()
 {
-	MessageBox(_T("澆口短邊之厚度，預設值為 2/3 * 產品平均肉厚，以 mm 計"), _T("澆口短邊肉厚"), 
+	MessageBox(_T("澆口短邊之厚度，預設值為 2/3 * 產品平均肉厚，以 mm 計"), _T("澆口短邊肉厚 (gate thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }

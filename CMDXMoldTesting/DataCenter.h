@@ -62,7 +62,7 @@ public:
 	{
 		m_iMaterialSel = material;
 	}
-	double GetMaterialSel()
+	int GetMaterialSel()
 	{
 		return m_iMaterialSel;
 	}

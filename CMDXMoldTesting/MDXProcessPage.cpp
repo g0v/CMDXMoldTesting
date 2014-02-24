@@ -7,9 +7,6 @@
 #include "afxdialogex.h"
 #include "DataCenter.h"
 
-#include "CAboutDlg.h"
-
-
 // CMDXProcessPage dialog
 
 IMPLEMENT_DYNAMIC(CMDXProcessPage, CDialog)
@@ -589,9 +586,6 @@ void CMDXProcessPage::OnBnClickedButton1()
 	m_profileP.SetXMinMaxValue(0,250);
 	m_profileP.SetYMinMaxValue(0,123);
 	m_profileP.Invalidate(TRUE);
-
-	CAboutBox dlg;
-	dlg.DoModal();
 }
 
 void CMDXProcessPage::OnCbnSelchangeComboFillingSection()

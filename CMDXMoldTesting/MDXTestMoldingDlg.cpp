@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "DataCenter.h"
 
+
 enum {MDXProductPage=0, MDXMachinePage, MDXMaterialPage, MDXProcessPage};
 // CMDXTestMoldingDlg dialog
 

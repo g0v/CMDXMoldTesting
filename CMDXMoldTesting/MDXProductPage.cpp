@@ -70,9 +70,8 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_PART_THICKNESS_INFO, &CMDXProductPage::OnBnClickedButtonPartThicknessInfo)
 	ON_BN_CLICKED(IDC_BUTTON_MAX_PART_THICKNESS_INFO, &CMDXProductPage::OnBnClickedButtonMaxPartThicknessInfo)
 	ON_BN_CLICKED(IDC_BUTTON_GATE_THICKNESS_INFO, &CMDXProductPage::OnBnClickedButtonGateThicknessInfo)
-	ON_CBN_SELCHANGE(IDC_COMBO_PRODUCTER, &CMDXProductPage::OnCbnSelchangeComboProducter)
-	ON_CBN_SELCHANGE(IDC_COMBO_GRADE, &CMDXProductPage::OnCbnSelchangeComboGrade)
-	ON_CBN_SELCHANGE(IDC_COMBO_MATERIAL2, &CMDXProductPage::OnCbnSelchangeComboMaterial)
+	ON_CBN_SELCHANGE(IDC_COMBO_MACHINE_TON, &CMDXProductPage::OnCbnSelchangeComboMachineTon)
+	//ON_CBN_SELCHANGE(IDC_COMBO_MATERIAL2, &CMDXProductPage::OnCbnSelchangeComboMaterial)
 	ON_EN_CHANGE(IDC_EDIT_MOLD_TEMPERATURE, &CMDXProductPage::OnEnChangeEditMoldTemperature)
 	ON_EN_CHANGE(IDC_EDIT_MELT_TEMPERATURE, &CMDXProductPage::OnEnChangeEditMeltTemperature)
 	ON_BN_CLICKED(IDC_BUTTON_MELT_TEMPERATURE_INFO, &CMDXProductPage::OnBnClickedButtonMeltTemperatureInfo)
@@ -83,18 +82,13 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_MOLD_TEMPERATURE_CAVITY_INFO, &CMDXProductPage::OnBnClickedButtonMoldTemperatureCavityInfo)
 	ON_BN_CLICKED(IDC_BUTTON_MELT_TEMPERATURE_LIMIT_INFO, &CMDXProductPage::OnBnClickedButtonMeltTemperatureLimitInfo)
 	ON_BN_CLICKED(IDC_BUTTON_MOLD_TEMPERATURE_LIMIT_INFO, &CMDXProductPage::OnBnClickedButtonMoldTemperatureLimitInfo)
+	ON_CBN_SELCHANGE(IDC_COMBO_MATERIAL, &CMDXProductPage::OnCbnSelchangeComboMaterial)
 END_MESSAGE_MAP()
-
-//void CMDXProductPage::OnEnKillfocusEditPartVolume()
-//{
-//
-//}
 
 BOOL CMDXProductPage::OnInitDialog()
 {
 	InitEditData();
-	InitComboMachineProducer();
-	InitComboMachineGrade();
+	InitComboMachineTon();
 	InitComboMaterialData();
 
 	m_bCheckEditData = true;
@@ -110,6 +104,9 @@ void CMDXProductPage::InitEditData()
 	//((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VOLUME))->SetRange(0, 10000 );
 	//(CSliderCtrl*)GetDlgItem(IDC_SLIDER_VOLUME))->SetBuddy(GetDlgItem(IDC_EDIT_VOLUME),0);
 
+
+
+
 	// cold & hot runner volume default = 0
 	GetDlgItem(IDC_EDIT_CR_VOLUME)->SetWindowText("0.00");
 	SetColdRunnerVolumeData(0.0);
@@ -120,86 +117,172 @@ void CMDXProductPage::InitEditData()
 	//DataCenter::getInstance().SetColdRunnerVolume(GetColdRunnerVolumeData());
 }
 
-void CMDXProductPage::InitComboMachineProducer()
+void CMDXProductPage::InitComboMachineTon()
 {
 	CString strMachineType("");
-	((CComboBox*)GetDlgItem(IDC_COMBO_PRODUCTER))->ResetContent();
-	strMachineType = "FSC";
-	((CComboBox*)GetDlgItem(IDC_COMBO_PRODUCTER))->AddString(strMachineType); 
-	strMachineType = "CLF Machinery";
-	((CComboBox*)GetDlgItem(IDC_COMBO_PRODUCTER))->AddString(strMachineType); 
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->ResetContent();
+	strMachineType = "25";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "51";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "61";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "133";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "153";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "163";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "204";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "326";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "408";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "469";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
+	strMachineType = "510";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
 
-	((CComboBox*)GetDlgItem(IDC_COMBO_PRODUCTER))->SetCurSel(0);
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->SetCurSel(0);
 	m_iMachineSel = 0;
 	SetMachineData();
 }
 
-void CMDXProductPage::InitComboMachineGrade()
+void CMDXProductPage::OnCbnSelchangeComboMachineTon()
 {
-	switch(m_iMachineSel)
-	{
-	case 0://FSC
-		{
-			CString strMachineType("");
-			((CComboBox*)GetDlgItem(IDC_COMBO_GRADE))->ResetContent();
-			strMachineType = "AF-250-40";
-			((CComboBox*)GetDlgItem(IDC_COMBO_GRADE))->AddString(strMachineType); 
-			((CComboBox*)GetDlgItem(IDC_COMBO_GRADE))->SetCurSel(0);
-		}
-		break;
-	case 1://CLF
-		{
-			CString strMachineType("");
-			((CComboBox*)GetDlgItem(IDC_COMBO_GRADE))->ResetContent();
-			strMachineType = "CLF-285TX-55";
-			((CComboBox*)GetDlgItem(IDC_COMBO_GRADE))->AddString(strMachineType); 
-			((CComboBox*)GetDlgItem(IDC_COMBO_GRADE))->SetCurSel(0);
-		}
-		break;
-	}
-}
-
-void CMDXProductPage::OnCbnSelchangeComboProducter()
-{
-	int iCurrentSel = ((CComboBox*)GetDlgItem(IDC_COMBO_PRODUCTER))->GetCurSel();
+	int iCurrentSel = ((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->GetCurSel();
 	if( m_iMachineSel ==  iCurrentSel)
 	{
 		return ;
 	}
 	m_iMachineSel = iCurrentSel;
-	InitComboMachineGrade();
 	SetMachineData();
-}
-
-void CMDXProductPage::OnCbnSelchangeComboGrade()
-{
-
 }
 
 void CMDXProductPage::SetMachineData()
 {
 	switch(m_iMachineSel)
 	{
-	case 0://FSC
+	case 0://25 ton
 		{
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("250");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("40");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("200");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("229");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("627");
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("500");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("273");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("25");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("22");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("89");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("31");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("62");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
 		}
 		break;
-	case 1://CLF
+	case 1://51 ton
 		{
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("280");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("55");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("329");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("643");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("211");
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("88.8");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("203");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("51");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("120");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("54");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("98");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+		}
+		break;
+	case 2://61 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("61");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("100");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("45");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("124");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("224");
+		}
+		break;
+	case 3://133 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("133");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("110");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("49");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("80");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+		}
+		break;
+	case 4://153 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("153");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("50");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("359");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("214");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
+		}
+		break;
+	case 5://163 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("163");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("35");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("144");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("127");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("128");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+		}
+		break;
+	case 6://204 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("204");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("35");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("144");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("127");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("128");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+		}
+		break;
+	case 7://326 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("326");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("984");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("306");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
+		}
+		break;
+	case 8://408 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("163");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("60");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("723");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("290");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+		}
+		break;
+	case 9://469 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("469");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("984");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("306");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
+		}
+		break;
+	case 10://510 ton
+		{
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("510");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("320");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("1125");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("290");
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
 		}
 		break;
 	}
@@ -791,7 +874,6 @@ void CMDXProductPage::OnBnClickedButtonGateThicknessInfo()
       MB_OK | MB_ICONINFORMATION);
 }
 
-
 void CMDXProductPage::OnCbnSelchangeComboMaterial()
 {
 	int iCurrentSel = ((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->GetCurSel();
@@ -1102,3 +1184,4 @@ void CMDXProductPage::OnBnClickedButtonMoldTemperatureLimitInfo()
 	MessageBox(_T("料商建議模具溫度範圍，單位 ℃"), _T("建議模溫 (suggested mold temperature range)"), 
       MB_OK | MB_ICONINFORMATION);
 }
+

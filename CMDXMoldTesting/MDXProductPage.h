@@ -82,8 +82,8 @@ private:
 	BOOL CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue);
 	BOOL CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max);
 
-	void InitComboMachineProducer();
-	void InitComboMachineGrade();
+	void InitComboMachineTon();
+	//void InitComboMachineGrade();
 	void SetMachineData();
 	BOOL IsClampingForceValidate( CDataExchange *pDX );
 	BOOL IsScrewDiamValidate( CDataExchange *pDX );
@@ -163,8 +163,7 @@ public:
 	afx_msg void OnBnClickedButtonMaxPartThicknessInfo();
 	afx_msg void OnBnClickedButtonGateThicknessInfo();
 
-	afx_msg void OnCbnSelchangeComboProducter();
-	afx_msg void OnCbnSelchangeComboGrade();
+	afx_msg void OnCbnSelchangeComboMachineTon();
 	afx_msg void OnCbnSelchangeComboMaterial();
 	afx_msg void OnEnChangeEditMoldTemperature();
 	afx_msg void OnEnChangeEditMeltTemperature();

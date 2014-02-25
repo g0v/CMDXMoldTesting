@@ -90,6 +90,12 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_MELT_TEMPERATURE_LIMIT_INFO, &CMDXProductPage::OnBnClickedButtonMeltTemperatureLimitInfo)
 	ON_BN_CLICKED(IDC_BUTTON_MOLD_TEMPERATURE_LIMIT_INFO, &CMDXProductPage::OnBnClickedButtonMoldTemperatureLimitInfo)
 	ON_CBN_SELCHANGE(IDC_COMBO_MATERIAL, &CMDXProductPage::OnCbnSelchangeComboMaterial)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MELT_TEMPERATURE, &CMDXProductPage::OnDeltaposSpinMeltTemperature)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_BARREL_TEMPERATURE_FIRST, &CMDXProductPage::OnDeltaposSpinBarrelTemperatureFirst)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_BARREL_TEMPERATURE_SECOND, &CMDXProductPage::OnDeltaposSpinBarrelTemperatureSecond)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_BARREL_TEMPERATURE_THIRD, &CMDXProductPage::OnDeltaposSpinBarrelTemperatureThird)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MOLD_TEMPERATURE_CORE, &CMDXProductPage::OnDeltaposSpinMoldTemperatureCore)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MOLD_TEMPERATURE_CAVITY, &CMDXProductPage::OnDeltaposSpinMoldTemperatureCavity)
 END_MESSAGE_MAP()
 
 BOOL CMDXProductPage::OnInitDialog()
@@ -166,125 +172,170 @@ void CMDXProductPage::OnCbnSelchangeComboMachineTon()
 
 void CMDXProductPage::SetMachineData()
 {
+	double mv = 0; //max velocity output = 螺桿截面積 * 最大射速
 	switch(m_iMachineSel)
 	{
 	case 0://25 ton
 		{
+			mv = 0.25 * 3.1415926 * (22/10) * (22/10) * (62/10); 
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("25");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("22");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("89");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("31");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp); //not in data sheet
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("62");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
 		}
 		break;
 	case 1://51 ton
 		{
+			mv = 0.25 * 3.1415926 * (25/10) * (25/10) * (98/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("51");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("120");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("54");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("98");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
 		}
 		break;
 	case 2://61 ton
 		{
+			mv = 0.25 * 3.1415926 * (25/10) * (25/10) * (124/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("61");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("100");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("45");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("124");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("224");
 		}
 		break;
 	case 3://133 ton
 		{
+			mv = 0.25 * 3.1415926 * (25/10) * (25/10) * (80/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("133");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("110");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("49");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("80");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
 		}
 		break;
 	case 4://153 ton
 		{
+			mv = 0.25 * 3.1415926 * (50/10) * (50/10) * (214/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("153");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("50");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("200");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("359");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("214");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
 		}
 		break;
 	case 5://163 ton
 		{
+			mv = 0.25 * 3.1415926 * (35/10) * (35/10) * (128/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("163");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("35");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("144");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("127");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("128");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
 		}
 		break;
 	case 6://204 ton
 		{
+			mv = 0.25 * 3.1415926 * (35/10) * (35/10) * (128/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("204");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("35");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("144");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("127");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("128");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
 		}
 		break;
 	case 7://326 ton
 		{
+			mv = 0.25 * 3.1415926 * (70/10) * (70/10) * (306/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("326");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("984");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("306");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
 		}
 		break;
 	case 8://408 ton
 		{
+			mv = 0.25 * 3.1415926 * (60/10) * (60/10) * (290/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("163");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("60");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("723");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("290");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
 		}
 		break;
 	case 9://469 ton
 		{
+			mv = 0.25 * 3.1415926 * (70/10) * (70/10) * (306/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("469");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("984");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("306");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
 		}
 		break;
 	case 10://510 ton
 		{
+			mv = 0.25 * 3.1415926 * (70/10) * (70/10) * (290/10);
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("510");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("320");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("1125");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1111");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("290");
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
 		}
@@ -1205,3 +1256,159 @@ void CMDXProductPage::OnBnClickedButtonMoldTemperatureLimitInfo()
       MB_OK | MB_ICONINFORMATION);
 }
 
+
+
+void CMDXProductPage::OnDeltaposSpinMeltTemperature(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-5
+	//至多調整至料商建議上下限
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dMeltTemp < m_dMaxMeltTemp)  
+    {
+        m_dMeltTemp += 5;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dMeltTemp > m_dMinMeltTemp)  
+    {
+        m_dMeltTemp -= 5;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.0f", m_dMeltTemp);
+	GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText(strTemp); 
+}
+
+
+void CMDXProductPage::OnDeltaposSpinBarrelTemperatureFirst(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-5
+	//至多調整至料商建議上下限
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dBarrelTempFirst < m_dMaxMeltTemp)  
+    {
+        m_dBarrelTempFirst += 5;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dBarrelTempFirst > m_dMinMeltTemp)  
+    {
+        m_dBarrelTempFirst -= 5;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.0f", m_dBarrelTempFirst);
+	GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText(strTemp); 
+}
+
+
+void CMDXProductPage::OnDeltaposSpinBarrelTemperatureSecond(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-5
+	//至多調整至料商建議上下限
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dBarrelTempSecond < m_dMaxMeltTemp)  
+    {
+        m_dBarrelTempSecond += 5;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dBarrelTempSecond > m_dMinMeltTemp)  
+    {
+        m_dBarrelTempSecond -= 5;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.0f", m_dBarrelTempSecond);
+	GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText(strTemp); 
+}
+
+
+void CMDXProductPage::OnDeltaposSpinBarrelTemperatureThird(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-5
+	//至多調整至料商建議上下限
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dBarrelTempThird < m_dMaxMeltTemp)  
+    {
+        m_dBarrelTempThird += 5;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dBarrelTempThird > m_dMinMeltTemp)  
+    {
+        m_dBarrelTempThird -= 5;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.0f", m_dBarrelTempThird);
+	GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText(strTemp); 
+}
+
+
+void CMDXProductPage::OnDeltaposSpinMoldTemperatureCore(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-5
+	//至多調整至料商建議上下限
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dMoldTempCore < m_dMaxMoldTemp)  
+    {
+        m_dMoldTempCore += 5;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dMoldTempCore > m_dMinMoldTemp)  
+    {
+        m_dMoldTempCore -= 5;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.0f", m_dMoldTempCore);
+	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->SetWindowText(strTemp); 
+}
+
+
+void CMDXProductPage::OnDeltaposSpinMoldTemperatureCavity(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-5
+	//至多調整至料商建議上下限
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dMoldTempCavity < m_dMaxMoldTemp)  
+    {
+        m_dMoldTempCavity += 5;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dMoldTempCavity > m_dMinMoldTemp)  
+    {
+        m_dMoldTempCavity -= 5;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.0f", m_dMoldTempCavity);
+	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText(strTemp); 
+}

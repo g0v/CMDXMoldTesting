@@ -188,4 +188,10 @@ public:
 	afx_msg void OnBnClickedButtonMoldTemperatureCavityInfo();
 	afx_msg void OnBnClickedButtonMeltTemperatureLimitInfo();
 	afx_msg void OnBnClickedButtonMoldTemperatureLimitInfo();
+	afx_msg void OnDeltaposSpinMeltTemperature(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinBarrelTemperatureFirst(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinBarrelTemperatureSecond(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinBarrelTemperatureThird(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinMoldTemperatureCore(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinMoldTemperatureCavity(NMHDR *pNMHDR, LRESULT *pResult);
 };

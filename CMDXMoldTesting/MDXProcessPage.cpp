@@ -496,7 +496,7 @@ void CMDXProcessPage::SetProfileFill()
 	m_profileF.SetProfileType(1);	//0:純線段 1:填滿
 	m_profileF.SetXAxisDrawingMode(1);	//0:左小右大 1:左大右小
 	m_profileF.SetXAxisCaption(_T("螺桿位置 (mm)"));
-	m_profileF.SetYAxisCaption(_T("充填速度 (mm/s)"));
+	m_profileF.SetYAxisCaption(_T("射出速度 (mm/s)"));
 	m_profileF.SetReadOnly(true);
 	m_profileF.SetColorForBk(RGB( 255,255,255 ) );  //背景顏色
 	m_profileF.SetVPSwitchLocation(m_dVP); //VP位置

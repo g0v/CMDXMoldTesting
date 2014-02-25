@@ -56,6 +56,10 @@ public:
 	void SetMeltTemperature( double dValue )	{ m_dMeltTemp =  dValue; };
 	void SetMoldTemperatureCore( double dValue )	{ m_dMoldTempCore =  dValue; };
 	void SetMoldTemperatureCavity( double dValue )	{ m_dMoldTempCavity =  dValue; };
+	void SetBarrelTemperatureFirst( double dValue )	{ m_dBarrelTempFirst =  dValue; };
+	void SetBarrelTemperatureSecond( double dValue )	{ m_dBarrelTempSecond =  dValue; };
+	void SetBarrelTemperatureThird( double dValue )	{ m_dBarrelTempThird =  dValue; };
+	void SetBarrelTemperatureSlope( double dValue )	{ m_dBarrelTempSlope =  dValue; };
 	double GetMaxMeltTemperature()	{ return m_dMaxMeltTemp; };
 	double GetMinMeltTemperature()	{ return m_dMinMeltTemp; };
 	double GetMaxMoldTemperature()	{ return m_dMaxMoldTemp; };
@@ -63,10 +67,15 @@ public:
 	double GetMeltTemperature()	{ return m_dMeltTemp; };
 	double GetMoldTemperatureCore()	{ return m_dMoldTempCore; };
 	double GetMoldTemperatureCavity()	{ return m_dMoldTempCavity; };
+	double GetBarrelTemperatureFirst()	{ return m_dBarrelTempFirst; };
+	double GetBarrelTemperatureSecond()	{ return m_dBarrelTempSecond; };
+	double GetBarrelTemperatureThird()	{ return m_dBarrelTempThird; };
+	double GetBarrelTemperatureSlope()	{ return m_dBarrelTempSlope; };
 
 private:
 	void InitEditData();
 	BOOL UpDateEditData();
+
 	BOOL IsValidateData(CDataExchange *pDX);
 	BOOL IsVolumeValidate( CDataExchange *pDX );
     BOOL IsColdRunnerVolumeValidate( CDataExchange *pDX );
@@ -148,6 +157,10 @@ private:
 	double m_dMeltTemp;
 	double m_dMoldTempCore;
 	double m_dMoldTempCavity;
+	double m_dBarrelTempFirst;
+	double m_dBarrelTempSecond;
+	double m_dBarrelTempThird;
+	double m_dBarrelTempSlope;
 
 public:
 	afx_msg void OnEnChangeEditPartVolume();

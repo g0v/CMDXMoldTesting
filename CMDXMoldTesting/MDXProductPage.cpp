@@ -33,10 +33,17 @@ CMDXProductPage::CMDXProductPage(CWnd* pParent /*=NULL*/)
 , m_dMaxInjectionVelocity(0.)
 , m_dMaxInjectionPressure(0.)
 , m_iMaterialSel(0)
-, m_dMaxMeltTemp(0)
-, m_dMinMeltTemp(0)
-, m_dMaxMoldTemp(0)
-, m_dMinMoldTemp(0)
+, m_dMaxMeltTemp(0.)
+, m_dMinMeltTemp(0.)
+, m_dMaxMoldTemp(0.)
+, m_dMinMoldTemp(0.)
+, m_dMeltTemp(0.)
+, m_dMoldTempCore(0.)
+, m_dMoldTempCavity(0.)
+, m_dBarrelTempSlope(0.)
+, m_dBarrelTempFirst(0.)
+, m_dBarrelTempSecond(0.)
+, m_dBarrelTempThird(0.)
 {
 
 }
@@ -103,9 +110,6 @@ void CMDXProductPage::InitEditData()
 	//GetDlgItem( IDC_EDIT_VOLUME )->SetWindowText(strVolumeText);	
 	//((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VOLUME))->SetRange(0, 10000 );
 	//(CSliderCtrl*)GetDlgItem(IDC_SLIDER_VOLUME))->SetBuddy(GetDlgItem(IDC_EDIT_VOLUME),0);
-
-
-
 
 	// cold & hot runner volume default = 0
 	GetDlgItem(IDC_EDIT_CR_VOLUME)->SetWindowText("0.00");
@@ -374,11 +378,6 @@ BOOL CMDXProductPage::IsColdRunnerVolumeValidate( CDataExchange *pDX )
     }
 
 	if( !CheckInputValue( pDX, IDC_EDIT_CR_VOLUME, atof(strItem)))
-	{
-		return FALSE;
-	}
-
-	if( !CheckInputValueNotZero( pDX, IDC_EDIT_CR_VOLUME, atof(strItem)))
 	{
 		return FALSE;
 	}
@@ -756,6 +755,12 @@ void CMDXProductPage::UpdateAllData()
 	SetMoldTemperatureCore(atof(strTemp) );
 	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->GetWindowText(strTemp);
 	SetMoldTemperatureCavity(atof(strTemp) );
+	GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->GetWindowText(strTemp);
+	SetBarrelTemperatureFirst(atof(strTemp) );
+	GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->GetWindowText(strTemp);
+	SetBarrelTemperatureSecond(atof(strTemp) );
+	GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->GetWindowText(strTemp);
+	SetBarrelTemperatureThird(atof(strTemp) );
 
 	//push material selection to data center
 	DataCenter::getInstance().SetMaterialSel(m_iMaterialSel);
@@ -916,6 +921,11 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("60");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("75"); // (90+60)/2
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("75"); // (90+60)/2
+			
+			m_dBarrelTempSlope = 5;
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("265"); // IDC_EDIT_MELT_TEMPERATURE
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("260"); // first - slope
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("255"); // second - slope
 		}
 		break;
 	case 1://PC+ABS
@@ -927,6 +937,11 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("50");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("70");
+
+			m_dBarrelTempSlope = 10;
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("235"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("225"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("215"); 
 		}
 		break;
 	case 2://PA
@@ -938,6 +953,11 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("50");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("70");
+
+			m_dBarrelTempSlope = 10;
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("245"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("235"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("225"); 
 		}
 		break;
 	}

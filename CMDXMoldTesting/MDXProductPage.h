@@ -54,13 +54,15 @@ public:
 	void SetMaxMoldTemperature( double dValue ) { m_dMaxMoldTemp =  dValue; };
 	void SetMinMoldTemperature( double dValue )	{ m_dMinMoldTemp =  dValue; };
 	void SetMeltTemperature( double dValue )	{ m_dMeltTemp =  dValue; };
-	void SetMoldTemperature( double dValue )	{ m_dMoldTemp =  dValue; };
+	void SetMoldTemperatureCore( double dValue )	{ m_dMoldTempCore =  dValue; };
+	void SetMoldTemperatureCavity( double dValue )	{ m_dMoldTempCavity =  dValue; };
 	double GetMaxMeltTemperature()	{ return m_dMaxMeltTemp; };
 	double GetMinMeltTemperature()	{ return m_dMinMeltTemp; };
 	double GetMaxMoldTemperature()	{ return m_dMaxMoldTemp; };
 	double GetMinMoldTemperature()	{ return m_dMinMoldTemp; };
 	double GetMeltTemperature()	{ return m_dMeltTemp; };
-	double GetMoldTemperature()	{ return m_dMoldTemp; };
+	double GetMoldTemperatureCore()	{ return m_dMoldTempCore; };
+	double GetMoldTemperatureCavity()	{ return m_dMoldTempCavity; };
 
 private:
 	void InitEditData();
@@ -100,7 +102,8 @@ private:
 	BOOL IsMeltTemperature( CDataExchange *pDX );
 	BOOL IsMaxMoldTemperature( CDataExchange *pDX ); 
 	BOOL IsMinMoldTemperature( CDataExchange *pDX );
-	BOOL IsMoldTemperature( CDataExchange *pDX );
+	BOOL IsMoldTemperatureCore( CDataExchange *pDX );
+	BOOL IsMoldTemperatureCavity( CDataExchange *pDX );
 
 protected:
 	virtual BOOL OnInitDialog();
@@ -143,7 +146,8 @@ private:
 	double m_dMaxMoldTemp;
 	double m_dMinMoldTemp;
 	double m_dMeltTemp;
-	double m_dMoldTemp;
+	double m_dMoldTempCore;
+	double m_dMoldTempCavity;
 
 public:
 	afx_msg void OnEnChangeEditPartVolume();
@@ -164,4 +168,12 @@ public:
 	afx_msg void OnCbnSelchangeComboMaterial();
 	afx_msg void OnEnChangeEditMoldTemperature();
 	afx_msg void OnEnChangeEditMeltTemperature();
+	afx_msg void OnBnClickedButtonMeltTemperatureInfo();
+	afx_msg void OnBnClickedButtonBarrelTemperatureFirstInfo();
+	afx_msg void OnBnClickedButtonBarrelTemperatureSecondInfo();
+	afx_msg void OnBnClickedButtonBarrelTemperatureThirdInfo();
+	afx_msg void OnBnClickedButtonMoldTemperatureCoreInfo();
+	afx_msg void OnBnClickedButtonMoldTemperatureCavityInfo();
+	afx_msg void OnBnClickedButtonMeltTemperatureLimitInfo();
+	afx_msg void OnBnClickedButtonMoldTemperatureLimitInfo();
 };

@@ -621,19 +621,19 @@ void CMDXProcessPage::OnCbnSelchangeComboPackingSection()
 
 void CMDXProcessPage::OnBnClickedButtonVpInfo()
 {
-	MessageBox(_T("此值是從[充填]轉為[保壓]的切換點，預設為 25% 的螺桿直徑，以 mm 計"), _T("VP 切換位置 (VP switch-over)"), 
+	MessageBox(_T("射出機從[速度控制]切換為[壓力控制]之螺桿位置，單位 mm (預設為25%螺桿直徑)"), _T("VP 切換位置 (VP switch-over)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonInjectionPressureInfo()
 {
-	MessageBox(_T("80% 機台最大射壓，以 MPa 計"), _T("射出壓力 (injection pressure)"), 
+	MessageBox(_T("射出作動的設定壓力上限，單位 MPa (預設為80%機台上限)"), _T("射出壓力 (injection pressure)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonFillintTimeInfo()
 {
-	MessageBox(_T("預估充填時間，參考[塑化體積]&[材料黏度]查表得之，以 sec 計"), _T("充填時間 (filling time)"), 
+	MessageBox(_T("預估充填時間，單位 sec (依塑化體積與材料種類估算而得)"), _T("充填時間 (filling time)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 

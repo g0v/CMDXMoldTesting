@@ -75,6 +75,14 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_MATERIAL2, &CMDXProductPage::OnCbnSelchangeComboMaterial)
 	ON_EN_CHANGE(IDC_EDIT_MOLD_TEMPERATURE, &CMDXProductPage::OnEnChangeEditMoldTemperature)
 	ON_EN_CHANGE(IDC_EDIT_MELT_TEMPERATURE, &CMDXProductPage::OnEnChangeEditMeltTemperature)
+	ON_BN_CLICKED(IDC_BUTTON_MELT_TEMPERATURE_INFO, &CMDXProductPage::OnBnClickedButtonMeltTemperatureInfo)
+	ON_BN_CLICKED(IDC_BUTTON_BARREL_TEMPERATURE_FIRST_INFO, &CMDXProductPage::OnBnClickedButtonBarrelTemperatureFirstInfo)
+	ON_BN_CLICKED(IDC_BUTTON_BARREL_TEMPERATURE_SECOND_INFO, &CMDXProductPage::OnBnClickedButtonBarrelTemperatureSecondInfo)
+	ON_BN_CLICKED(IDC_BUTTON_BARREL_TEMPERATURE_THIRD_INFO, &CMDXProductPage::OnBnClickedButtonBarrelTemperatureThirdInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MOLD_TEMPERATURE_CORE_INFO, &CMDXProductPage::OnBnClickedButtonMoldTemperatureCoreInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MOLD_TEMPERATURE_CAVITY_INFO, &CMDXProductPage::OnBnClickedButtonMoldTemperatureCavityInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MELT_TEMPERATURE_LIMIT_INFO, &CMDXProductPage::OnBnClickedButtonMeltTemperatureLimitInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MOLD_TEMPERATURE_LIMIT_INFO, &CMDXProductPage::OnBnClickedButtonMoldTemperatureLimitInfo)
 END_MESSAGE_MAP()
 
 //void CMDXProductPage::OnEnKillfocusEditPartVolume()
@@ -242,7 +250,8 @@ BOOL CMDXProductPage::IsValidateData(CDataExchange *pDX)
 	if( !IsMeltTemperature( pDX ) )				{ return FALSE; };
 	if( !IsMaxMoldTemperature( pDX ) )				{ return FALSE; };
 	if( !IsMinMoldTemperature( pDX ) )			{ return FALSE; };
-	if( !IsMoldTemperature( pDX ) )			{ return FALSE; };
+	if( !IsMoldTemperatureCore( pDX ) )			{ return FALSE; };
+	if( !IsMoldTemperatureCavity( pDX ) )			{ return FALSE; };
         //
    return TRUE;
    
@@ -271,7 +280,6 @@ BOOL CMDXProductPage::IsVolumeValidate( CDataExchange *pDX )
 	SetVolumeData(atof(strItem));
 	return TRUE;
 }
-
 BOOL CMDXProductPage::IsColdRunnerVolumeValidate( CDataExchange *pDX )
 {
 	CString strItem("");
@@ -295,7 +303,6 @@ BOOL CMDXProductPage::IsColdRunnerVolumeValidate( CDataExchange *pDX )
 	SetColdRunnerVolumeData(atof(strItem));
 	return TRUE;
 }
-
 BOOL CMDXProductPage::IsHotRunnerVolumeValidate( CDataExchange *pDX )
 {
 	CString strItem("");
@@ -314,7 +321,6 @@ BOOL CMDXProductPage::IsHotRunnerVolumeValidate( CDataExchange *pDX )
 	SetHotRunnerVolumeData(atof(strItem));
 	return TRUE;
 }
-
 BOOL CMDXProductPage::IsPlasticVolumeValidate( CDataExchange *pDX )
 {
 	CString strItem("");
@@ -338,7 +344,6 @@ BOOL CMDXProductPage::IsPlasticVolumeValidate( CDataExchange *pDX )
 	SetPlasticVolumeData(atof(strItem));
 	return TRUE;
 }
-
 BOOL CMDXProductPage::IsGateThicknessValidate( CDataExchange *pDX )
 {
 	CString strItem("");
@@ -362,7 +367,6 @@ BOOL CMDXProductPage::IsGateThicknessValidate( CDataExchange *pDX )
 	SetGateThicknessData(atof(strItem));
 	return TRUE;
 }
-
 BOOL CMDXProductPage::IsPartThicknessValidate( CDataExchange *pDX )
 {
 	CString strItem("");
@@ -394,7 +398,6 @@ BOOL CMDXProductPage::IsPartThicknessValidate( CDataExchange *pDX )
 	SetPartThicknessData(atof(strItem));
 	return TRUE;
 }
-
 BOOL CMDXProductPage::IsMaxPartThicknessValidate( CDataExchange *pDX )
 {
 	CString strItem("");
@@ -413,7 +416,6 @@ BOOL CMDXProductPage::IsMaxPartThicknessValidate( CDataExchange *pDX )
 	SetMaxPartThicknessData(atof(strItem));
 	return TRUE;
 }
-
 BOOL CMDXProductPage::IsClampingForceValidate( CDataExchange *pDX ) 			
 { 
 	CString strItem("");
@@ -522,7 +524,6 @@ BOOL CMDXProductPage::IsMaxInjectionVelocityValidate( CDataExchange *pDX )
 	return TRUE;
 
 }
-
 BOOL CMDXProductPage::IsMaxInjectionPressureValidate( CDataExchange *pDX ) 
 { 
 	CString strItem("");
@@ -540,7 +541,6 @@ BOOL CMDXProductPage::IsMaxInjectionPressureValidate( CDataExchange *pDX )
 	SetMaxInjectionPressureData(atof(strItem));
 	return TRUE;
 }
-
 BOOL CMDXProductPage::IsRealParse(CDataExchange *pDX, UINT nEditID, CString strValue)
 {
     CMDXStringParser parser;
@@ -568,7 +568,6 @@ BOOL CMDXProductPage::CheckInputValue( CDataExchange *pDX, UINT nEditID, double 
 	}
 	return TRUE;
 }
-
 BOOL CMDXProductPage::CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, double dValue)
 {
 	CMDXStringParser parser;
@@ -580,7 +579,6 @@ BOOL CMDXProductPage::CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, d
 	}
 	return TRUE;
 }
-
 BOOL CMDXProductPage::CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue)
 {
 	CMDXStringParser parser;
@@ -592,7 +590,6 @@ BOOL CMDXProductPage::CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, 
 	}
 	return TRUE;
 }
-
 BOOL CMDXProductPage::CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max)
 {
 	CMDXStringParser parser;
@@ -671,9 +668,11 @@ void CMDXProductPage::UpdateAllData()
 	GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->GetWindowText(strTemp);
 	SetMinMoldTemperature(atof(strTemp) );
 	GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->GetWindowText(strTemp);
-	SetMoldTemperature(atof(strTemp) );
-	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->GetWindowText(strTemp);
-	SetMoldTemperature(atof(strTemp) );
+	SetMoldTemperatureCore(atof(strTemp) );
+	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->GetWindowText(strTemp);
+	SetMoldTemperatureCore(atof(strTemp) );
+	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->GetWindowText(strTemp);
+	SetMoldTemperatureCavity(atof(strTemp) );
 
 	//push material selection to data center
 	DataCenter::getInstance().SetMaterialSel(m_iMaterialSel);
@@ -752,43 +751,43 @@ void CMDXProductPage::OnEnChangeEditHrVolume()
 
 void CMDXProductPage::OnBnClickedButtonVolumeInfo()
 {
-	MessageBox(_T("射出成型產品之體積，以 cc 計"), _T("產品體積 (product volume)"), 
+	MessageBox(_T("成型品的產品體積，單位 cc (多模穴系統則為全部產品體積總和)"), _T("產品體積 (product volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonCrVolumeInfo()
 {
-	MessageBox(_T("冷流道部分之體積，以 cc 計"), _T("冷流道體積 (cold runner volume)"), 
+	MessageBox(_T("冷流道體積，單位 cc"), _T("冷流道體積 (cold runner volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonHrVolumeInfo()
 {
-	MessageBox(_T("熱流道部分之體積，以 cc 計"), _T("熱流道體積 (hot runner volume)"), 
+	MessageBox(_T("熱流道體積，單位 cc"), _T("熱流道體積 (hot runner volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonPlasticVolumeInfo()
 {
-	MessageBox(_T("產品體積 + 冷流道部分體積，建議 < 550 cc，以 cc 計"), _T("塑化體積 (plasticizing volume)"), 
+	MessageBox(_T("每模次射出體積，單位 cc (預設為產品體積與冷流道體積總和)，建議 < 550 cc"), _T("塑化體積 (plasticizing volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonPartThicknessInfo()
 {
-	MessageBox(_T("產品平均厚度，以 mm 計"), _T("產品平均肉厚 (product average thickness)"), 
+	MessageBox(_T("產品平均肉厚，單位 mm (用以估計澆口短邊肉厚)"), _T("產品平均肉厚 (product average thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonMaxPartThicknessInfo()
 {
-	MessageBox(_T("產品最大厚度，以 mm 計"), _T("產品最大肉厚 (product maximum thickness)"), 
+	MessageBox(_T("產品最大肉厚，單位 mm (用以估計冷卻時間)"), _T("產品最大肉厚 (product maximum thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonGateThicknessInfo()
 {
-	MessageBox(_T("澆口短邊之厚度，預設值為 2/3 * 產品平均肉厚，以 mm 計"), _T("澆口短邊肉厚 (gate thickness)"), 
+	MessageBox(_T("澆口最薄處之肉厚，單位 mm (用以估計保壓時間)"), _T("澆口短邊肉厚 (gate thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
@@ -834,6 +833,7 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("60");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("75"); // (90+60)/2
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("75"); // (90+60)/2
 		}
 		break;
 	case 1://PC+ABS
@@ -844,6 +844,7 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("50");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("70");
 		}
 		break;
 	case 2://PA
@@ -854,6 +855,7 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("50");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("70");
 		}
 		break;
 	}
@@ -986,28 +988,53 @@ BOOL CMDXProductPage::IsMinMoldTemperature( CDataExchange *pDX )
 	return TRUE;
 }
 
-BOOL CMDXProductPage::IsMoldTemperature( CDataExchange *pDX ) 
+BOOL CMDXProductPage::IsMoldTemperatureCore( CDataExchange *pDX ) 
 { 
 	CString strItem("");
-	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->GetWindowText(strItem);
+	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->GetWindowText(strItem);
     
-	if( !IsRealParse( pDX, IDC_EDIT_MOLD_TEMPERATURE, strItem ) )
+	if( !IsRealParse( pDX, IDC_EDIT_MOLD_TEMPERATURE_CORE, strItem ) )
     {
         return FALSE;
     }
 
-	if( !CheckInputValue( pDX, IDC_EDIT_MOLD_TEMPERATURE, atof(strItem)))
+	if( !CheckInputValue( pDX, IDC_EDIT_MOLD_TEMPERATURE_CORE, atof(strItem)))
 	{
 		return FALSE;
 	}
 
-	if( !CheckMoldMinMax( pDX, IDC_EDIT_MOLD_TEMPERATURE, atof(strItem), 
+	if( !CheckMoldMinMax( pDX, IDC_EDIT_MOLD_TEMPERATURE_CORE, atof(strItem), 
 		GetMinMoldTemperature(), GetMaxMoldTemperature()))
 	{
 		return FALSE;
 	}
 
-	SetMoldTemperature(atof(strItem));
+	SetMoldTemperatureCore(atof(strItem));
+	return TRUE;
+}
+
+BOOL CMDXProductPage::IsMoldTemperatureCavity( CDataExchange *pDX )
+{
+	CString strItem("");
+	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->GetWindowText(strItem);
+    
+	if( !IsRealParse( pDX, IDC_EDIT_MOLD_TEMPERATURE_CAVITY, strItem ) )
+    {
+        return FALSE;
+    }
+
+	if( !CheckInputValue( pDX, IDC_EDIT_MOLD_TEMPERATURE_CAVITY, atof(strItem)))
+	{
+		return FALSE;
+	}
+
+	if( !CheckMoldMinMax( pDX, IDC_EDIT_MOLD_TEMPERATURE_CAVITY, atof(strItem), 
+		GetMinMoldTemperature(), GetMaxMoldTemperature()))
+	{
+		return FALSE;
+	}
+
+	SetMoldTemperatureCavity(atof(strItem));
 	return TRUE;
 }
 
@@ -1016,7 +1043,7 @@ void CMDXProductPage::OnEnChangeEditMoldTemperature()
 	CString strEditData("");
 	GetDlgItem( IDC_EDIT_MOLD_TEMPERATURE )->GetWindowText(strEditData);
 	double t = _tstof(strEditData);
-	SetMoldTemperature(t);
+	SetMoldTemperatureCore(t);
 }
 
 void CMDXProductPage::OnEnChangeEditMeltTemperature()
@@ -1025,4 +1052,53 @@ void CMDXProductPage::OnEnChangeEditMeltTemperature()
 	GetDlgItem( IDC_EDIT_MELT_TEMPERATURE )->GetWindowText(strEditData);
 	double t = _tstof(strEditData);
 	SetMeltTemperature(t);
+}
+
+
+void CMDXProductPage::OnBnClickedButtonMeltTemperatureInfo()
+{
+	MessageBox(_T("射嘴設定溫度，單位 ℃"), _T("射嘴料溫 (melt temperature)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonBarrelTemperatureFirstInfo()
+{
+	MessageBox(_T("第一段料管設定溫度，單位 ℃ (高黏度材料每段溫差 5℃、低黏度溫差 10℃)"), _T("第一段料管溫度 (first barrel temperature)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonBarrelTemperatureSecondInfo()
+{
+	MessageBox(_T("第二段料管設定溫度，單位 ℃"), _T("第二段料管溫度 (second barrel temperature)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonBarrelTemperatureThirdInfo()
+{
+	MessageBox(_T("第三段料管設定溫度，單位 ℃"), _T("第三段料管溫度 (third barrel temperature)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMoldTemperatureCoreInfo()
+{
+	MessageBox(_T("公模設定溫度，單位 ℃"), _T("公模模溫 (core temperature)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMoldTemperatureCavityInfo()
+{
+	MessageBox(_T("母模設定溫度，單位 ℃"), _T("母模模溫 (cavity temperature)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMeltTemperatureLimitInfo()
+{
+	MessageBox(_T("料商建議塑料加工溫度範圍，單位 ℃"), _T("建議料溫 (suggested melt temperature range)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMoldTemperatureLimitInfo()
+{
+	MessageBox(_T("料商建議模具溫度範圍，單位 ℃"), _T("建議模溫 (suggested mold temperature range)"), 
+      MB_OK | MB_ICONINFORMATION);
 }

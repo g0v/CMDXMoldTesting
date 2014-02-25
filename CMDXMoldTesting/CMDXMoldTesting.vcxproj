@@ -184,8 +184,12 @@
     <ClInclude Include="CMDXMoldTestingDlg.h" />
     <ClInclude Include="DataCenter.h" />
     <ClInclude Include="MDXAllMoldTestingData.h" />
-    <ClInclude Include="MDXMachinePage.h" />
-    <ClInclude Include="MDXMaterialPage.h" />
+    <ClInclude Include="MDXMachinePage.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="MDXMaterialPage.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="MDXProcessPage.h" />
     <ClInclude Include="MDXProductPage.h" />
     <ClInclude Include="MDXProductPageData.h" />
@@ -203,8 +207,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="MDXAllMoldTestingData.cpp" />
-    <ClCompile Include="MDXMachinePage.cpp" />
-    <ClCompile Include="MDXMaterialPage.cpp" />
+    <ClCompile Include="MDXMachinePage.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="MDXMaterialPage.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MDXProcessPage.cpp" />
     <ClCompile Include="MDXProductPage.cpp" />
     <ClCompile Include="MDXProductPageData.cpp" />

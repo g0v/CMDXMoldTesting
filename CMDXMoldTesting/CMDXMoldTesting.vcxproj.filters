@@ -51,9 +51,6 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MDXMachinePage.h">
-      <Filter>Page</Filter>
-    </ClInclude>
     <ClInclude Include="MDXProcessPage.h">
       <Filter>Page</Filter>
     </ClInclude>
@@ -61,9 +58,6 @@
       <Filter>Dialog</Filter>
     </ClInclude>
     <ClInclude Include="MDXProductPage.h">
-      <Filter>Page</Filter>
-    </ClInclude>
-    <ClInclude Include="MDXMaterialPage.h">
       <Filter>Page</Filter>
     </ClInclude>
     <ClInclude Include="MDXStringParser.h">
@@ -78,6 +72,12 @@
     <ClInclude Include="DataCenter.h">
       <Filter>Data</Filter>
     </ClInclude>
+    <ClInclude Include="MDXMachinePage.h">
+      <Filter>Page</Filter>
+    </ClInclude>
+    <ClInclude Include="MDXMaterialPage.h">
+      <Filter>Page</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMDXMoldTesting.cpp">
@@ -89,9 +89,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MDXMachinePage.cpp">
-      <Filter>Page</Filter>
-    </ClCompile>
     <ClCompile Include="MDXProcessPage.cpp">
       <Filter>Page</Filter>
     </ClCompile>
@@ -99,9 +96,6 @@
       <Filter>Dialog</Filter>
     </ClCompile>
     <ClCompile Include="MDXProductPage.cpp">
-      <Filter>Page</Filter>
-    </ClCompile>
-    <ClCompile Include="MDXMaterialPage.cpp">
       <Filter>Page</Filter>
     </ClCompile>
     <ClCompile Include="MDXStringParser.cpp">
@@ -115,6 +109,12 @@
     </ClCompile>
     <ClCompile Include="DataCenter.cpp">
       <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXMachinePage.cpp">
+      <Filter>Page</Filter>
+    </ClCompile>
+    <ClCompile Include="MDXMaterialPage.cpp">
+      <Filter>Page</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

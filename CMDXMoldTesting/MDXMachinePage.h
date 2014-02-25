@@ -12,7 +12,7 @@ public:
 	virtual ~CMDXMachinePage();
 
 // Dialog Data
-	enum { IDD = IDD_PAGE_MACHINE };
+	enum { IDD = IDD_PAGE_PRODUCT };
 
 public:
 	void SetClampingForceData( double dValue ) {m_dClampingForce = dValue;};

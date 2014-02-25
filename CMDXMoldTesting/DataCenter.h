@@ -67,7 +67,7 @@ public:
 		return m_iMaterialSel;
 	}
 
-	void SetMaxScrewStroke(int stroke)
+	void SetMaxScrewStroke(double stroke)
 	{
 		m_dMaxScrewStroke = stroke;
 	}

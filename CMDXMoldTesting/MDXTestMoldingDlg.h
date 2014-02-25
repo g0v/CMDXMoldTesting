@@ -7,7 +7,7 @@
 #include "MDXAllMoldTestingData.h"
 // CMDXTestMoldingDlg dialog
 
-#define PAGESIZE 4  //頁面個數
+#define PAGESIZE 2  //頁面個數
 
 class CMDXTestMoldingDlg : public CDialog
 {
@@ -23,8 +23,8 @@ public:
 
 public:
 	CMDXProductPage* GetProductPagePtr();
-	CMDXMachinePage* GetMachinePagePtr();
-	CMDXMaterialPage* GetMaterialPagePtr();
+	//CMDXMachinePage* GetMachinePagePtr();
+	//CMDXMaterialPage* GetMaterialPagePtr();
 	CMDXProcessPage* GetProcessPagePtr();
 
 protected:
@@ -43,8 +43,8 @@ private:
 	CDialog* m_pTestMoldingDlg[PAGESIZE];  //container
 	CTabCtrl m_tab;
 	CMDXProductPage m_ProductPage;  //產品頁面
-	CMDXMachinePage m_MachinePage; //機台頁面
-	CMDXMaterialPage m_MaterialPage; //材料頁面
+	//CMDXMachinePage m_MachinePage; //機台頁面
+	//CMDXMaterialPage m_MaterialPage; //材料頁面
 	CMDXProcessPage m_ProcessPage; // 成型頁面
 
 	CMDXMoldTestingData m_pMoldTestingData;//所有資料存放區

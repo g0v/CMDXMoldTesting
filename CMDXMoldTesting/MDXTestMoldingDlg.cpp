@@ -8,7 +8,7 @@
 #include "DataCenter.h"
 
 
-enum {MDXProductPage=0, MDXMachinePage, MDXMaterialPage, MDXProcessPage};
+enum {MDXProductPage=0, MDXProcessPage};
 // CMDXTestMoldingDlg dialog
 
 IMPLEMENT_DYNAMIC(CMDXTestMoldingDlg, CDialog)
@@ -45,14 +45,14 @@ void CMDXTestMoldingDlg::Init()
 void CMDXTestMoldingDlg::CreateTab()
 {
 	//tab頁面建立
-	m_tab.InsertItem( 0, _T("產品") );
-	m_tab.InsertItem( 1, _T("機台") );
-	m_tab.InsertItem( 2, _T("材料") );
-	m_tab.InsertItem( 3, _T("成型") );
+	m_tab.InsertItem( 0, _T("參數設定") );
+	//m_tab.InsertItem( 1, _T("機台") );
+	//m_tab.InsertItem( 2, _T("材料") );
+	m_tab.InsertItem( 1, _T("成型條件") );
 
 	m_ProductPage.Create( IDD_PAGE_PRODUCT, &m_tab );
-	m_MachinePage.Create( IDD_PAGE_MACHINE, &m_tab);
-	m_MaterialPage.Create( IDD_PAGE_MATERIAL, &m_tab);
+	//m_MachinePage.Create( IDD_PAGE_MACHINE, &m_tab);
+	//m_MaterialPage.Create( IDD_PAGE_MATERIAL, &m_tab);
 	m_ProcessPage.Create( IDD_PAGE_PROCESS, &m_tab);
 
 	//讓TAB外觀不會遮住頁面
@@ -65,21 +65,21 @@ void CMDXTestMoldingDlg::CreateTab()
 
 	//移動頁面
 	m_ProductPage.MoveWindow(&rect);
-	m_MachinePage.MoveWindow(&rect);
-	m_MaterialPage.MoveWindow(&rect);
+	//m_MachinePage.MoveWindow(&rect);
+	//m_MaterialPage.MoveWindow(&rect);
 	m_ProcessPage.MoveWindow(&rect);
 
 	//將個頁面加入至container
 	m_pTestMoldingDlg[0] = &m_ProductPage;
-	m_pTestMoldingDlg[1] = &m_MachinePage;
-	m_pTestMoldingDlg[2] = &m_MaterialPage;
-	m_pTestMoldingDlg[3] = &m_ProcessPage;
+	//m_pTestMoldingDlg[1] = &m_MachinePage;
+	//m_pTestMoldingDlg[2] = &m_MaterialPage;
+	m_pTestMoldingDlg[1] = &m_ProcessPage;
 
 	//顯示頁面  第一次開始顯示產品頁面
 	m_pTestMoldingDlg[0]->ShowWindow( SW_SHOW );
+	//m_pTestMoldingDlg[1]->ShowWindow( SW_HIDE );
+	//m_pTestMoldingDlg[2]->ShowWindow( SW_HIDE );
 	m_pTestMoldingDlg[1]->ShowWindow( SW_HIDE );
-	m_pTestMoldingDlg[2]->ShowWindow( SW_HIDE );
-	m_pTestMoldingDlg[3]->ShowWindow( SW_HIDE );
 }
 void CMDXTestMoldingDlg::FreeMemory()
 {
@@ -113,6 +113,8 @@ void CMDXTestMoldingDlg::OnTcnSelchangeTabmolding(NMHDR *pNMHDR, LRESULT *pResul
 			//離開此頁時更新資訊
 			m_ProductPage.UpdateAllData();
 			m_ProcessPage.InitFillTime();
+			m_ProcessPage.InitVP();
+			m_ProcessPage.InitInjectionPressure();
 			m_ProcessPage.SetProfileFill();
 			m_ProcessPage.SetProfilePack();
 			m_ProcessPage.InitCoolTime();
@@ -126,40 +128,40 @@ void CMDXTestMoldingDlg::OnTcnSelchangeTabmolding(NMHDR *pNMHDR, LRESULT *pResul
 			}
 		}
 		break;
-	case 1: //機台
-		{
-			//離開此頁時更新資訊
-			m_MachinePage.UpdateAllData();
-			m_ProcessPage.InitVP();
-			m_ProcessPage.InitInjectionPressure();
-			m_ProcessPage.SetProfileFill();
-			m_ProcessPage.SetProfilePack();
+	//case 1: //機台
+	//	{
+	//		//離開此頁時更新資訊
+	//		m_MachinePage.UpdateAllData();
+	//		m_ProcessPage.InitVP();
+	//		m_ProcessPage.InitInjectionPressure();
+	//		m_ProcessPage.SetProfileFill();
+	//		m_ProcessPage.SetProfilePack();
 
-			if( !m_MachinePage.UpdateData())
-			{
-				m_tab.SetCurSel(m_iCurrentPage);
-				return;
-			}
-		}
-		break;
-	case 2: //材料
-		{
-			//離開此頁時更新資訊
-			m_MaterialPage.UpdateAllData();
-			m_ProcessPage.InitFillTime();
-			m_ProcessPage.SetProfileFill();
-			m_ProcessPage.SetProfilePack();
-			m_ProcessPage.InitCycleTime();
-			m_ProcessPage.InitResidenceTime();
+	//		if( !m_MachinePage.UpdateData())
+	//		{
+	//			m_tab.SetCurSel(m_iCurrentPage);
+	//			return;
+	//		}
+	//	}
+	//	break;
+	//case 2: //材料
+	//	{
+	//		//離開此頁時更新資訊
+	//		m_MaterialPage.UpdateAllData();
+	//		m_ProcessPage.InitFillTime();
+	//		m_ProcessPage.SetProfileFill();
+	//		m_ProcessPage.SetProfilePack();
+	//		m_ProcessPage.InitCycleTime();
+	//		m_ProcessPage.InitResidenceTime();
 
-			if( !m_MaterialPage.UpdateData())
-			{
-				m_tab.SetCurSel(m_iCurrentPage);
-				return;
-			}
-		}
-		break;
-	case 3: //成型
+	//		if( !m_MaterialPage.UpdateData())
+	//		{
+	//			m_tab.SetCurSel(m_iCurrentPage);
+	//			return;
+	//		}
+	//	}
+	//	break;
+	case 1: //成型
 		{
 			if( !m_ProcessPage.UpdateData())
 			{
@@ -185,7 +187,7 @@ void CMDXTestMoldingDlg::OnTcnSelchangeTabmolding(NMHDR *pNMHDR, LRESULT *pResul
 	m_pTestMoldingDlg[m_iCurrentPage]->ShowWindow(SW_SHOW);
 
 	//只有"成型"頁可以按[提交]
-	if(m_iCurrentPage == 3)
+	if(m_iCurrentPage == 1)
 	{
 		GetDlgItem(IDOK)->EnableWindow(TRUE);
 	}
@@ -233,15 +235,15 @@ CMDXProductPage* CMDXTestMoldingDlg::GetProductPagePtr()
 	return &m_ProductPage;
 }
 
-CMDXMachinePage* CMDXTestMoldingDlg::GetMachinePagePtr()
-{
-	return &m_MachinePage;
-}
-
-CMDXMaterialPage* CMDXTestMoldingDlg::GetMaterialPagePtr()
-{
-	return &m_MaterialPage;
-}
+//CMDXMachinePage* CMDXTestMoldingDlg::GetMachinePagePtr()
+//{
+//	return &m_MachinePage;
+//}
+//
+//CMDXMaterialPage* CMDXTestMoldingDlg::GetMaterialPagePtr()
+//{
+//	return &m_MaterialPage;
+//}
 
 CMDXProcessPage* CMDXTestMoldingDlg::GetProcessPagePtr()
 {

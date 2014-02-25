@@ -12,7 +12,7 @@ public:
 	virtual ~CMDXMaterialPage();
 
 // Dialog Data
-	enum { IDD = IDD_PAGE_MATERIAL };
+	enum { IDD = IDD_PAGE_PRODUCT };
 
 public:
 	void SetMaxMeltTemperature( double dValue )	{ m_dMaxMeltTemp =  dValue; };

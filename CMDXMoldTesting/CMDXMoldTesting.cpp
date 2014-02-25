@@ -80,10 +80,10 @@ BOOL CCMDXMoldTestingApp::InitInstance()
 	if (nResponse == IDOK)
 	{
 		//dlg.UpDateAllPage();
-		CMDXMachinePage* pMachinePage;
-		pMachinePage = dlg.GetMachinePagePtr();
-		CMDXMaterialPage* pMaterialPage;
-		pMaterialPage = dlg.GetMaterialPagePtr();
+		//CMDXMachinePage* pMachinePage;
+		//pMachinePage = dlg.GetMachinePagePtr();
+		//CMDXMaterialPage* pMaterialPage;
+		//pMaterialPage = dlg.GetMaterialPagePtr();
 		CMDXProductPage* pProductPage;
 		pProductPage = dlg.GetProductPagePtr();
 		double adata = pProductPage->GetVolumeData();

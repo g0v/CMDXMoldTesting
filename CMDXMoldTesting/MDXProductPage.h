@@ -26,7 +26,6 @@ public:
 	void SetGateThicknessData(double dValue)	{ m_dGateThicknessData = dValue;};
 	void SetPartThicknessData(double dValue)	{ m_dPartThicknessData = dValue;};
 	void SetMaxPartThicknessData(double dValue) { m_dMaxPartThicknessData = dValue;};
-
 	double GetVolumeData()				{ return m_dVolumeData;};
 	double GetColdRunnerVolumeData()	{ return m_dColdRunnerVolumeData;};
 	double GetHotRunnerVolumeData()		{ return m_dHotRunnerVolumeData;};
@@ -34,6 +33,35 @@ public:
 	double GetGateThicknessData()		{ return m_dGateThicknessData;};
 	double GetPartThicknessData()		{ return m_dPartThicknessData;};
 	double GetMaxPartThicknessData()	{ return m_dMaxPartThicknessData;};
+
+	void SetClampingForceData( double dValue ) {m_dClampingForce = dValue;};
+	void SetScrewDiamData( double dValue ) {m_dScrewDiam = dValue;};
+	void SetMaxStrokeData( double dValue  ) {m_dMaxStroke = dValue;};
+	void SetInjectionVolumeData( double dValue ) {m_dInjectionVolume = dValue;};
+	void SetMaxInjectionVolumeData( double dValue ) {m_dMaxInjectionVolume = dValue;};
+	void SetMaxInjectionVelocityData( double dValue ) {m_dMaxInjectionVelocity = dValue;};
+	void SetMaxInjectionPressureData( double dValue ) {m_dMaxInjectionPressure = dValue;};
+	double GetClampingForceData() { return m_dClampingForce;};
+	double GetScrewDiamData() {return m_dScrewDiam;};
+	double GetMaxStrokeData() {return m_dMaxStroke;};
+	double GetInjectionVolumeData() {return m_dInjectionVolume;};
+	double GetMaxInjectionVolumeData() {return m_dMaxInjectionVolume;};
+	double GetMaxInjectionVelocityData() {return m_dMaxInjectionVelocity;};
+	double GetMaxInjectionPressureData() {return m_dMaxInjectionPressure;};
+
+	void SetMaxMeltTemperature( double dValue )	{ m_dMaxMeltTemp =  dValue; };
+	void SetMinMeltTemperature( double dValue )	{ m_dMinMeltTemp =  dValue; };
+	void SetMaxMoldTemperature( double dValue ) { m_dMaxMoldTemp =  dValue; };
+	void SetMinMoldTemperature( double dValue )	{ m_dMinMoldTemp =  dValue; };
+	void SetMeltTemperature( double dValue )	{ m_dMeltTemp =  dValue; };
+	void SetMoldTemperature( double dValue )	{ m_dMoldTemp =  dValue; };
+	double GetMaxMeltTemperature()	{ return m_dMaxMeltTemp; };
+	double GetMinMeltTemperature()	{ return m_dMinMeltTemp; };
+	double GetMaxMoldTemperature()	{ return m_dMaxMoldTemp; };
+	double GetMinMoldTemperature()	{ return m_dMinMoldTemp; };
+	double GetMeltTemperature()	{ return m_dMeltTemp; };
+	double GetMoldTemperature()	{ return m_dMoldTemp; };
+
 private:
 	void InitEditData();
 	BOOL UpDateEditData();
@@ -52,6 +80,28 @@ private:
 	BOOL CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue);
 	BOOL CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max);
 
+	void InitComboMachineProducer();
+	void InitComboMachineGrade();
+	void SetMachineData();
+	BOOL IsClampingForceValidate( CDataExchange *pDX );
+	BOOL IsScrewDiamValidate( CDataExchange *pDX );
+	BOOL IsMaxStrokeValidate( CDataExchange *pDX );
+	BOOL IsInjectionVolumeValidate( CDataExchange *pDX );
+	BOOL IsMaxInjectionVolumeValidate( CDataExchange *pDX );
+	BOOL IsMaxInjectionVelocityValidate( CDataExchange *pDX );
+	BOOL IsMaxInjectionPressureValidate( CDataExchange *pDX );
+
+	void InitComboMaterialData();
+	void SetTemperatureData();
+	BOOL CheckMeltMinMax( CDataExchange *pDX, UINT nEditID, double melt, double min, double max );
+	BOOL CheckMoldMinMax( CDataExchange *pDX, UINT nEditID, double mold, double min, double max );
+	BOOL IsMaxMeltTemperature( CDataExchange *pDX ); 
+	BOOL IsMinMeltTemperature( CDataExchange *pDX );
+	BOOL IsMeltTemperature( CDataExchange *pDX );
+	BOOL IsMaxMoldTemperature( CDataExchange *pDX ); 
+	BOOL IsMinMoldTemperature( CDataExchange *pDX );
+	BOOL IsMoldTemperature( CDataExchange *pDX );
+
 protected:
 	virtual BOOL OnInitDialog();
 
@@ -61,6 +111,7 @@ protected:
 	//CSliderCtrl m_SectionSlider;
 
 	//afx_msg void OnEnKillfocusEditPartVolume();
+	CComboBox m_cMaterialType;
 
 	DECLARE_MESSAGE_MAP()
 
@@ -74,6 +125,26 @@ private:
 	double m_dGateThicknessData;
 	double m_dPartThicknessData;
 	double m_dMaxPartThicknessData;
+
+	int m_iMachineSel;
+	//bool m_bCheckEditData;
+	double m_dClampingForce;
+	double m_dScrewDiam;
+	double m_dMaxStroke;
+	double m_dInjectionVolume;
+	double m_dMaxInjectionVolume;
+	double m_dMaxInjectionVelocity;
+	double m_dMaxInjectionPressure;
+
+	int m_iMaterialSel;
+	//bool m_bCheckEditData;
+	double m_dMaxMeltTemp;
+	double m_dMinMeltTemp;
+	double m_dMaxMoldTemp;
+	double m_dMinMoldTemp;
+	double m_dMeltTemp;
+	double m_dMoldTemp;
+
 public:
 	afx_msg void OnEnChangeEditPartVolume();
 	afx_msg void OnEnChangeEditColdRunnerVolume();
@@ -87,4 +158,10 @@ public:
 	afx_msg void OnBnClickedButtonPartThicknessInfo();
 	afx_msg void OnBnClickedButtonMaxPartThicknessInfo();
 	afx_msg void OnBnClickedButtonGateThicknessInfo();
+
+	afx_msg void OnCbnSelchangeComboProducter();
+	afx_msg void OnCbnSelchangeComboGrade();
+	afx_msg void OnCbnSelchangeComboMaterial();
+	afx_msg void OnEnChangeEditMoldTemperature();
+	afx_msg void OnEnChangeEditMeltTemperature();
 };

@@ -607,54 +607,73 @@ void CMDXProcessPage::OnCbnSelchangeComboPackingSection()
 
 void CMDXProcessPage::OnBnClickedButtonVpInfo()
 {
-	MessageBox(_T("射出機從[速度控制]切換為[壓力控制]之螺桿位置，單位 mm (預設為25%螺桿直徑)"), _T("VP 切換位置 (VP switch-over)"), 
+	MessageBox(_T("射出機從[速度控制]切換為[壓力控制]之螺桿位置，單位 mm\n"
+				"(預設為25%螺桿直徑)"), 
+				_T("VP 切換位置 (VP switch-over)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonInjectionPressureInfo()
 {
-	MessageBox(_T("射出作動的設定壓力上限，單位 MPa (預設為80%機台上限)"), _T("射出壓力 (injection pressure)"), 
+	MessageBox(_T("射出作動的設定壓力上限，單位 MPa\n"
+				"(預設為80%機台上限)"), 
+				_T("射出壓力 (injection pressure)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonFillintTimeInfo()
 {
-	MessageBox(_T("預估充填時間，單位 sec (依塑化體積與材料種類估算而得)"), _T("充填時間 (filling time)"), 
+	MessageBox(_T("預估充填時間，單位 sec\n"
+				"(依[塑化體積]與[材料種類]估算而得)"), 
+				_T("充填時間 (filling time)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonFillingSectionInfo()
 {
-	MessageBox(_T("可選擇[單段充填]或[三段充填]，[三段充填]預設速度比為 2:4:1，分別充填[冷流道體積]、[95% 產品體積]、[5% 產品體積]"), _T("充填段數 (filling section)"), 
+	MessageBox(_T("可選擇[單段充填]或[三段充填]，\n"
+				"[三段充填]預設速度比為 2:4:1，\n"
+				"分別充填[冷流道體積]、[95% 產品體積]、[5% 產品體積]"), 
+				_T("充填段數 (filling section)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonPackingSectionInfo()
 {
-	MessageBox(_T("可選擇[單段保壓]或[二段保壓]，[二段保壓]預設保壓時間比為 1:1，保壓壓力分別為[75% 機台最大射壓]、[40% 機台最大射壓]"), _T("保壓段數 (packing section)"), 
+	MessageBox(_T("可選擇[單段保壓]或[二段保壓]，\n"
+				"[二段保壓]預設保壓時間比為 1:1，\n"
+				"保壓壓力分別為[75% 機台最大射壓]、[40% 機台最大射壓]"), 
+				_T("保壓段數 (packing section)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonCoolingTimeInfo()
 {
-	MessageBox(_T("從[保壓結束]到成型料溫已冷卻至[頂出溫度]的時間，使用[產品最大厚度]預估之，以 sec 計"), _T("冷卻時間 (cooling time)"), 
+	MessageBox(_T("從[保壓結束]到成型料溫已冷卻至[頂出溫度]的時間，單位 sec\n"
+				"(依[產品最大厚度]估算而得)"), 
+				_T("冷卻時間 (cooling time)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonMoldopenTimeInfo()
 {
-	MessageBox(_T("此值是開模、塑件頂出與關模所需的開模時間，預設為 5.0 秒，以 sec 計"), _T("開模時間 (mold-open time)"), 
+	MessageBox(_T("開模、塑件頂出與關模所需的開模時間，單位 sec\n"
+				"(預設為 5.0 秒)"), 
+				_T("開模時間 (mold-open time)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonCycleTimeInfo()
 {
-	MessageBox(_T("一次射出成型所需時間，為[充填時間]+[冷卻時間]+[開模時間]，以 sec 計"), _T("成型周期 (cycle time)"), 
+	MessageBox(_T("一次射出成型所需時間，單位 sec\n"
+				"([充填時間]+[冷卻時間]+[開模時間])"), 
+				_T("成型周期 (cycle time)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProcessPage::OnBnClickedButtonResidenceTimeInfo()
 {
-	MessageBox(_T("塑料從熱澆道入口到澆口擠出前，在料管內滯留的時間，以 min 計"), _T("料管滯留時間 (residence time)"), 
+	MessageBox(_T("塑料從熱澆道入口到澆口擠出前，在料管內滯留的時間，單位 min"), 
+				_T("料管滯留時間 (residence time)"), 
       MB_OK | MB_ICONINFORMATION);
 }

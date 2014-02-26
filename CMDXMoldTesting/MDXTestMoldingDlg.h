@@ -1,8 +1,8 @@
 #pragma once
 
 #include"MDXProductPage.h"
-#include"MDXMachinePage.h"
-#include"MDXMaterialPage.h"
+//#include"MDXMachinePage.h"
+//#include"MDXMaterialPage.h"
 #include"MDXProcessPage.h"
 #include "MDXAllMoldTestingData.h"
 // CMDXTestMoldingDlg dialog
@@ -54,5 +54,5 @@ private:
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTcnSelchangeTabmolding(NMHDR *pNMHDR, LRESULT *pResult);
-	double m_dDiaScrew;
+	//double m_dDiaScrew;
 };

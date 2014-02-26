@@ -16,7 +16,7 @@ IMPLEMENT_DYNAMIC(CMDXTestMoldingDlg, CDialog)
 CMDXTestMoldingDlg::CMDXTestMoldingDlg(CWnd* pParent /*=NULL*/ )
 	: CDialog(CMDXTestMoldingDlg::IDD, pParent)
 	,m_iCurrentPage(0)
-	,m_dDiaScrew(0.f)
+	//,m_dDiaScrew(0.f)
 {
 	 m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -40,7 +40,10 @@ END_MESSAGE_MAP()
 // CMDXTestMoldingDlg message handlers
 void CMDXTestMoldingDlg::Init()
 {
-
+	//MessageBox(_T("本程式意在幫助現場試模人員在相關經驗不足的情況下，\n"
+	//				"填入基本產品資料便可得出[第一次試模]建議成型條件，\n"
+	//				"不保證為最佳解。"), _T("電腦試模表輔助程式 (ver.02)"), 
+ //     MB_OK | MB_ICONINFORMATION);
 }
 void CMDXTestMoldingDlg::CreateTab()
 {

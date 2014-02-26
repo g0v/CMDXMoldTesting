@@ -921,43 +921,55 @@ void CMDXProductPage::OnEnChangeEditHrVolume()
 
 void CMDXProductPage::OnBnClickedButtonVolumeInfo()
 {
-	MessageBox(_T("成型品的產品體積，單位 cc (多模穴系統則為全部產品體積總和)"), _T("產品體積 (product volume)"), 
+	MessageBox(_T("成型品的產品體積，單位 cc\n"
+				"(多模穴系統則為全部產品體積總和)"), 
+				_T("產品體積 (product volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonCrVolumeInfo()
 {
-	MessageBox(_T("冷流道體積，單位 cc"), _T("冷流道體積 (cold runner volume)"), 
+	MessageBox(_T("冷流道體積，單位 cc"), 
+				_T("冷流道體積 (cold runner volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonHrVolumeInfo()
 {
-	MessageBox(_T("熱流道體積，單位 cc"), _T("熱流道體積 (hot runner volume)"), 
+	MessageBox(_T("熱流道體積，單位 cc"), 
+				_T("熱流道體積 (hot runner volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonPlasticVolumeInfo()
 {
-	MessageBox(_T("每模次射出體積，單位 cc (預設為產品體積與冷流道體積總和)，建議 < 550 cc"), _T("塑化體積 (plasticizing volume)"), 
+	MessageBox(_T("每模次射出體積，單位 cc\n"
+				"(預設為產品體積與冷流道體積總和)，建議 < 550 cc"), 
+				_T("塑化體積 (plasticizing volume)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonPartThicknessInfo()
 {
-	MessageBox(_T("產品平均肉厚，單位 mm (用以估計澆口短邊肉厚)"), _T("產品平均肉厚 (product average thickness)"), 
+	MessageBox(_T("產品平均肉厚，單位 mm\n"
+				"(用以估計澆口短邊肉厚)"), 
+				_T("產品平均肉厚 (product average thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonMaxPartThicknessInfo()
 {
-	MessageBox(_T("產品最大肉厚，單位 mm (用以估計冷卻時間)"), _T("產品最大肉厚 (product maximum thickness)"), 
+	MessageBox(_T("產品最大肉厚，單位 mm\n"
+				"(用以估計冷卻時間)"), 
+				_T("產品最大肉厚 (product maximum thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonGateThicknessInfo()
 {
-	MessageBox(_T("澆口最薄處之肉厚，單位 mm (用以估計保壓時間)"), _T("澆口短邊肉厚 (gate thickness)"), 
+	MessageBox(_T("澆口最薄處之肉厚，單位 mm\n"
+				"(用以估計保壓時間)"), 
+				_T("澆口短邊肉厚 (gate thickness)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
@@ -1241,49 +1253,58 @@ void CMDXProductPage::OnEnChangeEditMeltTemperature()
 
 void CMDXProductPage::OnBnClickedButtonMeltTemperatureInfo()
 {
-	MessageBox(_T("射嘴設定溫度，單位 ℃"), _T("射嘴料溫 (melt temperature)"), 
+	MessageBox(_T("射嘴設定溫度，單位 ℃"), 
+				_T("射嘴料溫 (melt temperature)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonBarrelTemperatureFirstInfo()
 {
-	MessageBox(_T("第一段料管設定溫度，單位 ℃ (高黏度材料每段溫差 5℃、低黏度溫差 10℃)"), _T("第一段料管溫度 (first barrel temperature)"), 
+	MessageBox(_T("第一段料管設定溫度，單位 ℃\n"
+				"(高黏度材料每段溫差 5℃、低黏度溫差 10℃)"), 
+				_T("第一段料管溫度 (first barrel temperature)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonBarrelTemperatureSecondInfo()
 {
-	MessageBox(_T("第二段料管設定溫度，單位 ℃"), _T("第二段料管溫度 (second barrel temperature)"), 
+	MessageBox(_T("第二段料管設定溫度，單位 ℃"), 
+				_T("第二段料管溫度 (second barrel temperature)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonBarrelTemperatureThirdInfo()
 {
-	MessageBox(_T("第三段料管設定溫度，單位 ℃"), _T("第三段料管溫度 (third barrel temperature)"), 
+	MessageBox(_T("第三段料管設定溫度，單位 ℃"), 
+				_T("第三段料管溫度 (third barrel temperature)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonMoldTemperatureCoreInfo()
 {
-	MessageBox(_T("公模設定溫度，單位 ℃"), _T("公模模溫 (core temperature)"), 
+	MessageBox(_T("公模設定溫度，單位 ℃"), 
+				_T("公模模溫 (core temperature)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonMoldTemperatureCavityInfo()
 {
-	MessageBox(_T("母模設定溫度，單位 ℃"), _T("母模模溫 (cavity temperature)"), 
+	MessageBox(_T("母模設定溫度，單位 ℃"), 
+				_T("母模模溫 (cavity temperature)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonMeltTemperatureLimitInfo()
 {
-	MessageBox(_T("料商建議塑料加工溫度範圍，單位 ℃"), _T("建議料溫 (suggested melt temperature range)"), 
+	MessageBox(_T("料商建議塑料加工溫度範圍，單位 ℃"), 
+				_T("建議料溫 (suggested melt temperature range)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 
 void CMDXProductPage::OnBnClickedButtonMoldTemperatureLimitInfo()
 {
-	MessageBox(_T("料商建議模具溫度範圍，單位 ℃"), _T("建議模溫 (suggested mold temperature range)"), 
+	MessageBox(_T("料商建議模具溫度範圍，單位 ℃"), 
+				_T("建議模溫 (suggested mold temperature range)"), 
       MB_OK | MB_ICONINFORMATION);
 }
 

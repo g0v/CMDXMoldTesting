@@ -173,8 +173,13 @@ void CMDXProcessPage::OnDeltaposSpinVP(NMHDR *pNMHDR, LRESULT *pResult)
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
 
-	//按一次箭頭可以+-預設值的1% 
+	//按一次箭頭可以+-bigger(預設值的1%, 0.1) 
 	//至多調整+-10%
+
+	if (m_dVP_step < 0.1)
+	{
+		m_dVP_step = 0.1;
+	}
 
 	//向上箭頭
 	if(pNMUpDown->iDelta == -1 && m_dVP < m_dVP_max)  
@@ -427,25 +432,6 @@ void CMDXProcessPage::InitComboProcessPack()
 	m_iPackSel = 0; //單段保壓
 	/*m_iMachineSel = 0;
 	SetMachineData();*/
-}
-
-void CMDXProcessPage::DrawFillCurve()
-{
-
-}
-
-void CMDXProcessPage::DrawPackCurve()
-{
-
-}
-
-void CMDXProcessPage::OnPaint()
-{
-	CClientDC dc(this);
-
-	dc.MoveTo(0,0);
-	dc.LineTo(10,10);
-
 }
 
 void CMDXProcessPage::CalculateFillSpeed()

@@ -93,6 +93,7 @@ private:
 
 	void InitComboMachineTon();
 	//void InitComboMachineGrade();
+	int AutoMachineSel();
 	void SetMachineData();
 	BOOL IsClampingForceValidate( CDataExchange *pDX );
 	BOOL IsScrewDiamValidate( CDataExchange *pDX );
@@ -194,4 +195,5 @@ public:
 	afx_msg void OnDeltaposSpinBarrelTemperatureThird(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinMoldTemperatureCore(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinMoldTemperatureCavity(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnEnChangeEditPlasticVolume();
 };

@@ -13,9 +13,7 @@ public:
 
 // Dialog Data
 	enum { IDD = IDD_PAGE_PROCESS };
-	void DrawFillCurve();
-	void DrawPackCurve();
-	afx_msg void OnPaint();
+
 protected:
 	
 	virtual BOOL OnInitDialog();

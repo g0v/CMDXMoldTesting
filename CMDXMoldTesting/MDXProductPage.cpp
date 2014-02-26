@@ -8,7 +8,7 @@
 #include "MDXStringParser.h"
 #include "MDXProductPageData.h"
 #include "DataCenter.h"
-
+#include <vector>
 
 // CMDXProductPage dialog
 
@@ -96,6 +96,7 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_BARREL_TEMPERATURE_THIRD, &CMDXProductPage::OnDeltaposSpinBarrelTemperatureThird)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MOLD_TEMPERATURE_CORE, &CMDXProductPage::OnDeltaposSpinMoldTemperatureCore)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MOLD_TEMPERATURE_CAVITY, &CMDXProductPage::OnDeltaposSpinMoldTemperatureCavity)
+	ON_EN_CHANGE(IDC_EDIT_PLASTIC_VOLUME, &CMDXProductPage::OnEnChangeEditPlasticVolume)
 END_MESSAGE_MAP()
 
 BOOL CMDXProductPage::OnInitDialog()
@@ -133,29 +134,29 @@ void CMDXProductPage::InitComboMachineTon()
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->ResetContent();
 	strMachineType = "25";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "51";
+	strMachineType = "50";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "61";
+	strMachineType = "60";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "133";
+	strMachineType = "130";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "153";
+	strMachineType = "150";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "163";
+	strMachineType = "160";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "204";
+	strMachineType = "205";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "326";
+	strMachineType = "325";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "408";
+	strMachineType = "410";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "469";
+	strMachineType = "470";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
 	strMachineType = "510";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
 
-	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->SetCurSel(0);
-	m_iMachineSel = 0;
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->SetCurSel(AutoMachineSel());
+	m_iMachineSel = AutoMachineSel();
 	SetMachineData();
 }
 
@@ -168,6 +169,36 @@ void CMDXProductPage::OnCbnSelchangeComboMachineTon()
 	}
 	m_iMachineSel = iCurrentSel;
 	SetMachineData();
+}
+
+int CMDXProductPage::AutoMachineSel()
+{
+	std::vector<double> machineDia  (11, 0);    // 11 double with value 0
+	machineDia[0] = 22;	//mm
+	machineDia[1] = 25;
+	machineDia[2] = 25;
+	machineDia[3] = 25;
+	machineDia[4] = 50;
+	machineDia[5] = 35;
+	machineDia[6] = 35;
+	machineDia[7] = 70;
+	machineDia[8] = 60;
+	machineDia[9] = 70;
+	machineDia[10] = 70;
+
+	double tmp = 0;
+	for (int i=0; i<10; i++)
+	{
+		//2.0~2.5D為適當螺桿行程
+		//2D*pi*D*D/4 = 2*塑化體積 (適當的螺桿行程*截面積=2倍塑化體積)
+		tmp = (machineDia[i]/10) * 3.1415926 * (machineDia[i]/10) * (machineDia[i]/10) / 4;
+		if (tmp >= m_dPlasticVolumeData)
+		{
+			return i;
+		}
+	}
+
+	return 10;
 }
 
 void CMDXProductPage::SetMachineData()
@@ -1411,4 +1442,13 @@ void CMDXProductPage::OnDeltaposSpinMoldTemperatureCavity(NMHDR *pNMHDR, LRESULT
     CString strTemp("");
 	strTemp.Format("%.0f", m_dMoldTempCavity);
 	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText(strTemp); 
+}
+
+
+void CMDXProductPage::OnEnChangeEditPlasticVolume()
+{
+	//若塑化體積改變，改變自動推薦之機台選擇
+	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->SetCurSel(AutoMachineSel());
+	m_iMachineSel = AutoMachineSel();
+	SetMachineData();
 }

@@ -46,6 +46,7 @@ BEGIN_MESSAGE_MAP(CMDXProcessPage, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_MOLDOPEN_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonMoldopenTimeInfo)
 	ON_BN_CLICKED(IDC_BUTTON_CYCLE_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonCycleTimeInfo)
 	ON_BN_CLICKED(IDC_BUTTON_RESIDENCE_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonResidenceTimeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_PACKING_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonPackingTimeInfo)
 END_MESSAGE_MAP()
 
 
@@ -56,6 +57,7 @@ BOOL CMDXProcessPage::OnInitDialog()
 	InitInjectionPressure();
 
 	InitFillTime();
+	InitPackTime();
 	InitVolumeExpansion();
 
 	InitComboProcessFill();
@@ -75,7 +77,7 @@ BOOL CMDXProcessPage::OnInitDialog()
 void CMDXProcessPage::InitCoolTime()
 {
 	double max_part = DataCenter::getInstance().GetMaxPartThickness();
-	m_dCoolTime = max_part * (1+2*max_part);
+	m_dCoolTime = max_part * (1+2*max_part) - m_dPackTime;
 
 	CString strTemp("");
 	strTemp.Format("%.1f", m_dCoolTime);
@@ -129,7 +131,7 @@ void CMDXProcessPage::OnDeltaposSpinMoldopenTime(NMHDR *pNMHDR, LRESULT *pResult
 	
 void CMDXProcessPage::InitCycleTime()
 {
-	m_dCycleTime = m_dInjectionTime + m_dCoolTime + m_dMoldOpenTime;
+	m_dCycleTime = m_dInjectionTime + m_dPackTime + m_dCoolTime + m_dMoldOpenTime;
 
 	CString strTemp("");
 	strTemp.Format("%.1f", m_dCycleTime);
@@ -304,6 +306,19 @@ void CMDXProcessPage::OnDeltaposSpinFillTime(NMHDR *pNMHDR, LRESULT *pResult)
 	SetProfileFill();
 	InitCycleTime();
 	InitResidenceTime();
+}
+
+void CMDXProcessPage::InitPackTime()
+{
+	//從資料中心拿資料
+	double gate_thickness = DataCenter::getInstance().GetGateThickness();
+	m_dMachinePressure = DataCenter::getInstance().GetMaxInjectionPressure();
+	m_dPackTime = gate_thickness * (1+2*gate_thickness);
+		
+	//更新顯示(保壓時間)
+	CString strTemp("");
+	strTemp.Format("%.1f", m_dPackTime);
+	GetDlgItem(IDC_EDIT_PACKING_TIME)->SetWindowText(strTemp); 
 }
 
 double CMDXProcessPage::InjectionTimeLookUpTable()
@@ -536,11 +551,6 @@ void CMDXProcessPage::SetProfilePack()
 	
 	m_profileP.RemoveAllData();
 
-	//從資料中心拿資料
-	double gate_thickness = DataCenter::getInstance().GetGateThickness();
-	m_dMachinePressure = DataCenter::getInstance().GetMaxInjectionPressure();
-	m_dPackTime = gate_thickness * (1+2*gate_thickness);
-
 	m_profileP.SetXMinMaxValue(0,m_dPackTime);
 	m_profileP.SetYMinMaxValue(0,m_dMachinePressure);
 
@@ -666,7 +676,7 @@ void CMDXProcessPage::OnBnClickedButtonMoldopenTimeInfo()
 void CMDXProcessPage::OnBnClickedButtonCycleTimeInfo()
 {
 	MessageBox(_T("一次射出成型所需時間，單位 sec\n"
-				"([充填時間]+[冷卻時間]+[開模時間])"), 
+				"([充填時間]+[保壓時間]+[冷卻時間]+[開模時間])"), 
 				_T("成型周期 (cycle time)"), 
       MB_OK | MB_ICONINFORMATION);
 }
@@ -675,5 +685,14 @@ void CMDXProcessPage::OnBnClickedButtonResidenceTimeInfo()
 {
 	MessageBox(_T("塑料從熱澆道入口到澆口擠出前，在料管內滯留的時間，單位 min"), 
 				_T("料管滯留時間 (residence time)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+
+void CMDXProcessPage::OnBnClickedButtonPackingTimeInfo()
+{
+	MessageBox(_T("預估保壓時間，單位 sec\n"
+				"(依[產品平均厚度]估算[澆口固化時間]而得)"), 
+				_T("保壓時間 (packing time)"), 
       MB_OK | MB_ICONINFORMATION);
 }

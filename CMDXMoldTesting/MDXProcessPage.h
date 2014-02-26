@@ -60,7 +60,7 @@ private:
 	double m_dInjectionPressure_max;
 	double m_dInjectionPressure_min;
 
-	double m_dInjectionTime;
+	double m_dInjectionTime; //filling time
 	double m_dInjectionTime_step;
 	double m_dInjectionTime_max;
 	double m_dInjectionTime_min;
@@ -88,6 +88,7 @@ public:
 	void InitVP();
 	void InitInjectionPressure();
 	void InitFillTime();
+	void InitPackTime();
 	void InitVolumeExpansion();
 	void SetProfileFill();
 	void SetProfilePack();
@@ -108,4 +109,5 @@ public:
 	afx_msg void OnBnClickedButtonMoldopenTimeInfo();
 	afx_msg void OnBnClickedButtonCycleTimeInfo();
 	afx_msg void OnBnClickedButtonResidenceTimeInfo();
+	afx_msg void OnBnClickedButtonPackingTimeInfo();
 };

@@ -116,6 +116,7 @@ void CMDXTestMoldingDlg::OnTcnSelchangeTabmolding(NMHDR *pNMHDR, LRESULT *pResul
 			//離開此頁時更新資訊
 			m_ProductPage.UpdateAllData();
 			m_ProcessPage.InitFillTime();
+			m_ProcessPage.InitPackTime();
 			m_ProcessPage.InitVP();
 			m_ProcessPage.InitInjectionPressure();
 			m_ProcessPage.SetProfileFill();

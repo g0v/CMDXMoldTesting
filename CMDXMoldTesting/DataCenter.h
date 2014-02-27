@@ -58,6 +58,15 @@ public:
 		return m_dHotRunnerVolume;
 	}
 
+	void SetGateNumber(int num)
+	{
+		m_iGateNumber = num;
+	}
+	int GetGateNumber()
+	{
+		return m_iGateNumber;
+	}
+
 	void SetMaterialSel(int material)
 	{
 		m_iMaterialSel = material;
@@ -112,4 +121,5 @@ private:
 	double m_dMaxScrewStroke;
 	double m_dGateThickness;
 	double m_dMaxPartThickness;
+	int m_iGateNumber;
 };

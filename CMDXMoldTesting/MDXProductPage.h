@@ -26,6 +26,7 @@ public:
 	void SetGateThicknessData(double dValue)	{ m_dGateThicknessData = dValue;};
 	void SetPartThicknessData(double dValue)	{ m_dPartThicknessData = dValue;};
 	void SetMaxPartThicknessData(double dValue) { m_dMaxPartThicknessData = dValue;};
+	void SetGateNumberData(int iValue)			{ m_iGateNumber = iValue;};
 	double GetVolumeData()				{ return m_dVolumeData;};
 	double GetColdRunnerVolumeData()	{ return m_dColdRunnerVolumeData;};
 	double GetHotRunnerVolumeData()		{ return m_dHotRunnerVolumeData;};
@@ -33,6 +34,7 @@ public:
 	double GetGateThicknessData()		{ return m_dGateThicknessData;};
 	double GetPartThicknessData()		{ return m_dPartThicknessData;};
 	double GetMaxPartThicknessData()	{ return m_dMaxPartThicknessData;};
+	int GetGateNumberData()			{ return m_iGateNumber;};
 
 	void SetClampingForceData( double dValue ) {m_dClampingForce = dValue;};
 	void SetScrewDiamData( double dValue ) {m_dScrewDiam = dValue;};
@@ -84,6 +86,7 @@ private:
 	BOOL IsGateThicknessValidate( CDataExchange *pDX );
 	BOOL IsPartThicknessValidate( CDataExchange *pDX );
 	BOOL IsMaxPartThicknessValidate( CDataExchange *pDX );
+	BOOL IsGateNumberValidate( CDataExchange *pDX );
 	BOOL IsRealParse(CDataExchange *pDX, UINT nEditID, CString strValue);
 	void ShowWarningMessage(CDataExchange *pDX, UINT nEditID, CString strMsg);
 	BOOL CheckInputValue( CDataExchange *pDX, UINT nEditID, double dVlaue ); //check >= 0
@@ -138,6 +141,7 @@ private:
 	double m_dGateThicknessData;
 	double m_dPartThicknessData;
 	double m_dMaxPartThicknessData;
+	int m_iGateNumber;
 
 	int m_iMachineSel;
 	//bool m_bCheckEditData;
@@ -196,4 +200,6 @@ public:
 	afx_msg void OnDeltaposSpinMoldTemperatureCore(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinMoldTemperatureCavity(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnChangeEditPlasticVolume();
+	afx_msg void OnDeltaposSpinGateNumber(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButtonGateNumberInfo();
 };

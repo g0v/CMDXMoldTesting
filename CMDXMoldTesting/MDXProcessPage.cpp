@@ -15,6 +15,8 @@ CMDXProcessPage::CMDXProcessPage(CWnd* pParent /*=NULL*/)
 	: CDialog(CMDXProcessPage::IDD, pParent)
 , m_iFillSel(0)
 , m_iPackSel(0)
+, m_iGateNumber(0)
+, m_iMaterialSel(0)
 , m_pParent(pParent)
 {
 
@@ -251,7 +253,7 @@ void CMDXProcessPage::OnDeltaposSpinInjectionPressure(NMHDR *pNMHDR, LRESULT *pR
 
 void CMDXProcessPage::InitVolumeExpansion()
 {
-	if (m_iMaterialSel != 2) //PC or PC+ABS:非結晶型 
+	if (m_iMaterialSel != 2) //PC+Fiber or PC+ABS or ABS:非結晶型 
 	{
 		m_dVolumeExpansion = 1.1;
 	}
@@ -267,6 +269,7 @@ void CMDXProcessPage::InitFillTime()
 	m_iMaterialSel = DataCenter::getInstance().GetMaterialSel();
 	m_dPartVolume = DataCenter::getInstance().GetPartVolume();
 	m_dColdRunnerVolume = DataCenter::getInstance().GetColdRunnerVolume();
+	m_iGateNumber = DataCenter::getInstance().GetGateNumber();
 
 	//更新顯示(充填時間)
 	m_dInjectionTime = InjectionTimeLookUpTable();
@@ -369,7 +372,8 @@ double CMDXProcessPage::InjectionTimeLookUpTable()
 	HighVis[9] = (7.2+9.5) / 2;
 
 	// part volume + cold runner volume = plasticizing volume 塑化體積
-	double plastic_volume = m_dPartVolume + m_dColdRunnerVolume;
+	// 若為多點進澆，則單一澆口分配到的塑化體積才用於查表 (塑化體積/澆口數量)
+	double plastic_volume = (m_dPartVolume + m_dColdRunnerVolume) / m_iGateNumber;
 	int idxV = 0;
 	if (plastic_volume < 8)
 	{
@@ -413,7 +417,7 @@ double CMDXProcessPage::InjectionTimeLookUpTable()
 	}
 
 	// material type
-	if (m_iMaterialSel == 0) //PC:high viscosity
+	if (m_iMaterialSel == 0) //PC+Fiber:high viscosity
 	{
 		return HighVis[idxV];
 	}

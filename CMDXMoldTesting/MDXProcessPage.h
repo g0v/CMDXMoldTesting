@@ -33,6 +33,7 @@ private:
 	int m_iPackSel;
 	int m_iMaterialSel;
 	double m_dVolumeExpansion;
+	int m_iGateNumber;
 
 	CWnd* m_pParent;
 	CMDXTestMoldingDrawProfile m_profileF;

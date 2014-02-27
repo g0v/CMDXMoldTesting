@@ -24,6 +24,7 @@ CMDXProductPage::CMDXProductPage(CWnd* pParent /*=NULL*/)
 , m_dGateThicknessData(0.)
 , m_dPartThicknessData(0.)
 , m_dMaxPartThicknessData(0.)
+, m_iGateNumber(0)
 , m_iMachineSel(0)
 , m_dClampingForce(0.)
 , m_dScrewDiam(0.)
@@ -97,6 +98,8 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MOLD_TEMPERATURE_CORE, &CMDXProductPage::OnDeltaposSpinMoldTemperatureCore)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_MOLD_TEMPERATURE_CAVITY, &CMDXProductPage::OnDeltaposSpinMoldTemperatureCavity)
 	ON_EN_CHANGE(IDC_EDIT_PLASTIC_VOLUME, &CMDXProductPage::OnEnChangeEditPlasticVolume)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_GATE_NUMBER, &CMDXProductPage::OnDeltaposSpinGateNumber)
+	ON_BN_CLICKED(IDC_BUTTON_GATE_NUMBER_INFO, &CMDXProductPage::OnBnClickedButtonGateNumberInfo)
 END_MESSAGE_MAP()
 
 BOOL CMDXProductPage::OnInitDialog()
@@ -123,6 +126,8 @@ void CMDXProductPage::InitEditData()
 	SetColdRunnerVolumeData(0.0);
 	GetDlgItem(IDC_EDIT_HR_VOLUME)->SetWindowText("0.00");
 	SetHotRunnerVolumeData(0.0);
+	GetDlgItem(IDC_EDIT_GATE_NUMBER)->SetWindowText("1");
+	SetGateNumberData(1);
 
 	////push cold runner volume to data center
 	//DataCenter::getInstance().SetColdRunnerVolume(GetColdRunnerVolumeData());
@@ -405,6 +410,7 @@ BOOL CMDXProductPage::IsValidateData(CDataExchange *pDX)
 	if( !IsGateThicknessValidate( pDX ) )		{ return FALSE; };
 	if( !IsPartThicknessValidate( pDX ) )		{ return FALSE; };
 	if( !IsMaxPartThicknessValidate( pDX ) )    { return FALSE; };
+	if( !IsGateNumberValidate( pDX ) )			{ return FALSE; };
 
 	if( !IsClampingForceValidate( pDX ) )			{ return FALSE; };
 	if( !IsScrewDiamValidate( pDX ) )				{ return FALSE; };
@@ -500,7 +506,7 @@ BOOL CMDXProductPage::IsPlasticVolumeValidate( CDataExchange *pDX )
 		return FALSE;
 	}
 
-	if( !CheckPlasticVolumeValue( pDX, IDC_EDIT_PLASTIC_VOLUME, atof(strItem)))
+	if( !CheckInputValueNotZero( pDX, IDC_EDIT_PLASTIC_VOLUME, atof(strItem)))
 	{
 		return FALSE;
 	}
@@ -580,6 +586,31 @@ BOOL CMDXProductPage::IsMaxPartThicknessValidate( CDataExchange *pDX )
 	SetMaxPartThicknessData(atof(strItem));
 	return TRUE;
 }
+
+BOOL CMDXProductPage::IsGateNumberValidate( CDataExchange *pDX )
+{
+	CString strItem("");
+	GetDlgItem(IDC_EDIT_GATE_NUMBER)->GetWindowText(strItem);
+    
+	if( !IsRealParse( pDX, IDC_EDIT_GATE_NUMBER, strItem ) )
+    {
+        return FALSE;
+    }
+
+	if( !CheckInputValue( pDX, IDC_EDIT_GATE_NUMBER, atof(strItem)))
+	{
+		return FALSE;
+	}
+
+	if( !CheckInputValueNotZero( pDX, IDC_EDIT_GATE_NUMBER, atof(strItem)))
+	{
+		return FALSE;
+	}
+
+	SetGateNumberData(atof(strItem));
+	return TRUE;
+}
+
 BOOL CMDXProductPage::IsClampingForceValidate( CDataExchange *pDX ) 			
 { 
 	CString strItem("");
@@ -596,8 +627,8 @@ BOOL CMDXProductPage::IsClampingForceValidate( CDataExchange *pDX )
 	}
 	SetClampingForceData(atof(strItem));
 	return TRUE;
-
 }
+
 BOOL CMDXProductPage::IsScrewDiamValidate( CDataExchange *pDX ) 
 { 
 	CString strItem("");
@@ -790,12 +821,15 @@ void CMDXProductPage::UpdateAllData()
 	SetGateThicknessData(atof(strTemp));
 	GetDlgItem(IDC_EDIT_MAX_PART_THICKNESS)->GetWindowText(strTemp);
 	SetMaxPartThicknessData(atof(strTemp));
+	GetDlgItem(IDC_EDIT_GATE_NUMBER)->GetWindowText(strTemp);
+	SetGateNumberData(atof(strTemp));
 
 	DataCenter::getInstance().SetPartVolume(GetVolumeData());
 	DataCenter::getInstance().SetColdRunnerVolume(GetColdRunnerVolumeData());
 	DataCenter::getInstance().SetHotRunnerVolume(GetHotRunnerVolumeData());
 	DataCenter::getInstance().SetGateThickness(GetGateThicknessData());
 	DataCenter::getInstance().SetMaxPartThickness(GetMaxPartThicknessData());
+	DataCenter::getInstance().SetGateNumber(GetGateNumberData());
 
 	//-------------------------------------
 	GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->GetWindowText(strTemp);
@@ -988,11 +1022,13 @@ void CMDXProductPage::InitComboMaterialData()
 {
 	CString strMaterialType("");
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->ResetContent();
-	strMaterialType = "PC+Fiber"; //Sabic (LEXAN DX06313)
+	strMaterialType = "PC+10%GF"; //Styron Celex 310HF
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->AddString(strMaterialType); 
-	strMaterialType = "PC+ABS"; //Bayer (FR 3021)
+	strMaterialType = "PC+ABS"; //Sabic Cycoloy C7230P
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->AddString(strMaterialType); 
 	strMaterialType = "PA";
+	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->AddString(strMaterialType); 
+	strMaterialType = "ABS"; //LG AF-312
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->AddString(strMaterialType); 
 
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->SetCurSel(0);
@@ -1004,23 +1040,23 @@ void CMDXProductPage::SetTemperatureData()
 {
 	switch(m_iMaterialSel)
 	{
-	case 0://PC+Fiber(30%) --Sabic(LEXAN DX06313)
+	case 0://PC+10%GF --Styron(Celex 310HF)
 		{
-			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("340");
-			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("315");
-			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("325"); 
-			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("115");
+			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("300");
+			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("260");
+			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("280"); 
+			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("120");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("80");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->SetWindowText("100"); 
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("100"); 
 			
 			m_dBarrelTempSlope = 5;
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("325"); // IDC_EDIT_MELT_TEMPERATURE
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("320"); // first - slope
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("315"); // second - slope
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("280"); // IDC_EDIT_MELT_TEMPERATURE
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("275"); // first - slope
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("270"); // second - slope
 		}
 		break;
-	case 1://PC+ABS --Bayer(FR 3021)
+	case 1://PC+ABS --Sabic(Cycoloy C7230P)
 		{
 			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("280");
 			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("240");
@@ -1030,10 +1066,10 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("70");
 
-			m_dBarrelTempSlope = 10;
+			m_dBarrelTempSlope = 5;
 			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("260"); 
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("250"); 
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("240"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("255"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("250"); 
 		}
 		break;
 	case 2://PA
@@ -1050,6 +1086,22 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("245"); 
 			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("235"); 
 			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("225"); 
+		}
+		break;
+	case 3://ABS --LG(AF-312)
+		{
+			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("230");
+			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("215");
+			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("60");
+			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("40");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->SetWindowText("50");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("50");
+
+			m_dBarrelTempSlope = 5;
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("200"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("195"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("190"); 
 		}
 		break;
 	}
@@ -1470,4 +1522,37 @@ void CMDXProductPage::OnEnChangeEditPlasticVolume()
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->SetCurSel(AutoMachineSel());
 	m_iMachineSel = AutoMachineSel();
 	SetMachineData();
+}
+
+
+void CMDXProductPage::OnDeltaposSpinGateNumber(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-1
+	//不可 < 1
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iGateNumber < 20)  
+    {
+        m_iGateNumber += 1;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iGateNumber > 1)  
+    {
+        m_iGateNumber -= 1;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%d", m_iGateNumber);
+	GetDlgItem(IDC_EDIT_GATE_NUMBER)->SetWindowText(strTemp); 
+}
+
+void CMDXProductPage::OnBnClickedButtonGateNumberInfo()
+{
+	MessageBox(_T("進澆數量"), 
+				_T("進澆數量 (number of melt entrances)"), 
+      MB_OK | MB_ICONINFORMATION);
 }

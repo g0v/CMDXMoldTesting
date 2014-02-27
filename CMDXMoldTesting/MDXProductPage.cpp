@@ -988,11 +988,9 @@ void CMDXProductPage::InitComboMaterialData()
 {
 	CString strMaterialType("");
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->ResetContent();
-	strMaterialType = "PC";
+	strMaterialType = "PC+Fiber"; //Sabic (LEXAN DX06313)
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->AddString(strMaterialType); 
-	strMaterialType = "PC+ABS";
-	/*((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->AddString(strMaterialType); 
-	strMaterialType = "PC+Fiber";*/
+	strMaterialType = "PC+ABS"; //Bayer (FR 3021)
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->AddString(strMaterialType); 
 	strMaterialType = "PA";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MATERIAL))->AddString(strMaterialType); 
@@ -1006,36 +1004,36 @@ void CMDXProductPage::SetTemperatureData()
 {
 	switch(m_iMaterialSel)
 	{
-	case 0://PC
+	case 0://PC+Fiber(30%) --Sabic(LEXAN DX06313)
 		{
-			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("300");
-			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("230");
-			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("265"); // (300+230)/2
-			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
-			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("60");
-			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("75"); // (90+60)/2
-			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("75"); // (90+60)/2
+			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("340");
+			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("315");
+			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("325"); 
+			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("115");
+			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("80");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->SetWindowText("100"); 
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("100"); 
 			
 			m_dBarrelTempSlope = 5;
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("265"); // IDC_EDIT_MELT_TEMPERATURE
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("260"); // first - slope
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("255"); // second - slope
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("325"); // IDC_EDIT_MELT_TEMPERATURE
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("320"); // first - slope
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("315"); // second - slope
 		}
 		break;
-	case 1://PC+ABS
+	case 1://PC+ABS --Bayer(FR 3021)
 		{
-			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("270");
-			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("200");
-			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("235");
-			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
-			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("50");
-			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("280");
+			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("240");
+			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("260");
+			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("80");
+			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("60");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("70");
 
 			m_dBarrelTempSlope = 10;
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("235"); 
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("225"); 
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("215"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("260"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("250"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("240"); 
 		}
 		break;
 	case 2://PA
@@ -1045,7 +1043,7 @@ void CMDXProductPage::SetTemperatureData()
 			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("245");
 			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("90");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("50");
-			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("70");
 
 			m_dBarrelTempSlope = 10;

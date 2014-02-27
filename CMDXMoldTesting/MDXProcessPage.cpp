@@ -47,6 +47,8 @@ BEGIN_MESSAGE_MAP(CMDXProcessPage, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_CYCLE_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonCycleTimeInfo)
 	ON_BN_CLICKED(IDC_BUTTON_RESIDENCE_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonResidenceTimeInfo)
 	ON_BN_CLICKED(IDC_BUTTON_PACKING_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonPackingTimeInfo)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_PACKING_TIME, &CMDXProcessPage::OnDeltaposSpinPackingTime)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_COOLING_TIME, &CMDXProcessPage::OnDeltaposSpinCoolingTime)
 END_MESSAGE_MAP()
 
 
@@ -78,6 +80,9 @@ void CMDXProcessPage::InitCoolTime()
 {
 	double max_part = DataCenter::getInstance().GetMaxPartThickness();
 	m_dCoolTime = max_part * (1+2*max_part) - m_dPackTime;
+	m_dCoolTime_step = m_dCoolTime * 0.01;
+	m_dCoolTime_max = m_dCoolTime * 1.5;
+	m_dCoolTime_min = m_dCoolTime * 1.0;
 
 	CString strTemp("");
 	strTemp.Format("%.1f", m_dCoolTime);
@@ -314,6 +319,9 @@ void CMDXProcessPage::InitPackTime()
 	double gate_thickness = DataCenter::getInstance().GetGateThickness();
 	m_dMachinePressure = DataCenter::getInstance().GetMaxInjectionPressure();
 	m_dPackTime = gate_thickness * (1+2*gate_thickness);
+	m_dPackTime_step = m_dPackTime * 0.01;
+	m_dPackTime_max = m_dPackTime * 1.5;
+	m_dPackTime_min = m_dPackTime * 1.0;
 		
 	//更新顯示(保壓時間)
 	CString strTemp("");
@@ -695,4 +703,74 @@ void CMDXProcessPage::OnBnClickedButtonPackingTimeInfo()
 				"(依[產品平均厚度]估算[澆口固化時間]而得)"), 
 				_T("保壓時間 (packing time)"), 
       MB_OK | MB_ICONINFORMATION);
+}
+
+
+void CMDXProcessPage::OnDeltaposSpinPackingTime(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-bigger(1%, 0.1)
+	//至多調整+50%
+
+	if (m_dPackTime_step < 0.1)
+	{
+		m_dPackTime_step = 0.1;
+	}
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dPackTime < m_dPackTime_max)  
+    {
+        m_dPackTime += m_dPackTime_step;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dPackTime > m_dPackTime_min)  
+    {
+        m_dPackTime -= m_dPackTime_step;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.1f", m_dPackTime);
+	GetDlgItem(IDC_EDIT_PACKING_TIME)->SetWindowText(strTemp); 
+	
+	InitCoolTime();
+	SetProfilePack();
+	//InitCycleTime(); //cool+pack=equal
+	//InitResidenceTime();
+}
+
+
+void CMDXProcessPage::OnDeltaposSpinCoolingTime(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以+-bigger(1%, 0.1)
+	//至多調整+50%
+
+	if (m_dCoolTime_step < 0.1)
+	{
+		m_dCoolTime_step = 0.1;
+	}
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_dCoolTime < m_dCoolTime_max)  
+    {
+        m_dCoolTime += m_dCoolTime_step;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_dCoolTime > m_dCoolTime_min)  
+    {
+        m_dCoolTime -= m_dCoolTime_step;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%.1f", m_dCoolTime);
+	GetDlgItem(IDC_EDIT_COOLING_TIME)->SetWindowText(strTemp); 
+	
+	InitCycleTime();
+	InitResidenceTime();
 }

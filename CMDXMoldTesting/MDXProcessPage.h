@@ -66,6 +66,9 @@ private:
 	double m_dInjectionTime_min;
 
 	double m_dPackTime;
+	double m_dPackTime_step;
+	double m_dPackTime_max;
+	double m_dPackTime_min;
 
 	double m_dFillSpeed_single;
 	double m_dFillSpeed_multi_1;
@@ -78,6 +81,10 @@ private:
 	double m_dMoldOpenTime_min;
 
 	double m_dCoolTime;
+	double m_dCoolTime_step;
+	double m_dCoolTime_max;
+	double m_dCoolTime_min;
+
 	double m_dCycleTime;
 	double m_dResidenceTime;
 
@@ -110,4 +117,6 @@ public:
 	afx_msg void OnBnClickedButtonCycleTimeInfo();
 	afx_msg void OnBnClickedButtonResidenceTimeInfo();
 	afx_msg void OnBnClickedButtonPackingTimeInfo();
+	afx_msg void OnDeltaposSpinPackingTime(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinCoolingTime(NMHDR *pNMHDR, LRESULT *pResult);
 };

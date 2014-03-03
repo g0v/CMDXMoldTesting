@@ -93,6 +93,7 @@ private:
 	BOOL CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, double dValue); //check != 0
 	BOOL CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue);
 	BOOL CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max);
+	BOOL CheckGateThickness(CDataExchange *pDX, UINT nEditID, double gate, double part_max);
 
 	void InitComboMachineTon();
 	//void InitComboMachineGrade();

@@ -518,6 +518,8 @@ BOOL CMDXProductPage::IsGateThicknessValidate( CDataExchange *pDX )
 {
 	CString strItem("");
 	GetDlgItem(IDC_EDIT_GATE_THICKNESS)->GetWindowText(strItem);
+	CString strItem2("");
+	GetDlgItem(IDC_EDIT_MAX_PART_THICKNESS)->GetWindowText(strItem2);
     
 	if( !IsRealParse( pDX, IDC_EDIT_GATE_THICKNESS, strItem ) )
     {
@@ -530,6 +532,11 @@ BOOL CMDXProductPage::IsGateThicknessValidate( CDataExchange *pDX )
 	}
 
 	if( !CheckInputValueNotZero( pDX, IDC_EDIT_GATE_THICKNESS, atof(strItem)))
+	{
+		return FALSE;
+	}
+
+	if( !CheckGateThickness( pDX, IDC_EDIT_GATE_THICKNESS, atof(strItem), atof(strItem2)))
 	{
 		return FALSE;
 	}
@@ -1555,4 +1562,17 @@ void CMDXProductPage::OnBnClickedButtonGateNumberInfo()
 	MessageBox(_T("進澆數量"), 
 				_T("進澆數量 (number of melt entrances)"), 
       MB_OK | MB_ICONINFORMATION);
+}
+
+BOOL CMDXProductPage::CheckGateThickness(CDataExchange *pDX, UINT nEditID, double gate, double part_max)
+{
+	CMDXStringParser parser;
+	
+	if (gate > part_max)
+	{
+		CString strErrorMesg("");
+		strErrorMesg = "[澆口短邊肉厚]不可大於[產品最大肉厚]";
+		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
+	}
+	return TRUE;
 }

@@ -77,7 +77,7 @@ BOOL CCMDXMoldTestingApp::InitInstance()
 	m_pMainWnd = &dlg;
 	
 	INT_PTR nResponse = dlg.DoModal();
-	if (nResponse == IDOK)
+	if (nResponse == IDSAVE)
 	{
 		//dlg.UpDateAllPage();
 		//CMDXMachinePage* pMachinePage;
@@ -89,7 +89,7 @@ BOOL CCMDXMoldTestingApp::InitInstance()
 		double adata = pProductPage->GetVolumeData();
 		double aa = 0;
 		// TODO: Place code here to handle when the dialog is
-		//  dismissed with OK
+		//  dismissed with SAVE
 	}
 	else if (nResponse == IDCANCEL)
 	{

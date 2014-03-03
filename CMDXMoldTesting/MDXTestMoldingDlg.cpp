@@ -190,14 +190,18 @@ void CMDXTestMoldingDlg::OnTcnSelchangeTabmolding(NMHDR *pNMHDR, LRESULT *pResul
 	m_iCurrentPage = m_tab.GetCurSel();
 	m_pTestMoldingDlg[m_iCurrentPage]->ShowWindow(SW_SHOW);
 
-	//只有"成型"頁可以按[提交]
+	//只有"成型"頁可以按[儲存][預覽][列印]
 	if(m_iCurrentPage == 1)
 	{
-		GetDlgItem(IDOK)->EnableWindow(TRUE);
+		GetDlgItem(IDSAVE)->EnableWindow(TRUE);
+		GetDlgItem(IDPREVIEW)->EnableWindow(TRUE);
+		GetDlgItem(IDPRINT)->EnableWindow(TRUE);
 	}
 	else
 	{
-		GetDlgItem(IDOK)->EnableWindow(FALSE);
+		GetDlgItem(IDSAVE)->EnableWindow(FALSE);
+		GetDlgItem(IDPREVIEW)->EnableWindow(FALSE);
+		GetDlgItem(IDPRINT)->EnableWindow(FALSE);
 	}
 }
 

@@ -700,7 +700,6 @@ void CMDXProcessPage::OnBnClickedButtonResidenceTimeInfo()
       MB_OK | MB_ICONINFORMATION);
 }
 
-
 void CMDXProcessPage::OnBnClickedButtonPackingTimeInfo()
 {
 	MessageBox(_T("預估保壓時間，單位 sec\n"
@@ -708,7 +707,6 @@ void CMDXProcessPage::OnBnClickedButtonPackingTimeInfo()
 				_T("保壓時間 (packing time)"), 
       MB_OK | MB_ICONINFORMATION);
 }
-
 
 void CMDXProcessPage::OnDeltaposSpinPackingTime(NMHDR *pNMHDR, LRESULT *pResult)
 {
@@ -744,7 +742,6 @@ void CMDXProcessPage::OnDeltaposSpinPackingTime(NMHDR *pNMHDR, LRESULT *pResult)
 	//InitCycleTime(); //cool+pack=equal
 	//InitResidenceTime();
 }
-
 
 void CMDXProcessPage::OnDeltaposSpinCoolingTime(NMHDR *pNMHDR, LRESULT *pResult)
 {

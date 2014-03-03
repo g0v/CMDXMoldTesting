@@ -141,8 +141,8 @@ void CMDXProcessPage::InitFillSpeedRatio()
 
 void CMDXProcessPage::InitPackPressurePercent()
 {
-	//預設為機器壓力的 75%:40%
-	m_iPackPressurePercent_1 = 75;
+	//預設為機器壓力的 70%:40%
+	m_iPackPressurePercent_1 = 70;
 	m_iPackPressurePercent_2 = 40;
 
 	CString strTemp("");
@@ -775,7 +775,7 @@ void CMDXProcessPage::OnBnClickedButtonPackingSectionInfo()
 {
 	MessageBox(_T("可選擇[單段保壓]或[二段保壓]，\n"
 				"[二段保壓]預設保壓時間比為 1:1，\n"
-				"預設保壓壓力分別為[75% 機台最大射壓]、[40% 機台最大射壓]"), 
+				"預設保壓壓力分別為[70% 機台最大射壓]、[40% 機台最大射壓]"), 
 				_T("保壓段數 (packing section)"), 
       MB_OK | MB_ICONINFORMATION);
 }
@@ -975,7 +975,7 @@ void CMDXProcessPage::OnDeltaposSpinPackingpressure1(NMHDR *pNMHDR, LRESULT *pRe
 	*pResult = 0;
 
 	//按一次箭頭可以 +-5
-	//調整範圍 5~100
+	//調整範圍 30~100
 
 	//向上箭頭
 	if(pNMUpDown->iDelta == -1 && m_iPackPressurePercent_1 < 100)  
@@ -983,7 +983,7 @@ void CMDXProcessPage::OnDeltaposSpinPackingpressure1(NMHDR *pNMHDR, LRESULT *pRe
         m_iPackPressurePercent_1 += 5;
     }
 	//向下箭頭
-    else if(pNMUpDown->iDelta == 1 && m_iPackPressurePercent_1 > 5)  
+    else if(pNMUpDown->iDelta == 1 && m_iPackPressurePercent_1 > 30)  
     {
         m_iPackPressurePercent_1 -= 5;
     }
@@ -991,6 +991,15 @@ void CMDXProcessPage::OnDeltaposSpinPackingpressure1(NMHDR *pNMHDR, LRESULT *pRe
     CString strTemp("");
 	strTemp.Format("%d", m_iPackPressurePercent_1);
 	GetDlgItem(IDC_EDIT_PACKINGPRESSURE_1)->SetWindowText(strTemp); 
+
+	//確認[第二段保壓壓力]沒有超過[第一段-10]
+	if ((m_iPackPressurePercent_1 - 10) < m_iPackPressurePercent_2)
+	{
+		m_iPackPressurePercent_2 = m_iPackPressurePercent_1 - 10;
+
+		strTemp.Format("%d", m_iPackPressurePercent_2);
+		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_2)->SetWindowText(strTemp);
+	}
 	
 	SetProfilePack();
 }
@@ -1002,15 +1011,15 @@ void CMDXProcessPage::OnDeltaposSpinPackingpressure2(NMHDR *pNMHDR, LRESULT *pRe
 	*pResult = 0;
 
 	//按一次箭頭可以 +-5
-	//調整範圍 5~100
+	//調整範圍 10~(第一段保壓壓力-10)
 
 	//向上箭頭
-	if(pNMUpDown->iDelta == -1 && m_iPackPressurePercent_2 < 100)  
+	if(pNMUpDown->iDelta == -1 && m_iPackPressurePercent_2 < (m_iPackPressurePercent_1-10))  
     {
         m_iPackPressurePercent_2 += 5;
     }
 	//向下箭頭
-    else if(pNMUpDown->iDelta == 1 && m_iPackPressurePercent_2 > 5)  
+    else if(pNMUpDown->iDelta == 1 && m_iPackPressurePercent_2 > 10)  
     {
         m_iPackPressurePercent_2 -= 5;
     }

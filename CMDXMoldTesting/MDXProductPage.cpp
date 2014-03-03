@@ -495,6 +495,8 @@ BOOL CMDXProductPage::IsPlasticVolumeValidate( CDataExchange *pDX )
 {
 	CString strItem("");
 	GetDlgItem(IDC_EDIT_PLASTIC_VOLUME)->GetWindowText(strItem);
+	CString strItem2("");
+	GetDlgItem(IDC_EDIT_GATE_NUMBER)->GetWindowText(strItem2);
     
 	if( !IsRealParse( pDX, IDC_EDIT_PLASTIC_VOLUME, strItem ) )
     {
@@ -507,6 +509,11 @@ BOOL CMDXProductPage::IsPlasticVolumeValidate( CDataExchange *pDX )
 	}
 
 	if( !CheckInputValueNotZero( pDX, IDC_EDIT_PLASTIC_VOLUME, atof(strItem)))
+	{
+		return FALSE;
+	}
+
+	if( !CheckPlasticVolumeValue( pDX, IDC_EDIT_PLASTIC_VOLUME, atof(strItem), atof(strItem2)))
 	{
 		return FALSE;
 	}
@@ -781,13 +788,13 @@ BOOL CMDXProductPage::CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, d
 	}
 	return TRUE;
 }
-BOOL CMDXProductPage::CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue)
+BOOL CMDXProductPage::CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue, int gate)
 {
 	CMDXStringParser parser;
-	if( dValue > 550 )
+	if( (dValue/gate) > 550 )
 	{
 		CString strErrorMesg("");
-		strErrorMesg = "建議塑化體積需小於550";
+		strErrorMesg = "建議[塑化體積/進澆數量]需小於550";
 		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
 	}
 	return TRUE;

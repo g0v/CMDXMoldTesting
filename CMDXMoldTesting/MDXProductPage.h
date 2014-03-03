@@ -91,7 +91,7 @@ private:
 	void ShowWarningMessage(CDataExchange *pDX, UINT nEditID, CString strMsg);
 	BOOL CheckInputValue( CDataExchange *pDX, UINT nEditID, double dVlaue ); //check >= 0
 	BOOL CheckInputValueNotZero(CDataExchange *pDX, UINT nEditID, double dValue); //check != 0
-	BOOL CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue);
+	BOOL CheckPlasticVolumeValue(CDataExchange *pDX, UINT nEditID, double dValue, int gate);
 	BOOL CheckPartThickness(CDataExchange *pDX, UINT nEditID, double part, double max);
 	BOOL CheckGateThickness(CDataExchange *pDX, UINT nEditID, double gate, double part_max);
 

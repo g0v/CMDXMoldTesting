@@ -664,10 +664,34 @@ void CMDXProcessPage::OnCbnSelchangeComboPackingSection()
 	if (m_iPackSel == 0)
 	{
 		m_iPackSel = 1;
+
+		GetDlgItem(IDC_STATIC_PACKINGPRESSURE)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_1)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_2)->EnableWindow(TRUE);
+		GetDlgItem(IDC_SPIN_PACKINGPRESSURE_1)->EnableWindow(TRUE);
+		GetDlgItem(IDC_SPIN_PACKINGPRESSURE_2)->EnableWindow(TRUE);
+
+		GetDlgItem(IDC_STATIC_PACKINGTIME)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_PACKINGTIME_1)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_PACKINGTIME_2)->EnableWindow(TRUE);
+		GetDlgItem(IDC_SPIN_PACKINGTIME_1)->EnableWindow(TRUE);
+		GetDlgItem(IDC_SPIN_PACKINGTIME_2)->EnableWindow(TRUE);
 	}
 	else
 	{
 		m_iPackSel = 0;
+
+		GetDlgItem(IDC_STATIC_PACKINGPRESSURE)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_1)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_2)->EnableWindow(FALSE);
+		GetDlgItem(IDC_SPIN_PACKINGPRESSURE_1)->EnableWindow(FALSE);
+		GetDlgItem(IDC_SPIN_PACKINGPRESSURE_2)->EnableWindow(FALSE);
+
+		GetDlgItem(IDC_STATIC_PACKINGTIME)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_PACKINGTIME_1)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_PACKINGTIME_2)->EnableWindow(FALSE);
+		GetDlgItem(IDC_SPIN_PACKINGTIME_1)->EnableWindow(FALSE);
+		GetDlgItem(IDC_SPIN_PACKINGTIME_2)->EnableWindow(FALSE);
 	}
 
 	m_profileP.RemoveAllData();
@@ -712,7 +736,7 @@ void CMDXProcessPage::OnBnClickedButtonPackingSectionInfo()
 {
 	MessageBox(_T("可選擇[單段保壓]或[二段保壓]，\n"
 				"[二段保壓]預設保壓時間比為 1:1，\n"
-				"保壓壓力分別為[75% 機台最大射壓]、[40% 機台最大射壓]"), 
+				"預設保壓壓力分別為[75% 機台最大射壓]、[40% 機台最大射壓]"), 
 				_T("保壓段數 (packing section)"), 
       MB_OK | MB_ICONINFORMATION);
 }

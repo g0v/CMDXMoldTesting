@@ -52,6 +52,12 @@ private:
 	int m_iSpeedRatio_3;
 
 	double m_dMachinePressure;
+
+	int m_iPackPressurePercent_1;
+	int m_iPackPressurePercent_2;
+	int m_iPackTimeRatio_1;
+	int m_iPackTimeRatio_2;
+
 	double m_dPartVolume;
 	double m_dColdRunnerVolume;
 
@@ -109,6 +115,8 @@ public:
 	void InitCycleTime();
 	void InitResidenceTime();
 	void InitFillSpeedRatio();
+	void InitPackPressurePercent();
+	void InitPackTimeRatio();
 	afx_msg void OnDeltaposSpinVP(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinInjectionPressure(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinFillTime(NMHDR *pNMHDR, LRESULT *pResult);
@@ -128,4 +136,10 @@ public:
 	afx_msg void OnDeltaposSpinFillingspeed1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinFillingspeed2(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinFillingspeed3(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinPackingpressure1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinPackingpressure2(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinPackingtime1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinPackingtime2(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButtonPackingPressurePercentInfo();
+	afx_msg void OnBnClickedButtonPackingTimeRatioInfo();
 };

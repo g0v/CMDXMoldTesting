@@ -1105,17 +1105,17 @@ void CMDXProductPage::SetTemperatureData()
 	case 3://ABS --LG(AF-312)
 		{
 			GetDlgItem(IDC_EDIT_MAX_MELT_TEMPERATURE)->SetWindowText("230");
-			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("215");
-			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_MIN_MELT_TEMPERATURE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_MELT_TEMPERATURE)->SetWindowText("215");
 			GetDlgItem(IDC_EDIT_MAX_MOLD_TEMPERATURE)->SetWindowText("60");
 			GetDlgItem(IDC_EDIT_MIN_MOLD_TEMPERATURE)->SetWindowText("40");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CORE)->SetWindowText("50");
 			GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText("50");
 
 			m_dBarrelTempSlope = 5;
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("200"); 
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("195"); 
-			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("190"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_FIRST)->SetWindowText("215"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_SECOND)->SetWindowText("210"); 
+			GetDlgItem(IDC_EDIT_BARREL_TEMPERATURE_THIRD)->SetWindowText("205"); 
 		}
 		break;
 	}

@@ -20,6 +20,10 @@ CMDXProcessPage::CMDXProcessPage(CWnd* pParent /*=NULL*/)
 , m_iSpeedRatio_1(0)
 , m_iSpeedRatio_2(0)
 , m_iSpeedRatio_3(0)
+, m_iPackPressurePercent_1(0)
+, m_iPackPressurePercent_2(0)
+, m_iPackTimeRatio_1(0)
+, m_iPackTimeRatio_2(0)
 , m_pParent(pParent)
 {
 
@@ -57,6 +61,12 @@ BEGIN_MESSAGE_MAP(CMDXProcessPage, CDialog)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_FILLINGSPEED_1, &CMDXProcessPage::OnDeltaposSpinFillingspeed1)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_FILLINGSPEED_2, &CMDXProcessPage::OnDeltaposSpinFillingspeed2)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_FILLINGSPEED_3, &CMDXProcessPage::OnDeltaposSpinFillingspeed3)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_PACKINGPRESSURE_1, &CMDXProcessPage::OnDeltaposSpinPackingpressure1)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_PACKINGPRESSURE_2, &CMDXProcessPage::OnDeltaposSpinPackingpressure2)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_PACKINGTIME_1, &CMDXProcessPage::OnDeltaposSpinPackingtime1)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_PACKINGTIME_2, &CMDXProcessPage::OnDeltaposSpinPackingtime2)
+	ON_BN_CLICKED(IDC_BUTTON_PACKING_PRESSURE_PERCENT_INFO, &CMDXProcessPage::OnBnClickedButtonPackingPressurePercentInfo)
+	ON_BN_CLICKED(IDC_BUTTON_PACKING_TIME_RATIO_INFO, &CMDXProcessPage::OnBnClickedButtonPackingTimeRatioInfo)
 END_MESSAGE_MAP()
 
 
@@ -74,6 +84,8 @@ BOOL CMDXProcessPage::OnInitDialog()
 	InitComboProcessPack();
 
 	InitFillSpeedRatio();
+	InitPackPressurePercent();
+	InitPackTimeRatio();
 
 	SetProfileFill();
 	SetProfilePack();
@@ -125,6 +137,32 @@ void CMDXProcessPage::InitFillSpeedRatio()
 	GetDlgItem(IDC_EDIT_FILLINGSPEED_2)->SetWindowText(strTemp);
 	strTemp.Format("%d", m_iSpeedRatio_3);
 	GetDlgItem(IDC_EDIT_FILLINGSPEED_3)->SetWindowText(strTemp);
+}
+
+void CMDXProcessPage::InitPackPressurePercent()
+{
+	//預設為機器壓力的 75%:40%
+	m_iPackPressurePercent_1 = 75;
+	m_iPackPressurePercent_2 = 40;
+
+	CString strTemp("");
+	strTemp.Format("%d", m_iPackPressurePercent_1);
+	GetDlgItem(IDC_EDIT_PACKINGPRESSURE_1)->SetWindowText(strTemp);
+	strTemp.Format("%d", m_iPackPressurePercent_2);
+	GetDlgItem(IDC_EDIT_PACKINGPRESSURE_2)->SetWindowText(strTemp);
+}
+
+void CMDXProcessPage::InitPackTimeRatio()
+{
+	//預設為 1:1
+	m_iPackTimeRatio_1 = 1;
+	m_iPackTimeRatio_2 = 1;
+
+	CString strTemp("");
+	strTemp.Format("%d", m_iPackTimeRatio_1);
+	GetDlgItem(IDC_EDIT_PACKINGTIME_1)->SetWindowText(strTemp);
+	strTemp.Format("%d", m_iPackTimeRatio_2);
+	GetDlgItem(IDC_EDIT_PACKINGTIME_2)->SetWindowText(strTemp);
 }
 
 void CMDXProcessPage::OnDeltaposSpinMoldopenTime(NMHDR *pNMHDR, LRESULT *pResult)
@@ -595,21 +633,28 @@ void CMDXProcessPage::SetProfilePack()
 	
 	m_profileP.RemoveAllData();
 
+	//TRACE("%d\n", m_iPackPressurePercent_1);
+
 	m_profileP.SetXMinMaxValue(0,m_dPackTime);
 	m_profileP.SetYMinMaxValue(0,m_dMachinePressure);
 
 	//加入資料
-	if (m_iPackSel == 0) //單段保壓 0.75(機器壓力)
+	if (m_iPackSel == 0) //單段保壓 
 	{
-		m_profileP.AddXYData(m_dPackTime,0.75*m_dMachinePressure);
-		m_profileP.AddXYData(0,0.75*m_dMachinePressure);
+		//TRACE("%lf\n", m_iPackPressurePercent_1);
+
+		m_profileP.AddXYData(m_dPackTime, (m_iPackPressurePercent_1*0.01)*m_dMachinePressure);
+		m_profileP.AddXYData(0, (m_iPackPressurePercent_1*0.01)*m_dMachinePressure);
 	}
-	else //二段保壓 0.75:0.4(機器壓力)
+	else //二段保壓 
 	{
-		m_profileP.AddXYData(m_dPackTime,0.4*m_dMachinePressure);
-		m_profileP.AddXYData(0.5*m_dPackTime,0.4*m_dMachinePressure);
-		m_profileP.AddXYData(0.5*m_dPackTime,0.75*m_dMachinePressure);
-		m_profileP.AddXYData(0,0.75*m_dMachinePressure);
+		double ratio_1 = (double)m_iPackTimeRatio_1 / (m_iPackTimeRatio_1+m_iPackTimeRatio_2);
+		double ratio_2 = (double)m_iPackTimeRatio_2 / (m_iPackTimeRatio_1+m_iPackTimeRatio_2);
+
+		m_profileP.AddXYData(m_dPackTime, (m_iPackPressurePercent_2*0.01)*m_dMachinePressure);
+		m_profileP.AddXYData(ratio_1*m_dPackTime, (m_iPackPressurePercent_2*0.01)*m_dMachinePressure);
+		m_profileP.AddXYData(ratio_1*m_dPackTime, (m_iPackPressurePercent_1*0.01)*m_dMachinePressure);
+		m_profileP.AddXYData(0, (m_iPackPressurePercent_1*0.01)*m_dMachinePressure);
 	}
 
 	m_profileP.Invalidate(TRUE);
@@ -665,10 +710,7 @@ void CMDXProcessPage::OnCbnSelchangeComboPackingSection()
 	{
 		m_iPackSel = 1;
 
-		GetDlgItem(IDC_STATIC_PACKINGPRESSURE)->EnableWindow(TRUE);
-		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_1)->EnableWindow(TRUE);
 		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_2)->EnableWindow(TRUE);
-		GetDlgItem(IDC_SPIN_PACKINGPRESSURE_1)->EnableWindow(TRUE);
 		GetDlgItem(IDC_SPIN_PACKINGPRESSURE_2)->EnableWindow(TRUE);
 
 		GetDlgItem(IDC_STATIC_PACKINGTIME)->EnableWindow(TRUE);
@@ -681,10 +723,7 @@ void CMDXProcessPage::OnCbnSelchangeComboPackingSection()
 	{
 		m_iPackSel = 0;
 
-		GetDlgItem(IDC_STATIC_PACKINGPRESSURE)->EnableWindow(FALSE);
-		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_1)->EnableWindow(FALSE);
 		GetDlgItem(IDC_EDIT_PACKINGPRESSURE_2)->EnableWindow(FALSE);
-		GetDlgItem(IDC_SPIN_PACKINGPRESSURE_1)->EnableWindow(FALSE);
 		GetDlgItem(IDC_SPIN_PACKINGPRESSURE_2)->EnableWindow(FALSE);
 
 		GetDlgItem(IDC_STATIC_PACKINGTIME)->EnableWindow(FALSE);
@@ -927,4 +966,126 @@ void CMDXProcessPage::OnDeltaposSpinFillingspeed3(NMHDR *pNMHDR, LRESULT *pResul
 	GetDlgItem(IDC_EDIT_FILLINGSPEED_3)->SetWindowText(strTemp); 
 	
 	SetProfileFill();
+}
+
+void CMDXProcessPage::OnDeltaposSpinPackingpressure1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以 +-5
+	//調整範圍 5~100
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iPackPressurePercent_1 < 100)  
+    {
+        m_iPackPressurePercent_1 += 5;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iPackPressurePercent_1 > 5)  
+    {
+        m_iPackPressurePercent_1 -= 5;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%d", m_iPackPressurePercent_1);
+	GetDlgItem(IDC_EDIT_PACKINGPRESSURE_1)->SetWindowText(strTemp); 
+	
+	SetProfilePack();
+}
+
+void CMDXProcessPage::OnDeltaposSpinPackingpressure2(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以 +-5
+	//調整範圍 5~100
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iPackPressurePercent_2 < 100)  
+    {
+        m_iPackPressurePercent_2 += 5;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iPackPressurePercent_2 > 5)  
+    {
+        m_iPackPressurePercent_2 -= 5;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%d", m_iPackPressurePercent_2);
+	GetDlgItem(IDC_EDIT_PACKINGPRESSURE_2)->SetWindowText(strTemp); 
+	
+	SetProfilePack();
+}
+
+void CMDXProcessPage::OnDeltaposSpinPackingtime1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以 +-1
+	//調整範圍 1~10
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iPackTimeRatio_1 < 10)  
+    {
+        m_iPackTimeRatio_1 += 1;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iPackTimeRatio_1 > 1)  
+    {
+        m_iPackTimeRatio_1 -= 1;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%d", m_iPackTimeRatio_1);
+	GetDlgItem(IDC_EDIT_PACKINGTIME_1)->SetWindowText(strTemp); 
+	
+	SetProfilePack();
+}
+
+void CMDXProcessPage::OnDeltaposSpinPackingtime2(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以 +-1
+	//調整範圍 1~10
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iPackTimeRatio_2 < 10)  
+    {
+        m_iPackTimeRatio_2 += 1;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iPackTimeRatio_2 > 1)  
+    {
+        m_iPackTimeRatio_2 -= 1;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%d", m_iPackTimeRatio_2);
+	GetDlgItem(IDC_EDIT_PACKINGTIME_2)->SetWindowText(strTemp); 
+	
+	SetProfilePack();
+}
+
+void CMDXProcessPage::OnBnClickedButtonPackingPressurePercentInfo()
+{
+	MessageBox(_T("[保壓壓力]占[機台最大射壓]之百分比，單位 %"), 
+				_T("保壓壓力比 (packing pressure percentage)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProcessPage::OnBnClickedButtonPackingTimeRatioInfo()
+{
+	MessageBox(_T("[二段保壓]之間的時間分配比例"), 
+				_T("保壓時間比 (packing time ratio)"), 
+      MB_OK | MB_ICONINFORMATION);
 }

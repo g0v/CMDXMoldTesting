@@ -17,6 +17,9 @@ CMDXProcessPage::CMDXProcessPage(CWnd* pParent /*=NULL*/)
 , m_iPackSel(0)
 , m_iGateNumber(0)
 , m_iMaterialSel(0)
+, m_iSpeedRatio_1(0)
+, m_iSpeedRatio_2(0)
+, m_iSpeedRatio_3(0)
 , m_pParent(pParent)
 {
 
@@ -51,6 +54,9 @@ BEGIN_MESSAGE_MAP(CMDXProcessPage, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_PACKING_TIME_INFO, &CMDXProcessPage::OnBnClickedButtonPackingTimeInfo)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_PACKING_TIME, &CMDXProcessPage::OnDeltaposSpinPackingTime)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_COOLING_TIME, &CMDXProcessPage::OnDeltaposSpinCoolingTime)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_FILLINGSPEED_1, &CMDXProcessPage::OnDeltaposSpinFillingspeed1)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_FILLINGSPEED_2, &CMDXProcessPage::OnDeltaposSpinFillingspeed2)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_FILLINGSPEED_3, &CMDXProcessPage::OnDeltaposSpinFillingspeed3)
 END_MESSAGE_MAP()
 
 
@@ -66,6 +72,8 @@ BOOL CMDXProcessPage::OnInitDialog()
 
 	InitComboProcessFill();
 	InitComboProcessPack();
+
+	InitFillSpeedRatio();
 
 	SetProfileFill();
 	SetProfilePack();
@@ -101,6 +109,22 @@ void CMDXProcessPage::InitMoldOpenTime()
 	CString strTemp("");
 	strTemp.Format("%.1f", m_dMoldOpenTime);
 	GetDlgItem(IDC_EDIT_MOLDOPEN_TIME)->SetWindowText(strTemp);
+}
+
+void CMDXProcessPage::InitFillSpeedRatio()
+{
+	//預設速度比 2:4:1
+	m_iSpeedRatio_1 = 2;
+	m_iSpeedRatio_2 = 4;
+	m_iSpeedRatio_3 = 1;
+
+	CString strTemp("");
+	strTemp.Format("%d", m_iSpeedRatio_1);
+	GetDlgItem(IDC_EDIT_FILLINGSPEED_1)->SetWindowText(strTemp);
+	strTemp.Format("%d", m_iSpeedRatio_2);
+	GetDlgItem(IDC_EDIT_FILLINGSPEED_2)->SetWindowText(strTemp);
+	strTemp.Format("%d", m_iSpeedRatio_3);
+	GetDlgItem(IDC_EDIT_FILLINGSPEED_3)->SetWindowText(strTemp);
 }
 
 void CMDXProcessPage::OnDeltaposSpinMoldopenTime(NMHDR *pNMHDR, LRESULT *pResult)
@@ -473,24 +497,20 @@ void CMDXProcessPage::CalculateFillSpeed()
 								/m_dInjectionTime/m_dAreaScrew;
 		m_dScrewStroke_single = m_dFillSpeed_single*m_dInjectionTime+m_dVP;
 	}
-	else //三段充填 2:4:1
+	else //三段充填
 	{
-		int iSpeedRatio_1 = 2;
-		int iSpeedRatio_2 = 4;
-		int iSpeedRatio_3 = 1;
-
 		//第一.二.三段螺桿行程距離
 		double dScrew_1 = 10 * m_dColdRunnerVolume*m_dVolumeExpansion/m_dAreaScrew;
 		double dScrew_2 = 10 * 0.95*m_dPartVolume*m_dVolumeExpansion/m_dAreaScrew;
 		double dScrew_3 = 10 * 0.05*m_dPartVolume*m_dVolumeExpansion/m_dAreaScrew;
 
 		//第一.二.三段速度
-		m_dFillSpeed_multi_1 = iSpeedRatio_1/m_dInjectionTime
-								*((dScrew_1/iSpeedRatio_1)+(dScrew_2/iSpeedRatio_2)+(dScrew_3/iSpeedRatio_3));
-		m_dFillSpeed_multi_2 = iSpeedRatio_2/m_dInjectionTime
-								*((dScrew_1/iSpeedRatio_1)+(dScrew_2/iSpeedRatio_2)+(dScrew_3/iSpeedRatio_3));
-		m_dFillSpeed_multi_3 = iSpeedRatio_3/m_dInjectionTime
-								*((dScrew_1/iSpeedRatio_1)+(dScrew_2/iSpeedRatio_2)+(dScrew_3/iSpeedRatio_3));
+		m_dFillSpeed_multi_1 = m_iSpeedRatio_1/m_dInjectionTime
+								*((dScrew_1/m_iSpeedRatio_1)+(dScrew_2/m_iSpeedRatio_2)+(dScrew_3/m_iSpeedRatio_3));
+		m_dFillSpeed_multi_2 = m_iSpeedRatio_2/m_dInjectionTime
+								*((dScrew_1/m_iSpeedRatio_1)+(dScrew_2/m_iSpeedRatio_2)+(dScrew_3/m_iSpeedRatio_3));
+		m_dFillSpeed_multi_3 = m_iSpeedRatio_3/m_dInjectionTime
+								*((dScrew_1/m_iSpeedRatio_1)+(dScrew_2/m_iSpeedRatio_2)+(dScrew_3/m_iSpeedRatio_3));
 
 		//第一.二.三段螺桿位置
 		m_dScrewStroke_1 = m_dVP + dScrew_1 + dScrew_2 + dScrew_3;
@@ -529,10 +549,22 @@ void CMDXProcessPage::SetProfileFill()
 		m_profileF.AddXYData(m_dScrewStroke_single,m_dFillSpeed_single);
 		m_profileF.AddXYData(m_dVP,m_dFillSpeed_single);
 	}
-	else //三段充填 2:4:1
+	else //三段充填
 	{
 		m_profileF.SetXMinMaxValue(m_dVP, m_dScrewStroke_1);  //X軸上下限
-		m_profileF.SetYMinMaxValue(0,m_dFillSpeed_multi_2*1.2);  //Y軸上下限
+		//Y軸上下限
+		if (m_iSpeedRatio_1 >= m_iSpeedRatio_2 && m_iSpeedRatio_1 >= m_iSpeedRatio_3)
+		{
+			m_profileF.SetYMinMaxValue(0,m_dFillSpeed_multi_1*1.2);
+		}
+		else if (m_iSpeedRatio_2 >= m_iSpeedRatio_1 && m_iSpeedRatio_2 >= m_iSpeedRatio_3)
+		{
+			m_profileF.SetYMinMaxValue(0,m_dFillSpeed_multi_2*1.2);
+		}
+		else
+		{
+			m_profileF.SetYMinMaxValue(0,m_dFillSpeed_multi_3*1.2);
+		}
 
 		m_profileF.AddXYData(m_dScrewStroke_1,m_dFillSpeed_multi_1);
 		m_profileF.AddXYData(m_dScrewStroke_2,m_dFillSpeed_multi_1); //SetProfileType(1)
@@ -601,10 +633,26 @@ void CMDXProcessPage::OnCbnSelchangeComboFillingSection()
 	if (m_iFillSel == 0)
 	{
 		m_iFillSel = 1;
+
+		GetDlgItem(IDC_STATIC_FILLINGSPEED)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_FILLINGSPEED_1)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_FILLINGSPEED_2)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_FILLINGSPEED_3)->EnableWindow(TRUE);
+		GetDlgItem(IDC_SPIN_FILLINGSPEED_1)->EnableWindow(TRUE);
+		GetDlgItem(IDC_SPIN_FILLINGSPEED_2)->EnableWindow(TRUE);
+		GetDlgItem(IDC_SPIN_FILLINGSPEED_3)->EnableWindow(TRUE);
 	}
 	else
 	{
 		m_iFillSel = 0;
+
+		GetDlgItem(IDC_STATIC_FILLINGSPEED)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_FILLINGSPEED_1)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_FILLINGSPEED_2)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT_FILLINGSPEED_3)->EnableWindow(FALSE);
+		GetDlgItem(IDC_SPIN_FILLINGSPEED_1)->EnableWindow(FALSE);
+		GetDlgItem(IDC_SPIN_FILLINGSPEED_2)->EnableWindow(FALSE);
+		GetDlgItem(IDC_SPIN_FILLINGSPEED_3)->EnableWindow(FALSE);
 	}
 
 	m_profileF.RemoveAllData();
@@ -774,4 +822,85 @@ void CMDXProcessPage::OnDeltaposSpinCoolingTime(NMHDR *pNMHDR, LRESULT *pResult)
 	
 	InitCycleTime();
 	InitResidenceTime();
+}
+
+void CMDXProcessPage::OnDeltaposSpinFillingspeed1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以 +-1
+	//調整範圍 1~10
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iSpeedRatio_1 < 10)  
+    {
+        m_iSpeedRatio_1 += 1;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iSpeedRatio_1 > 1)  
+    {
+        m_iSpeedRatio_1 -= 1;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%d", m_iSpeedRatio_1);
+	GetDlgItem(IDC_EDIT_FILLINGSPEED_1)->SetWindowText(strTemp); 
+	
+	SetProfileFill();
+}
+
+void CMDXProcessPage::OnDeltaposSpinFillingspeed2(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以 +-1
+	//調整範圍 1~10
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iSpeedRatio_2 < 10)  
+    {
+        m_iSpeedRatio_2 += 1;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iSpeedRatio_1 > 1)  
+    {
+        m_iSpeedRatio_2 -= 1;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%d", m_iSpeedRatio_2);
+	GetDlgItem(IDC_EDIT_FILLINGSPEED_2)->SetWindowText(strTemp); 
+	
+	SetProfileFill();
+}
+
+void CMDXProcessPage::OnDeltaposSpinFillingspeed3(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按一次箭頭可以 +-1
+	//調整範圍 1~10
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iSpeedRatio_3 < 10)  
+    {
+        m_iSpeedRatio_3 += 1;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iSpeedRatio_3 > 1)  
+    {
+        m_iSpeedRatio_3 -= 1;
+    }
+
+    CString strTemp("");
+	strTemp.Format("%d", m_iSpeedRatio_3);
+	GetDlgItem(IDC_EDIT_FILLINGSPEED_3)->SetWindowText(strTemp); 
+	
+	SetProfileFill();
 }

@@ -47,6 +47,10 @@ private:
 	double m_dScrewStroke_2;
 	double m_dScrewStroke_3;
 
+	int m_iSpeedRatio_1;
+	int m_iSpeedRatio_2;
+	int m_iSpeedRatio_3;
+
 	double m_dMachinePressure;
 	double m_dPartVolume;
 	double m_dColdRunnerVolume;
@@ -104,6 +108,7 @@ public:
 	void InitMoldOpenTime();
 	void InitCycleTime();
 	void InitResidenceTime();
+	void InitFillSpeedRatio();
 	afx_msg void OnDeltaposSpinVP(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinInjectionPressure(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinFillTime(NMHDR *pNMHDR, LRESULT *pResult);
@@ -120,4 +125,7 @@ public:
 	afx_msg void OnBnClickedButtonPackingTimeInfo();
 	afx_msg void OnDeltaposSpinPackingTime(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpinCoolingTime(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinFillingspeed1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinFillingspeed2(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinFillingspeed3(NMHDR *pNMHDR, LRESULT *pResult);
 };

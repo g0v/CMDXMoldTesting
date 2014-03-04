@@ -212,7 +212,7 @@ void CMDXProcessPage::InitResidenceTime()
 	double hrV = DataCenter::getInstance().GetHotRunnerVolume();
 	m_dResidenceTime = (hrV+m_dPartVolume+m_dColdRunnerVolume)
 						/(m_dPartVolume+m_dColdRunnerVolume)
-						/m_dVolumeExpansion*m_dCycleTime/60;
+						/m_dVolumeExpansion*m_dCycleTime;
 	
 	CString strTemp("");
 	strTemp.Format("%.1f", m_dResidenceTime);
@@ -806,7 +806,7 @@ void CMDXProcessPage::OnBnClickedButtonCycleTimeInfo()
 
 void CMDXProcessPage::OnBnClickedButtonResidenceTimeInfo()
 {
-	MessageBox(_T("塑料從熱澆道入口到澆口擠出前，在料管內滯留的時間，單位 min"), 
+	MessageBox(_T("塑料從熱澆道入口到澆口擠出前，在料管內滯留的時間，單位 sec"), 
 				_T("料管滯留時間 (residence time)"), 
       MB_OK | MB_ICONINFORMATION);
 }

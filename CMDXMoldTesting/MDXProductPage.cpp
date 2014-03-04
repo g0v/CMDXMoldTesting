@@ -337,7 +337,7 @@ void CMDXProductPage::SetMachineData()
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("163");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("408");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("60");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("723");

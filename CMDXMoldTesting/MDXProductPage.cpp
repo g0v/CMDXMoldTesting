@@ -145,29 +145,28 @@ void CMDXProductPage::InitEditData()
 
 void CMDXProductPage::InitComboMachineTon()
 {
+	//參考MDX專案內的[FCS]機台製造商
 	CString strMachineType("");
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->ResetContent();
 	strMachineType = "25";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
 	strMachineType = "50";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "60";
-	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "130";
+	strMachineType = "100";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
 	strMachineType = "150";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "160";
+	strMachineType = "200";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "205";
+	strMachineType = "250";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "325";
+	strMachineType = "300";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "410";
+	strMachineType = "350";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "470";
+	strMachineType = "450";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "510";
+	strMachineType = "550";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
 
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->SetCurSel(AutoMachineSel());
@@ -188,21 +187,20 @@ void CMDXProductPage::OnCbnSelchangeComboMachineTon()
 
 int CMDXProductPage::AutoMachineSel()
 {
-	std::vector<double> machineDia  (11, 0);    // 11 double with value 0
-	machineDia[0] = 22;	//mm
-	machineDia[1] = 25;
-	machineDia[2] = 25;
-	machineDia[3] = 25;
-	machineDia[4] = 50;
-	machineDia[5] = 35;
-	machineDia[6] = 35;
-	machineDia[7] = 70;
-	machineDia[8] = 60;
-	machineDia[9] = 70;
-	machineDia[10] = 70;
+	std::vector<double> machineDia  (10, 0);    // 10 double with value 0
+	machineDia[0] = 20;	//mm
+	machineDia[1] = 24;
+	machineDia[2] = 32;
+	machineDia[3] = 38;
+	machineDia[4] = 44;
+	machineDia[5] = 44;
+	machineDia[6] = 55;
+	machineDia[7] = 55;
+	machineDia[8] = 66;
+	machineDia[9] = 72;
 
 	double tmp = 0;
-	for (int i=0; i<10; i++)
+	for (int i=0; i<9; i++)
 	{
 		//2.0~2.5D為適當螺桿行程
 		//2D*pi*D*D/4 = 2*塑化體積 (適當的螺桿行程*截面積=2倍塑化體積)
@@ -213,192 +211,178 @@ int CMDXProductPage::AutoMachineSel()
 		}
 	}
 
-	return 10;
+	return 9;
 }
 
 void CMDXProductPage::SetMachineData()
 {
-	double mv = 0; //max velocity output = 螺桿截面積 * 最大射速
+	//最大射出量  =  螺桿截面積 * 最大射速
+	//求最大射速(mm/s) --> 10(cm to mm) * 最大射出量(cm^3/s) / 螺桿截面積(cm^2)
+	double mv = 0; 
 	switch(m_iMachineSel)
 	{
-	case 0://25 ton
+	case 0://25 ton(AF-30-20)
 		{
-			mv = 0.25 * 3.1415926 * (22/10) * (22/10) * (62/10); 
+			mv = 10 * 220.0 / (0.25*3.1415926*(20.0/10)*(20.0/10)); 
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("25");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("22");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("22");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("89");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("31");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp); //not in data sheet
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("62");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("30");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("20");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("20");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("90");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("26"); //shot weight
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("220"); //injection rate
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("258");
 		}
 		break;
-	case 1://51 ton
+	case 1://50 ton(AF-60-24)
 		{
-			mv = 0.25 * 3.1415926 * (25/10) * (25/10) * (98/10);
+			mv = 10 * 271.0 / (0.25*3.1415926*(24.0/10)*(24.0/10)); 
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("51");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("25");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("120");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("54");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("98");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
-		}
-		break;
-	case 2://61 ton
-		{
-			mv = 0.25 * 3.1415926 * (25/10) * (25/10) * (124/10);
-			CString strTemp("");
-			strTemp.Format("%.0f", mv);
-
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("61");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("25");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("100");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("45");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("124");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("224");
-		}
-		break;
-	case 3://133 ton
-		{
-			mv = 0.25 * 3.1415926 * (25/10) * (25/10) * (80/10);
-			CString strTemp("");
-			strTemp.Format("%.0f", mv);
-
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("133");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("25");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("60");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("24");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("24");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("110");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("49");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("80");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("45"); //shot weight
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("271"); //injection rate
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("220");
 		}
 		break;
-	case 4://153 ton
+	case 2://100 ton(AF-110-32)
 		{
-			mv = 0.25 * 3.1415926 * (50/10) * (50/10) * (214/10);
+			mv = 10 * 483.0 / (0.25*3.1415926*(32.0/10)*(32.0/10)); 
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("153");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("50");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("50");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("110");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("32");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("32");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("150");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("110"); //shot weight
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("483"); //injection rate
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("217");
+		}
+		break;
+	case 3://150 ton(AF-150-38)
+		{
+			mv = 10 * 567.0 / (0.25*3.1415926*(38.0/10)*(38.0/10)); 
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("150");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("38");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("38");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("180");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("186");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("567");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("232");
+		}
+		break;
+	case 4://200 ton(AF-200-44)
+		{
+			mv = 10 * 759.0 / (0.25*3.1415926*(44.0/10)*(44.0/10)); 
+			CString strTemp("");
+			strTemp.Format("%.0f", mv);
+
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("44");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("44");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("200");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("359");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("214");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("277"); //shot weight
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("759"); //injection rate
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("226");
 		}
 		break;
-	case 5://163 ton
+	case 5://250 ton(AF-250-44)
 		{
-			mv = 0.25 * 3.1415926 * (35/10) * (35/10) * (128/10);
+			mv = 10 * 759.0 / (0.25*3.1415926*(44.0/10)*(44.0/10)); 
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("163");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("35");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("35");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("144");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("127");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("128");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("250");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("44");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("44");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("277"); //shot weight
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("759"); //injection rate
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("226");
 		}
 		break;
-	case 6://204 ton
+	case 6://300 ton(AF-300-55)
 		{
-			mv = 0.25 * 3.1415926 * (35/10) * (35/10) * (128/10);
+			mv = 10 * 949.0 / (0.25*3.1415926*(55.0/10)*(55.0/10)); 
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("204");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("35");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("35");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("144");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("127");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("128");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("300");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("55");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("55");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("250");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("540");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("949");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("232");
 		}
 		break;
-	case 7://326 ton
+	case 7://350 ton(AF-350-55)
 		{
-			mv = 0.25 * 3.1415926 * (70/10) * (70/10) * (306/10);
+			mv = 10 * 594.0 / (0.25*3.1415926*(55.0/10)*(55.0/10)); 
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("326");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("70");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("984");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("306");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("350");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("55");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("55");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("250");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("540");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("594");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("231");
 		}
 		break;
-	case 8://408 ton
+	case 8://450 ton(AF-450-66)
 		{
-			mv = 0.25 * 3.1415926 * (60/10) * (60/10) * (290/10);
+			mv = 10 * 1366.0 / (0.25*3.1415926*(66.0/10)*(66.0/10)); 
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("408");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("60");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("60");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("723");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("290");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("450");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("66");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("66");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("300");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("934");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1366");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("193");
 		}
 		break;
-	case 9://469 ton
+	case 9://550 ton(AF-550-72)
 		{
-			mv = 0.25 * 3.1415926 * (70/10) * (70/10) * (306/10);
+			mv = 10 * 1426.0 / (0.25*3.1415926*(72.0/10)*(72.0/10)); 
 			CString strTemp("");
 			strTemp.Format("%.0f", mv);
 
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("469");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("70");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("984");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("306");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("200");
-		}
-		break;
-	case 10://510 ton
-		{
-			mv = 0.25 * 3.1415926 * (70/10) * (70/10) * (290/10);
-			CString strTemp("");
-			strTemp.Format("%.0f", mv);
-
-			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("510");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
-			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("70");
-			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("320");
-			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("1125");
-			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
-			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText("290");
-			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("250");
+			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("550");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("72");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("72");
+			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("330");
+			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("1222");
+			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1426");
+			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
+			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("188");
 		}
 		break;
 	}
-
+	
 	UpdateAllData();
 }
 

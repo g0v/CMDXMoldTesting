@@ -147,6 +147,7 @@ private:
 	int m_iGateNumber;
 
 	int m_iMachineSel;
+	int m_iMachineSelDefault;
 	//bool m_bCheckEditData;
 	double m_dClampingForce;
 	double m_dScrewDiam;

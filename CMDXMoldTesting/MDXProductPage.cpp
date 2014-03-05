@@ -26,6 +26,7 @@ CMDXProductPage::CMDXProductPage(CWnd* pParent /*=NULL*/)
 , m_dMaxPartThicknessData(0.)
 , m_iGateNumber(0)
 , m_iMachineSel(0)
+, m_iMachineSelDefault(0)
 , m_dClampingForce(0.)
 , m_dScrewDiam(0.)
 , m_dScrewDiamDefault(0.)
@@ -181,10 +182,29 @@ void CMDXProductPage::InitComboMachineTon()
 void CMDXProductPage::OnCbnSelchangeComboMachineTon()
 {
 	int iCurrentSel = ((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->GetCurSel();
-	if( m_iMachineSel ==  iCurrentSel)
+	
+	if( m_iMachineSel == iCurrentSel)
 	{
 		return ;
 	}
+
+	//TRACE("now:%d default:%d\n", m_iMachineSel, m_iMachineSelDefault);
+
+	//不可選擇比預設更小的機台
+	if (iCurrentSel < m_iMachineSelDefault)
+	{
+		MessageBox(_T("塑化體積超出機台限制，請選擇較大噸數"), 
+					_T("警告 warning"), 
+					MB_OK | MB_ICONWARNING);
+
+		//跳回預設機台
+		m_iMachineSel = m_iMachineSelDefault;
+		((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->SetCurSel(m_iMachineSel);
+		SetMachineData();
+
+		return ;
+	}
+
 	m_iMachineSel = iCurrentSel;
 	SetMachineData();
 }
@@ -211,10 +231,12 @@ int CMDXProductPage::AutoMachineSel()
 		tmp = (machineDia[i]/10) * 3.1415926 * (machineDia[i]/10) * (machineDia[i]/10) / 4;
 		if (tmp >= m_dPlasticVolumeData)
 		{
+			m_iMachineSelDefault = i;
 			return i;
 		}
 	}
 
+	m_iMachineSelDefault = 9;
 	return 9;
 }
 
@@ -432,7 +454,6 @@ BOOL CMDXProductPage::UpdatePageData()
 	bState = UpDateEditData();
 
 	return bState;
-
 }
 
 BOOL CMDXProductPage::IsValidateData(CDataExchange *pDX)
@@ -1571,7 +1592,6 @@ void CMDXProductPage::OnDeltaposSpinMoldTemperatureCavity(NMHDR *pNMHDR, LRESULT
 	GetDlgItem(IDC_EDIT_MOLD_TEMPERATURE_CAVITY)->SetWindowText(strTemp); 
 }
 
-
 void CMDXProductPage::OnEnChangeEditPlasticVolume()
 {
 	//若塑化體積改變，改變自動推薦之機台選擇
@@ -1579,7 +1599,6 @@ void CMDXProductPage::OnEnChangeEditPlasticVolume()
 	m_iMachineSel = AutoMachineSel();
 	SetMachineData();
 }
-
 
 void CMDXProductPage::OnDeltaposSpinGateNumber(NMHDR *pNMHDR, LRESULT *pResult)
 {

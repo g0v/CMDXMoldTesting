@@ -29,6 +29,9 @@ CMDXProductPage::CMDXProductPage(CWnd* pParent /*=NULL*/)
 , m_dClampingForce(0.)
 , m_dScrewDiam(0.)
 , m_dScrewDiamDefault(0.)
+, m_iScrewDiaSel(0)
+, m_dScrewDiamMax(0.)
+, m_dScrewDiamMin(0.)
 , m_dMaxStroke(0.)
 , m_dInjectionVolume(0.)
 , m_dMaxInjectionVolume(0.)
@@ -110,6 +113,7 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_MAX_INJECTION_VELOCITY_INFO, &CMDXProductPage::OnBnClickedButtonMaxInjectionVelocityInfo)
 	ON_BN_CLICKED(IDC_BUTTON_MAX_INJECTION_PRESSURE_INFO, &CMDXProductPage::OnBnClickedButtonMaxInjectionPressureInfo)
 	ON_BN_CLICKED(IDC_BUTTON_CLAMPING_FORCE_INFO, &CMDXProductPage::OnBnClickedButtonClampingForceInfo)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_SCREW_DIAM, &CMDXProductPage::OnDeltaposSpinScrewDiam)
 END_MESSAGE_MAP()
 
 BOOL CMDXProductPage::OnInitDialog()
@@ -148,11 +152,11 @@ void CMDXProductPage::InitComboMachineTon()
 	//參考MDX專案內的[FCS]機台製造商
 	CString strMachineType("");
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->ResetContent();
-	strMachineType = "25";
+	strMachineType = "30";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "50";
+	strMachineType = "60";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
-	strMachineType = "100";
+	strMachineType = "110";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
 	strMachineType = "150";
 	((CComboBox*)GetDlgItem(IDC_COMBO_MACHINE_TON))->AddString(strMachineType); 
@@ -221,7 +225,7 @@ void CMDXProductPage::SetMachineData()
 	double mv = 0; 
 	switch(m_iMachineSel)
 	{
-	case 0://25 ton(AF-30-20)
+	case 0://30 ton(AF-30-20)
 		{
 			mv = 10 * 220.0 / (0.25*3.1415926*(20.0/10)*(20.0/10)); 
 			CString strTemp("");
@@ -235,9 +239,12 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("220"); //injection rate
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("258");
+
+			m_dScrewDiamMax = 22;
+			m_dScrewDiamMin = 18;
 		}
 		break;
-	case 1://50 ton(AF-60-24)
+	case 1://60 ton(AF-60-24)
 		{
 			mv = 10 * 271.0 / (0.25*3.1415926*(24.0/10)*(24.0/10)); 
 			CString strTemp("");
@@ -251,9 +258,12 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("271"); //injection rate
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("220");
+
+			m_dScrewDiamMax = 26;
+			m_dScrewDiamMin = 22;
 		}
 		break;
-	case 2://100 ton(AF-110-32)
+	case 2://110 ton(AF-110-32)
 		{
 			mv = 10 * 483.0 / (0.25*3.1415926*(32.0/10)*(32.0/10)); 
 			CString strTemp("");
@@ -267,6 +277,9 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("483"); //injection rate
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("217");
+
+			m_dScrewDiamMax = 34;
+			m_dScrewDiamMin = 28;
 		}
 		break;
 	case 3://150 ton(AF-150-38)
@@ -283,6 +296,9 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("567");
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("232");
+
+			m_dScrewDiamMax = 42;
+			m_dScrewDiamMin = 34;
 		}
 		break;
 	case 4://200 ton(AF-200-44)
@@ -299,6 +315,9 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("759"); //injection rate
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("226");
+
+			m_dScrewDiamMax = 48;
+			m_dScrewDiamMin = 40;
 		}
 		break;
 	case 5://250 ton(AF-250-44)
@@ -315,6 +334,9 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("759"); //injection rate
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("226");
+
+			m_dScrewDiamMax = 48;
+			m_dScrewDiamMin = 40;
 		}
 		break;
 	case 6://300 ton(AF-300-55)
@@ -331,6 +353,9 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("949");
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("232");
+
+			m_dScrewDiamMax = 60;
+			m_dScrewDiamMin = 50;
 		}
 		break;
 	case 7://350 ton(AF-350-55)
@@ -347,6 +372,9 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("594");
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("231");
+
+			m_dScrewDiamMax = 60;
+			m_dScrewDiamMin = 50;
 		}
 		break;
 	case 8://450 ton(AF-450-66)
@@ -363,6 +391,9 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1366");
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("193");
+
+			m_dScrewDiamMax = 72;
+			m_dScrewDiamMin = 60;
 		}
 		break;
 	case 9://550 ton(AF-550-72)
@@ -379,10 +410,14 @@ void CMDXProductPage::SetMachineData()
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText("1426");
 			GetDlgItem(IDC_EDIT_MAX_INJECTION_VELOCITY)->SetWindowText(strTemp);
 			GetDlgItem(IDC_EDIT_MAX_INJECTIONPRESSURE)->SetWindowText("188");
+
+			m_dScrewDiamMax = 76;
+			m_dScrewDiamMin = 66;
 		}
 		break;
 	}
 	
+	m_iScrewDiaSel = 0; //螺桿直徑=預設螺桿直徑
 	UpdateAllData();
 }
 
@@ -1653,4 +1688,48 @@ void CMDXProductPage::OnBnClickedButtonClampingForceInfo()
 	MessageBox(_T("機台鎖模力，單位 Ton"), 
 				_T("機台鎖模力 (machine clamping force)"), 
       MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnDeltaposSpinScrewDiam(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	//按箭頭可以在3種螺桿直徑間轉換
+	//m_iScrewDiaSel = -1(較小螺桿), 0(預設螺桿), 1(較大螺桿)
+
+	//向上箭頭
+	if(pNMUpDown->iDelta == -1 && m_iScrewDiaSel != 1)  
+    {
+        if (m_iScrewDiaSel == 0)
+		{
+			m_dScrewDiam = m_dScrewDiamMax;
+		}
+		else
+		{
+			m_dScrewDiam = m_dScrewDiamDefault;
+		}
+
+		m_iScrewDiaSel += 1;
+    }
+	//向下箭頭
+    else if(pNMUpDown->iDelta == 1 && m_iScrewDiaSel != -1)  
+    {
+        if (m_iScrewDiaSel == 0)
+		{
+			m_dScrewDiam = m_dScrewDiamMin;
+		}
+		else
+		{
+			m_dScrewDiam = m_dScrewDiamDefault;
+		}
+
+		m_iScrewDiaSel -= 1;
+    }
+
+
+	CString strTemp("");
+	strTemp.Format("%.0f", m_dScrewDiam);
+	GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText(strTemp); 
 }

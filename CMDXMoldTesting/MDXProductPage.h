@@ -150,6 +150,9 @@ private:
 	//bool m_bCheckEditData;
 	double m_dClampingForce;
 	double m_dScrewDiam;
+	int m_iScrewDiaSel;
+	double m_dScrewDiamMax;
+	double m_dScrewDiamMin;
 	double m_dScrewDiamDefault;
 	double m_dMaxStroke;
 	double m_dInjectionVolume;
@@ -215,4 +218,5 @@ public:
 	afx_msg void OnBnClickedButtonMaxInjectionVelocityInfo();
 	afx_msg void OnBnClickedButtonMaxInjectionPressureInfo();
 	afx_msg void OnBnClickedButtonClampingForceInfo();
+	afx_msg void OnDeltaposSpinScrewDiam(NMHDR *pNMHDR, LRESULT *pResult);
 };

@@ -101,6 +101,15 @@ BEGIN_MESSAGE_MAP(CMDXProductPage, CDialog)
 	ON_EN_CHANGE(IDC_EDIT_PLASTIC_VOLUME, &CMDXProductPage::OnEnChangeEditPlasticVolume)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_GATE_NUMBER, &CMDXProductPage::OnDeltaposSpinGateNumber)
 	ON_BN_CLICKED(IDC_BUTTON_GATE_NUMBER_INFO, &CMDXProductPage::OnBnClickedButtonGateNumberInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MACHINE_TON_INFO, &CMDXProductPage::OnBnClickedButtonMachineTonInfo)
+	ON_BN_CLICKED(IDC_BUTTON_SCREW_DIAM_INFO, &CMDXProductPage::OnBnClickedButtonScrewDiamInfo)
+	ON_BN_CLICKED(IDC_BUTTON_SCREW_DIAM_DEFAULT_INFO, &CMDXProductPage::OnBnClickedButtonScrewDiamDefaultInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MAX_SCREW_STROKE_INFO, &CMDXProductPage::OnBnClickedButtonMaxScrewStrokeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_INJECTION_VOLUME_INFO, &CMDXProductPage::OnBnClickedButtonInjectionVolumeInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MAX_VOLUME_OUTPUT_INFO, &CMDXProductPage::OnBnClickedButtonMaxVolumeOutputInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MAX_INJECTION_VELOCITY_INFO, &CMDXProductPage::OnBnClickedButtonMaxInjectionVelocityInfo)
+	ON_BN_CLICKED(IDC_BUTTON_MAX_INJECTION_PRESSURE_INFO, &CMDXProductPage::OnBnClickedButtonMaxInjectionPressureInfo)
+	ON_BN_CLICKED(IDC_BUTTON_CLAMPING_FORCE_INFO, &CMDXProductPage::OnBnClickedButtonClampingForceInfo)
 END_MESSAGE_MAP()
 
 BOOL CMDXProductPage::OnInitDialog()
@@ -1596,4 +1605,68 @@ BOOL CMDXProductPage::CheckGateThickness(CDataExchange *pDX, UINT nEditID, doubl
 		parser.ShowWarningMessage( pDX, nEditID, strErrorMesg/*parser.GetTableString( AFX_IDP_PARSE_REAL )*/  );
 	}
 	return TRUE;
+}
+
+void CMDXProductPage::OnBnClickedButtonMachineTonInfo()
+{
+	MessageBox(_T("選擇射出機噸數，單位 Ton\n"
+				"(預設值依據塑化體積為噸數下限)"), 
+				_T("機台噸數 (machine tonnage)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonScrewDiamInfo()
+{
+	MessageBox(_T("選擇螺桿直徑，單位 mm"), 
+				_T("螺桿直徑 (screw diameter)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonScrewDiamDefaultInfo()
+{
+	MessageBox(_T("預設螺桿直徑，單位 mm"), 
+				_T("預設螺桿直徑 (default screw diameter)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMaxScrewStrokeInfo()
+{
+	MessageBox(_T("最大螺桿行程，單位 mm"), 
+				_T("預設螺桿之最大螺桿行程 (max screw stroke)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonInjectionVolumeInfo()
+{
+	MessageBox(_T("預設螺桿直徑之射出量，單位 g"), 
+				_T("射出量 (injection volume)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMaxVolumeOutputInfo()
+{
+	MessageBox(_T("預設螺桿直徑之最大射出量，單位 cc/s"), 
+				_T("最大射出量 (max injection volume output)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMaxInjectionVelocityInfo()
+{
+	MessageBox(_T("預設螺桿直徑之最大射速，單位 mm/s"), 
+				_T("最大射速 (max injection velocity)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonMaxInjectionPressureInfo()
+{
+	MessageBox(_T("預設螺桿直徑之最大射壓，單位 MPa"), 
+				_T("最大射壓 (max injection pressure)"), 
+      MB_OK | MB_ICONINFORMATION);
+}
+
+void CMDXProductPage::OnBnClickedButtonClampingForceInfo()
+{
+	MessageBox(_T("機台鎖模力，單位 Ton"), 
+				_T("機台鎖模力 (machine clamping force)"), 
+      MB_OK | MB_ICONINFORMATION);
 }

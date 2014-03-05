@@ -206,4 +206,13 @@ public:
 	afx_msg void OnEnChangeEditPlasticVolume();
 	afx_msg void OnDeltaposSpinGateNumber(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButtonGateNumberInfo();
+	afx_msg void OnBnClickedButtonMachineTonInfo();
+	afx_msg void OnBnClickedButtonScrewDiamInfo();
+	afx_msg void OnBnClickedButtonScrewDiamDefaultInfo();
+	afx_msg void OnBnClickedButtonMaxScrewStrokeInfo();
+	afx_msg void OnBnClickedButtonInjectionVolumeInfo();
+	afx_msg void OnBnClickedButtonMaxVolumeOutputInfo();
+	afx_msg void OnBnClickedButtonMaxInjectionVelocityInfo();
+	afx_msg void OnBnClickedButtonMaxInjectionPressureInfo();
+	afx_msg void OnBnClickedButtonClampingForceInfo();
 };

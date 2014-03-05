@@ -28,6 +28,7 @@ CMDXProductPage::CMDXProductPage(CWnd* pParent /*=NULL*/)
 , m_iMachineSel(0)
 , m_dClampingForce(0.)
 , m_dScrewDiam(0.)
+, m_dScrewDiamDefault(0.)
 , m_dMaxStroke(0.)
 , m_dInjectionVolume(0.)
 , m_dMaxInjectionVolume(0.)
@@ -219,6 +220,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("25");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("22");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("22");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("89");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("31");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp); //not in data sheet
@@ -234,6 +236,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("51");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("25");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("120");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("54");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -249,6 +252,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("61");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("25");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("100");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("45");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -264,6 +268,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("133");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("25");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("25");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("110");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("49");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -279,6 +284,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("153");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("50");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("50");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("200");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("359");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -294,6 +300,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("163");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("35");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("35");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("144");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("127");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -309,6 +316,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("204");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("35");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("35");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("144");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("127");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -324,6 +332,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("326");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("984");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -339,6 +348,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("408");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("60");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("60");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("723");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -354,6 +364,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("469");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("280");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("984");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -369,6 +380,7 @@ void CMDXProductPage::SetMachineData()
 
 			GetDlgItem(IDC_EDIT_CLAMPING_FORCE)->SetWindowText("510");
 			GetDlgItem(IDC_EDIT_SCREW_DIAM)->SetWindowText("70");
+			GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->SetWindowText("70");
 			GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->SetWindowText("320");
 			GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->SetWindowText("1125");
 			GetDlgItem(IDC_EDIT_MAX_VOLUME_OUTPUT)->SetWindowText(strTemp);
@@ -850,6 +862,8 @@ void CMDXProductPage::UpdateAllData()
 	SetClampingForceData(atof(strTemp));
 	GetDlgItem(IDC_EDIT_SCREW_DIAM)->GetWindowText(strTemp);
 	SetScrewDiamData(atof(strTemp));
+	GetDlgItem(IDC_EDIT_SCREW_DIAM_DEFAULT)->GetWindowText(strTemp);
+	SetScrewDiamDefaultData(atof(strTemp));
 	GetDlgItem(IDC_EDIT_MAX_SCREW_STROKE)->GetWindowText(strTemp);
 	SetMaxStrokeData(atof(strTemp));
 	GetDlgItem(IDC_EDIT_INJECTION_VOLUME)->GetWindowText(strTemp);

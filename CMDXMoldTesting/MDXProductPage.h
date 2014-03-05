@@ -38,6 +38,7 @@ public:
 
 	void SetClampingForceData( double dValue ) {m_dClampingForce = dValue;};
 	void SetScrewDiamData( double dValue ) {m_dScrewDiam = dValue;};
+	void SetScrewDiamDefaultData( double dValue ) {m_dScrewDiamDefault = dValue;};
 	void SetMaxStrokeData( double dValue  ) {m_dMaxStroke = dValue;};
 	void SetInjectionVolumeData( double dValue ) {m_dInjectionVolume = dValue;};
 	void SetMaxInjectionVolumeData( double dValue ) {m_dMaxInjectionVolume = dValue;};
@@ -45,6 +46,7 @@ public:
 	void SetMaxInjectionPressureData( double dValue ) {m_dMaxInjectionPressure = dValue;};
 	double GetClampingForceData() { return m_dClampingForce;};
 	double GetScrewDiamData() {return m_dScrewDiam;};
+	double GetScrewDiamDefaultData() {return m_dScrewDiamDefault;};
 	double GetMaxStrokeData() {return m_dMaxStroke;};
 	double GetInjectionVolumeData() {return m_dInjectionVolume;};
 	double GetMaxInjectionVolumeData() {return m_dMaxInjectionVolume;};
@@ -148,6 +150,7 @@ private:
 	//bool m_bCheckEditData;
 	double m_dClampingForce;
 	double m_dScrewDiam;
+	double m_dScrewDiamDefault;
 	double m_dMaxStroke;
 	double m_dInjectionVolume;
 	double m_dMaxInjectionVolume;
